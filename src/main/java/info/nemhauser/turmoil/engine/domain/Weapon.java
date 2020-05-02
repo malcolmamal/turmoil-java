@@ -3,10 +3,10 @@ package info.nemhauser.turmoil.engine.domain;
 import info.nemhauser.turmoil.engine.enums.DamageType;
 import info.nemhauser.turmoil.engine.enums.ItemType;
 import info.nemhauser.turmoil.engine.enums.WeaponType;
+import info.nemhauser.turmoil.engine.templates.WeaponTemplate;
 
 public class Weapon extends Item
 {
-	ItemType itemType = ItemType.WEAPON;
 	WeaponType weaponType;
 	public DamageType damageType;
 
@@ -15,6 +15,17 @@ public class Weapon extends Item
 
 	public String toString() {
 		return itemName;
+	}
+
+	public Weapon(WeaponTemplate template)
+	{
+		super(template);
+
+		itemType = ItemType.WEAPON;
+		weaponType = template.weaponType;
+		damageType = template.damageType;
+		minDamage = template.minDamage;
+		maxDamage = template.maxDamage;
 	}
 
 	public double getAverageDamage()

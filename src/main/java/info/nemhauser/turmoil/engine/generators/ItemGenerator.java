@@ -110,8 +110,7 @@ public class ItemGenerator
 		}
 
 		template.rarity = rarity;
-		// TODO: constructor from template
-		return new Accessory();
+		return new Accessory(template);
 	}
 
 	public static Armor generateArmor(ItemRarity rarity)
@@ -127,8 +126,7 @@ public class ItemGenerator
 		}
 
 		template.rarity = rarity;
-		// TODO: constructor from template
-		return new Armor();
+		return new Armor(template);
 	}
 
 	public static Weapon generateWeapon(ItemRarity rarity)
@@ -144,8 +142,7 @@ public class ItemGenerator
 		}
 
 		template.rarity = rarity;
-		// TODO: constructor from template
-		return new Weapon();
+		return new Weapon(template);
 	}
 
 	public static ItemTemplate getRandomTemplate(ItemTemplate[] values)
@@ -159,7 +156,7 @@ public class ItemGenerator
 
 		ArrayList<Attribute> attributes = ItemAttributeGenerator.rollAttributes(item);
 		attributes.addAll(Arrays.asList(item.attributes));
-		item.attributes = (Attribute[])attributes.toArray();
+		item.attributes = attributes.toArray(new Attribute[0]);
 
 		return item;
 	}

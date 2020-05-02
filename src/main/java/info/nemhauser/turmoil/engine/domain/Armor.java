@@ -2,13 +2,22 @@ package info.nemhauser.turmoil.engine.domain;
 
 import info.nemhauser.turmoil.engine.enums.ArmorType;
 import info.nemhauser.turmoil.engine.enums.ItemType;
+import info.nemhauser.turmoil.engine.templates.ArmorTemplate;
 
 public class Armor extends Item
 {
-	ItemType itemType = ItemType.ARMOR;
 	public ArmorType armorType;
 
 	public Integer armorValue = 0;
+
+	public Armor(ArmorTemplate template)
+	{
+		super(template);
+
+		itemType = ItemType.ARMOR;
+		armorType = template.armorType;
+		armorValue = template.armorValue;
+	}
 
 	public String toString() {
 		return itemName;

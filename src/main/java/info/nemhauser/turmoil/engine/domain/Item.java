@@ -3,6 +3,7 @@ package info.nemhauser.turmoil.engine.domain;
 import info.nemhauser.turmoil.engine.enums.ItemRarity;
 import info.nemhauser.turmoil.engine.enums.ItemSlot;
 import info.nemhauser.turmoil.engine.enums.ItemType;
+import info.nemhauser.turmoil.engine.templates.ItemTemplate;
 
 public class Item
 {
@@ -29,8 +30,13 @@ public class Item
 
 	public Attribute[] attributes;
 
+	public Item(ItemTemplate template)
+	{
+		itemCode = template.itemCode;
+	}
+
 	public String toString() {
-		return itemName;
+		return itemName + " [" + itemType + "]";
 	}
 
 	public String getFileCode()
@@ -89,6 +95,7 @@ public class Item
 	{
 		String value =	"itemCode: "	+ itemCode		+ ", " +
 					"itemName: "	+ itemName		+ ", " +
+					"itemType: "	+ itemType		+ ", " +
 					"level: "		+ level			+ ", " +
 					"rarity: "		+ rarity		+ ", " +
 					"isCrafted: "	+ isCrafted		+ ", " +

@@ -54,11 +54,11 @@ public class EnumValues
 		return getRandomValue(itemRarities);
 	}
 
-	public AttributeType getRandomAttributeType()
+	public Enum getRandomAttributeType()
 	{
 		//TODO:
-		//return getRandomValue(attributeTypes);
-		return AttributeType.LIFE_HIT;
+		return getRandomValue(attributeTypes);
+		//return AttributeType.LIFE_HIT;
 	}
 
 	public Enum getProperRandomItemRarity()

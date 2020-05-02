@@ -2,148 +2,293 @@ package info.nemhauser.turmoil.engine.helpers;
 
 import groovy.util.ConfigObject;
 import groovy.util.ConfigSlurper;
+import info.nemhauser.turmoil.engine.enums.*;
 import info.nemhauser.turmoil.engine.templates.AccessoryTemplate;
 import info.nemhauser.turmoil.engine.templates.ArmorTemplate;
+import info.nemhauser.turmoil.engine.templates.ItemTemplate;
 import info.nemhauser.turmoil.engine.templates.WeaponTemplate;
 
-import java.io.InputStream;
+import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.*;
 
 public class ItemTemplatesHelper
 {
+	public static ItemTemplate[] parseItems(String itemType, Boolean legendary)
+	{
+		HashMap<String, ItemTemplate> itemTemplates = new HashMap<String, ItemTemplate>();
+		try
+		{
+			ConfigObject configObject = new ConfigSlurper().parse(new URL("file:properties/items-" + itemType + ".groovy")); // items-accessories.groovy
+
+			ConfigObject items = (ConfigObject)configObject.get(legendary ? "legendaries" : itemType); //accessories legendaries
+			Iterator iterator = items.keySet().iterator();
+
+			while (iterator.hasNext())
+			{
+				String key = iterator.next().toString();
+				ConfigObject values = (ConfigObject)items.get(key);
+
+				ItemTemplate provideItem = provideItem(itemTemplates, key, itemType, legendary);
+
+				System.out.println("key: " + key);
+				Set set = values.entrySet();
+
+				Iterator setIterator = set.iterator();
+				while (setIterator.hasNext())
+				{
+					Map.Entry<String, Object> map = (Map.Entry<String, Object>)setIterator.next();
+					System.out.println("map key:" + map.getKey());
+					System.out.println("map value: " + map.getValue());
+					System.out.println("map class: "+ map.getValue().getClass());
+
+					switch (itemType)
+					{
+						case "accessories":
+						{
+							AccessoryTemplate template = (AccessoryTemplate)provideItem;
+							template.accessoryType = (AccessoryType) map.getValue();
+
+							itemTemplates.put(key, template);
+							break;
+						}
+						case "armors":
+						{
+							ArmorTemplate template = (ArmorTemplate)provideItem;
+							switch (map.getKey())
+							{
+								case "armor_value":
+								{
+									template.armorValue = (Integer) map.getValue();
+									break;
+								}
+								case "armor_type":
+								{
+									template.armorType = (ArmorType) map.getValue();
+									break;
+								}
+							}
+
+							itemTemplates.put(key, template);
+							break;
+						}
+						case "weapons":
+						{
+							WeaponTemplate template = (WeaponTemplate)provideItem;
+
+							switch (map.getKey())
+							{
+								case "min_damage":
+								{
+									template.minDamage = (Integer) map.getValue();
+									break;
+								}
+								case "max_damage":
+								{
+									template.maxDamage = (Integer) map.getValue();
+									break;
+								}
+								case "damage_type":
+								{
+									template.damageType = (DamageType) map.getValue();
+									break;
+								}
+								case "weapon_type":
+								{
+									template.weaponType = (WeaponType) map.getValue();
+									break;
+								}
+							}
+
+							itemTemplates.put(key, template);
+							break;
+						}
+					}
+				}
+			}
+		}
+		catch (MalformedURLException e)
+		{
+			e.printStackTrace();
+		}
+
+		return itemTemplates.values().toArray(new ItemTemplate[0]);
+	}
+
+	public static ItemTemplate provideItem(HashMap<String, ItemTemplate> itemTemplates, String itemCode, String itemType, Boolean legendary)
+	{
+		if (itemTemplates.containsKey(itemCode))
+		{
+			return itemTemplates.get(itemCode);
+		}
+
+		switch (itemType)
+		{
+			case "accessories":
+			{
+				AccessoryTemplate template = new AccessoryTemplate();
+				template.itemCode = itemCode;
+				template.isLegendary = legendary;
+
+				itemTemplates.put(itemCode, template);
+				return template;
+			}
+			case "armors":
+			{
+				ArmorTemplate template = new ArmorTemplate();
+				template.itemCode = itemCode;
+				template.isLegendary = legendary;
+
+				itemTemplates.put(itemCode, template);
+				return template;
+			}
+			case "weapons":
+			{
+				WeaponTemplate template = new WeaponTemplate();
+				template.itemCode = itemCode;
+				template.isLegendary = legendary;
+
+				itemTemplates.put(itemCode, template);
+				return template;
+			}
+		}
+
+		return null;
+	}
+
 	public static AccessoryTemplate[] parseCommonAccessories()
 	{
-		AccessoryTemplate[] accessoryTemplates = new AccessoryTemplate[]{};
-		ConfigObject configObject = new ConfigSlurper().parse("properties/items-accessories.groovy");
+		/*
+		ArrayList<AccessoryTemplate> accessoryTemplates = new ArrayList<AccessoryTemplate>();
+		try
+		{
+			ConfigObject configObject = new ConfigSlurper().parse(new URL("file:properties/items-accessories.groovy")); // items-accessories.groovy
 
-//		configObject.accessories.each() {
-//			def values = it.getValue();
-//
-//			AccessoryTemplate template = new AccessoryTemplate();
-//			template.itemCode = it.getKey();
-//			template.accessoryType = values.accessory_type;
-//
-//			accessoryTemplates.add(template);
-//		}
+			ConfigObject accessories = (ConfigObject)configObject.get("accessories"); //accessories legendaries
+			Iterator iterator = accessories.keySet().iterator();
+
+			while (iterator.hasNext())
+			{
+				String key = iterator.next().toString();
+				ConfigObject values = (ConfigObject)accessories.get(key);
+
+				System.out.println(key);
+				Set set = values.entrySet();
+
+				Iterator setIterator = set.iterator();
+				while (setIterator.hasNext())
+				{
+					Map.Entry<String, Object> map = (Map.Entry<String, Object>)setIterator.next();
+					System.out.println(map.getKey());
+					System.out.println(map.getValue());
+					System.out.println(map.getValue().getClass());
+
+					AccessoryTemplate template = new AccessoryTemplate();
+					template.itemCode = key;
+					template.accessoryType = (AccessoryType) map.getValue();
+					accessoryTemplates.add(template);
+				}
+			}
+		}
+		catch (MalformedURLException e)
+		{
+			e.printStackTrace();
+		}
 
 		//log.info "Common Accessory Templates loaded (" + accessoryTemplates.size() + ")";
-		return accessoryTemplates;
+
+		return accessoryTemplates.toArray(new AccessoryTemplate[0]);
+
+		 */
+		ItemTemplate[] itemTemplates = parseItems("accessories", false);
+		ArrayList<AccessoryTemplate> accessoryTemplates = new ArrayList<AccessoryTemplate>();
+
+		for (ItemTemplate element : itemTemplates) {
+			accessoryTemplates.add((AccessoryTemplate)element);
+		}
+		return accessoryTemplates.toArray(new AccessoryTemplate[0]);
+
+		//return (AccessoryTemplate[]) parseItems("accessories", false);
 	}
 
 	public static AccessoryTemplate[] parseLegendaryAccessories()
 	{
-		AccessoryTemplate[] accessoryTemplates = new AccessoryTemplate[]{};
-		ConfigObject configObject = new ConfigSlurper().parse("properties/items-accessories.groovy");
+		ItemTemplate[] itemTemplates = parseItems("accessories", true);
+		ArrayList<AccessoryTemplate> accessoryTemplates = new ArrayList<AccessoryTemplate>();
 
-//		configObject.legendaries.each() {
-//			def values = it.getValue();
-//
-//			AccessoryTemplate template = new AccessoryTemplate();
-//			template.itemCode = it.getKey();
-//			template.accessoryType = values.accessory_type;
-//			template.isLegendary = true;
-//
-//			accessoryTemplates.add(template);
-//		}
-
-		//log.info "Legendary Accessory Templates loaded (" + accessoryTemplates.size() + ")";
-		return accessoryTemplates;
+		for (ItemTemplate element : itemTemplates) {
+			accessoryTemplates.add((AccessoryTemplate)element);
+		}
+		return accessoryTemplates.toArray(new AccessoryTemplate[0]);
 	}
 
 	public static ArmorTemplate[] parseCommonArmors()
 	{
-		ArmorTemplate[] armorTemplates = new ArmorTemplate[]{};
-		ConfigObject configObject = new ConfigSlurper().parse("properties/items-armors.groovy");
+		ItemTemplate[] itemTemplates = parseItems("armors", false);
+		ArrayList<ArmorTemplate> armorTemplates = new ArrayList<ArmorTemplate>();
 
-//		configObject.armors.each() {
-//			def values = it.getValue();
-//
-//			ArmorTemplate template = new ArmorTemplate();
-//			template.itemCode = it.getKey();
-//			template.armorType = values.armor_type;
-//
-//			armorTemplates.add(template);
-//		}
-
-		//log.info "Common Armor Templates loaded (" + armorTemplates.size() + ")";
-		return armorTemplates;
+		for (ItemTemplate element : itemTemplates) {
+			armorTemplates.add((ArmorTemplate)element);
+		}
+		return armorTemplates.toArray(new ArmorTemplate[0]);
 	}
 
 	public static ArmorTemplate[] parseLegendaryArmors()
 	{
-		ArmorTemplate[] armorTemplates = new ArmorTemplate[]{};
-		ConfigObject configObject = new ConfigSlurper().parse("properties/items-armors.groovy");
+		ItemTemplate[] itemTemplates = parseItems("armors", true);
+		ArrayList<ArmorTemplate> armorTemplates = new ArrayList<ArmorTemplate>();
 
-//		configObject.legendaries.each() {
-//			def values = it.getValue();
-//
-//			ArmorTemplate template = new ArmorTemplate();
-//			template.itemCode = it.getKey();
-//			template.armorValue = values.armor_value;
-//			template.armorType = values.armor_type;
-//			template.isLegendary = true;
-//
-//			armorTemplates.add(template);
-//		}
-
-		//log.info "Legendary Armor Templates loaded (" + armorTemplates.size() + ")";
-		return armorTemplates;
+		for (ItemTemplate element : itemTemplates) {
+			armorTemplates.add((ArmorTemplate)element);
+		}
+		return armorTemplates.toArray(new ArmorTemplate[0]);
 	}
 
 	public static WeaponTemplate[] parseCommonWeapons()
 	{
-		WeaponTemplate[] weaponTemplates = new WeaponTemplate[]{};
-		ConfigObject configObject = new ConfigSlurper().parse("properties/items-weapons.groovy");
+		ItemTemplate[] itemTemplates = parseItems("weapons", false);
+		ArrayList<WeaponTemplate> weaponTemplates = new ArrayList<WeaponTemplate>();
 
-//		configObject.weapons.each() {
-//			def values = it.getValue();
-//
-//			WeaponTemplate template = new WeaponTemplate();
-//			template.itemCode = it.getKey();
-//			template.weaponType = values.weapon_type;
-//
-//			weaponTemplates.add(template);
-//		}
-
-		//log.info "Common Weapon Templates loaded (" + weaponTemplates.size() + ")"
-		return weaponTemplates;
+		for (ItemTemplate element : itemTemplates) {
+			weaponTemplates.add((WeaponTemplate)element);
+		}
+		return weaponTemplates.toArray(new WeaponTemplate[0]);
 	}
 
 	public static WeaponTemplate[] parseLegendaryWeapons()
 	{
-		WeaponTemplate[] weaponTemplates = new WeaponTemplate[]{};
-		ConfigObject configObject = new ConfigSlurper().parse("properties/items-weapons.groovy");
+		ItemTemplate[] itemTemplates = parseItems("weapons", true);
+		ArrayList<WeaponTemplate> weaponTemplates = new ArrayList<WeaponTemplate>();
 
-//		configObject.legendaries.each() {
-//			def values = it.getValue();
-//
-//			WeaponTemplate template = new WeaponTemplate();
-//			template.itemCode = it.getKey();
-//			template.minDamage = values.min_damage;
-//			template.maxDamage = values.max_damage;
-//			template.damageType = values.damage_type;
-//			template.weaponType = values.weapon_type;
-//			template.isLegendary = true;
-//
-//			weaponTemplates.add(template);
-//		}
-
-		//log.info "Legendary Weapon Templates loaded (" + weaponTemplates.size() + ")";
-		return weaponTemplates;
+		for (ItemTemplate element : itemTemplates) {
+			weaponTemplates.add((WeaponTemplate)element);
+		}
+		return weaponTemplates.toArray(new WeaponTemplate[0]);
 	}
 
 	public static String[] parseItemNames(Boolean isPrefix)
 	{
-		String[] tokens = new String[]{};
+		ArrayList<String> tokens = new ArrayList<String>(){};
 		String fileNameType = (isPrefix) ? "prefix" : "suffix";
-//		InputStream file = ItemTemplatesHelper.getContext().getResource("properties/names-" + fileNameType + ".groovy").inputStream;
-//
-//		file.eachLine("utf8") {
-//			tokens << it.trim();
-//		}
+		try
+		{
+			InputStream file = new FileInputStream(new File("properties/names-" + fileNameType + ".groovy"));
 
-		//log.info "Name tokens '" + fileNameType + "' loaded (" + tokens.size() + ")";
+			BufferedReader br = new BufferedReader(new InputStreamReader(file));
 
-		return tokens;
+			String line;
+			while ((line = br.readLine()) != null)
+			{
+				tokens.add(line);
+			}
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+
+		return tokens.toArray(new String[0]);
 	}
 
 	public static void getContext()

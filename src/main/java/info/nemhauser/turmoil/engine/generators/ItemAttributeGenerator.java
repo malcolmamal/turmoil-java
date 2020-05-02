@@ -1,5 +1,6 @@
 package info.nemhauser.turmoil.engine.generators;
 
+import ch.qos.logback.core.net.SyslogOutputStream;
 import info.nemhauser.turmoil.engine.domain.Accessory;
 import info.nemhauser.turmoil.engine.domain.Armor;
 import info.nemhauser.turmoil.engine.domain.Attribute;
@@ -86,6 +87,9 @@ class ItemAttributeGenerator
 			}
 		}
 
+		System.out.println("item " + item);
+		System.out.println("item " + item.toStringFull());
+		System.out.println("item type: " + item.itemType);
 		switch (item.itemType)
 		{
 			case ACCESSORY:

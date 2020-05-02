@@ -1,6 +1,7 @@
 package info.nemhauser.turmoil.engine.enums;
 
-public enum AttributeType {
+public enum AttributeType
+{
 
 	// TODO: add toughness (critical defence)
 

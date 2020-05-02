@@ -1,6 +1,7 @@
 package info.nemhauser.turmoil.engine.templates;
 
 import info.nemhauser.turmoil.engine.enums.ItemRarity;
+import info.nemhauser.turmoil.engine.enums.ItemType;
 
 public class ItemTemplate
 {

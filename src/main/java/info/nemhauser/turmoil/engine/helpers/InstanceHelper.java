@@ -10,7 +10,7 @@ import info.nemhauser.turmoil.engine.generators.ItemGenerator;
 import info.nemhauser.turmoil.engine.instances.CombatState;
 
 
-class InstanceHelper
+public class InstanceHelper
 {
 	public static DefaultUndirectedGraph<String, DefaultEdge> getInstanceGraph()
 	{
@@ -23,29 +23,29 @@ class InstanceHelper
 		{
 			for (int j = 1; j <= maxHeight; j++)
 			{
-				String vertex = new String("${i}-${j}");
+				String vertex = new String(i + "-" + j);
 				graph.addVertex(vertex);
 
 				if (j > 1)
 				{
-					String vertexAbove = new String("${i}-${j-1}");
+					String vertexAbove = new String(i + "-" + (j-1));
 					graph.addEdge(vertexAbove, vertex);
 
 					if (i > 1 && i % 2 != 0)
 					{
-						String vertexDiagonalRight = new String("${i - 1}-${j - 1}");
+						String vertexDiagonalRight = new String((i-1) + "-" + (j-1));
 						graph.addEdge(vertexDiagonalRight, vertex);
 					}
 				}
 
 				if (i > 1)
 				{
-					String vertexBeside = new String("${i-1}-${j}");
+					String vertexBeside = new String((i-1) + "-" + j);
 					graph.addEdge(vertexBeside, vertex);
 
 					if (i % 2 == 0 && j < maxHeight)
 					{
-						String vertexDiagonalLeft = new String("${i - 1}-${j + 1}");
+						String vertexDiagonalLeft = new String((i-1) + "-" + (j+1));
 						graph.addEdge(vertexDiagonalLeft, vertex);
 					}
 				}

@@ -15,12 +15,17 @@ public class ServerHelper
 
 	public static EnumValues getEnumValues()
 	{
-		return null;
+		EnumValues values = new EnumValues();
+		values.init();
+		return values;
 	}
 
 	public static ItemTemplates getItemTemplates()
 	{
-		return null;
+		ItemTemplates itemTemplates = new ItemTemplates();
+		itemTemplates.initialize();
+
+		return itemTemplates;
 	}
 
 	public static CharacterState getCharacterState(Character character)
@@ -41,7 +46,7 @@ public class ServerHelper
 
 	private static HashMap<String, CharacterState> getCharacterStates()
 	{
-		return null;
+		return new HashMap<String, CharacterState>();
 	}
 
 	public static CombatState getCombatState(Character character)
@@ -60,7 +65,7 @@ public class ServerHelper
 
 	private static HashMap<String, CombatState> getCombatStates()
 	{
-		return null;
+		return new HashMap<String, CombatState>();
 	}
 
 	public static String[] getPortraits(Gender gender)
