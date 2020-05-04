@@ -5,7 +5,7 @@ import info.nemhauser.turmoil.engine.domain.CharacterState;
 
 import java.util.Random;
 
-class CombatHelper
+public class CombatHelper
 {
 	public static long computeDamageToDeal(Character character)
 	{
@@ -28,6 +28,7 @@ class CombatHelper
 		}
 
 		return damageToDeal;
+		//'damageToDeal'
 		//resultMap << [isCriticalHit: isCriticalHit];
 	}
 }

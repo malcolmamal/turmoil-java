@@ -32,16 +32,17 @@ public class ItemTemplatesHelper
 
 				ItemTemplate provideItem = provideItem(itemTemplates, key, itemType, legendary);
 
-				System.out.println("key: " + key);
+//				System.out.println("key: " + key);
 				Set set = values.entrySet();
 
 				Iterator setIterator = set.iterator();
 				while (setIterator.hasNext())
 				{
 					Map.Entry<String, Object> map = (Map.Entry<String, Object>)setIterator.next();
-					System.out.println("map key:" + map.getKey());
-					System.out.println("map value: " + map.getValue());
-					System.out.println("map class: "+ map.getValue().getClass());
+					//TODO: newdebug
+//					System.out.println("map key:" + map.getKey());
+//					System.out.println("map value: " + map.getValue());
+//					System.out.println("map class: "+ map.getValue().getClass());
 
 					switch (itemType)
 					{

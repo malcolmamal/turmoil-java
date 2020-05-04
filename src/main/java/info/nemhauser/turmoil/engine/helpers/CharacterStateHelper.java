@@ -15,7 +15,7 @@ import info.nemhauser.turmoil.engine.enums.ItemType;
 
 import java.util.ArrayList;
 
-class CharacterStateHelper
+public class CharacterStateHelper
 {
 	public static CharacterState getCharacterState(Character character)
 	{

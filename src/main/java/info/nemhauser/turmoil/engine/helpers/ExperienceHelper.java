@@ -1,6 +1,6 @@
 package info.nemhauser.turmoil.engine.helpers;
 
-class ExperienceHelper
+public class ExperienceHelper
 {
 	public static Integer getRequiredExperience(Integer level)
 	{

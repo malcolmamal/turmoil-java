@@ -1,6 +1,5 @@
 package info.nemhauser.turmoil.engine.generators;
 
-import ch.qos.logback.core.net.SyslogOutputStream;
 import info.nemhauser.turmoil.engine.domain.Accessory;
 import info.nemhauser.turmoil.engine.domain.Armor;
 import info.nemhauser.turmoil.engine.domain.Attribute;
@@ -11,7 +10,6 @@ import info.nemhauser.turmoil.engine.enums.ArmorType;
 import info.nemhauser.turmoil.engine.enums.AttributeType;
 import info.nemhauser.turmoil.engine.enums.ItemRarity;
 import info.nemhauser.turmoil.engine.enums.ItemType;
-import info.nemhauser.turmoil.engine.instances.EnumValues;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -87,9 +85,10 @@ class ItemAttributeGenerator
 			}
 		}
 
-		System.out.println("item " + item);
-		System.out.println("item " + item.toStringFull());
-		System.out.println("item type: " + item.itemType);
+		//TODO: newdebug
+//		System.out.println("item " + item);
+//		System.out.println("item " + item.toStringFull());
+//		System.out.println("item type: " + item.itemType);
 		switch (item.itemType)
 		{
 			case ACCESSORY:

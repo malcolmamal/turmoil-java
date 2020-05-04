@@ -3,22 +3,28 @@ package info.nemhauser.turmoil.sandbox;
 import groovy.util.ConfigObject;
 import groovy.util.ConfigSlurper;
 import info.nemhauser.turmoil.engine.domain.Character;
+import info.nemhauser.turmoil.engine.domain.Item;
 import info.nemhauser.turmoil.engine.enums.ItemRarity;
-import info.nemhauser.turmoil.engine.helpers.InstanceHelper;
-import info.nemhauser.turmoil.engine.helpers.ItemTemplatesHelper;
-import info.nemhauser.turmoil.engine.helpers.ServerHelper;
+import info.nemhauser.turmoil.engine.helpers.*;
 import info.nemhauser.turmoil.engine.instances.CombatState;
+import org.jgrapht.Graph;
+import org.jgrapht.GraphPath;
+import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
+import org.jgrapht.alg.shortestpath.KShortestSimplePaths;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.DefaultUndirectedGraph;
+import org.jgrapht.graph.GraphWalk;
+import org.json.simple.JSONObject;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 
 public class Sandbox
 {
 	public static void main(String[] args)
 	{
-		System.out.println("yo");
+		System.out.println("Sandbox started...");
 
 		//ItemTemplatesHelper.parseCommonAccessories();
 
@@ -28,9 +34,130 @@ public class Sandbox
 		//*
 		Character character = new Character();
 
-		DefaultUndirectedGraph<String, DefaultEdge> graph = InstanceHelper.getInstanceGraph();
-		CombatState cs = InstanceHelper.createCombatState(character);
+		instanceActionEnemy(character, "polygon-5-4");
+
+
+		//DefaultUndirectedGraph<String, DefaultEdge> graph = InstanceHelper.getInstanceGraph();
+		//CombatState cs = InstanceHelper.createCombatState(character);
 
 		 //*/
+	}
+
+	public static String instanceMove(Character character, String position)
+	{
+		JSONObject json = new JSONObject();
+		if (position != null && character != null)
+		{
+			CombatState cs = InstanceHelper.getCombatState(character);
+			cs.friend.instancePosition = position;
+
+			json.put("success", true);
+			json.put("friendlyTurn", true);
+			json.put("actionType", "move");
+			json.put("polygonId" , cs.friend.instancePosition);
+		}
+		return json.toJSONString();
+	}
+
+	public static String instanceAttack(Character character, String position)
+	{
+		// todo
+		double healthBarValue = 100;
+
+		JSONObject json = new JSONObject();
+		if (position != null && character != null)
+		{
+			CombatState cs = InstanceHelper.getCombatState(character);
+			long computedAttack = CombatHelper.computeDamageToDeal(character);
+			int damageDealt = (int)computedAttack;//computedAttack['damageToDeal'];
+			cs.enemy.currentHealth -= damageDealt;
+
+			if (cs.enemy.currentHealth < 0)
+			{
+				Item item = cs.enemy.lootBag.get("loot");
+				if (item != null)
+				{
+					//itemService.saveItem(item, character);
+
+					json.put("stashedItemId", item.toStringFull());
+					//todo
+					//json.put( << [stashedItemContent: g.render(contextPath: "../character/", template: "item_slot_stash", model: [item: item])];
+				}
+
+				cs.enemy = InstanceHelper.createMonster(character);
+				json.put("newEnemyPosition", cs.enemy.instancePosition);
+
+				//TODO: handle it properly
+				character.experience += 10;
+				if (character.experience >= ExperienceHelper.getRequiredExperience(character.level+1))
+				{
+					character.level++;
+					character.experience = ExperienceHelper.getRequiredExperience(character.level) - character.experience;
+				}
+				CharacterStateHelper.computeValuesForCharacterState(character);
+			}
+
+			json.put("success", true);
+			json.put("friendlyTurn", true);
+			json.put("actionType", "attack");
+			//if (computedAttack['isCriticalHit'])
+			{
+				json.put("type", "critical");
+			}
+			json.put("polygonId", position);
+			json.put("damageDealt", damageDealt);
+			json.put("healthBar", Math.floor(cs.enemy.currentHealth * healthBarValue / cs.enemy.health));
+		}
+		return json.toJSONString();
+	}
+
+	public static String instanceActionEnemy(Character character, String position)
+	{
+		// todo
+		double healthBarValue = 100;
+
+		//TODO: investigate issue: The end vertex is the same as the start vertex!.
+		JSONObject json = new JSONObject();
+		if (position != null && character != null)
+		{
+			json.put("success", true);
+
+			CombatState cs = InstanceHelper.getCombatState(character);
+
+			String enemyPosition = cs.enemy.instancePosition.substring(8);
+			String characterPosition = cs.friend.instancePosition.substring(8);
+
+			DefaultUndirectedGraph<String, DefaultEdge> graph = InstanceHelper.getInstanceGraph();
+			//List<DefaultEdge> sp = (List<DefaultEdge>)DijkstraShortestPath.findPathBetween(graph, enemyPosition, characterPosition);
+			DijkstraShortestPath<String, DefaultEdge> dijkstraGraph = new DijkstraShortestPath<String, DefaultEdge>(graph);
+			GraphWalk<String, DefaultEdge> graphWalk = (GraphWalk<String, DefaultEdge>) dijkstraGraph.getPath(enemyPosition, characterPosition);
+			//KShortestSimplePaths pathing = new KShortestSimplePaths(graph, cs.enemy.instancePosition.substring(8), 1);
+			//List<GraphPath<String, DefaultEdge>> path = pathing.getPaths(cs.friend.instancePosition.substring(8));
+
+			System.out.println(graphWalk.toString());
+
+//			def newPosition = Graphs.getPathVertexList(path.first()).getAt(1);
+//			String newPolygon = "polygon-" + newPosition;
+//
+//			json.put("polygonId", newPolygon);
+//			if (path.first().getEdgeList().size() == 1)
+//			{
+//				cs.friend.currentHealth -= 5;
+//
+//				json.put("actionType", "attack");
+//				json.put("attackingUnit", position);
+//				json.put("damageDealt", 5);
+//				json.put("healthBar", Math.floor(cs.friend.currentHealth * healthBarValue / cs.friend.health));
+//			}
+//			else
+//			{
+//				cs.enemy.instancePosition = newPolygon;
+//
+//				json.put("actionType", "move");
+//				json.put("unitToMove", position);
+//				json.put("path", path);
+//			}
+		}
+		return json.toJSONString();
 	}
 }
