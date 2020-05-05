@@ -19,7 +19,7 @@ export default class Turmoil extends React.Component
 							<div className="shadowBottom"/>
 						</div>
 
-						<Window/>
+						<Window ident="instance"/>
 					</div>
 				</div>
 

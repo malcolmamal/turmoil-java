@@ -26,8 +26,6 @@ export class EnemyUnit extends React.Component
 {
 	render()
 	{
-		//onClick="actionOnUnit(this);"
-
 		const unitStyle = {
 			width: '35px',
 		}
