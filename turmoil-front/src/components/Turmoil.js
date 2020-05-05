@@ -1,14 +1,17 @@
 import React from "react";
 import Header from "./Header";
-import Window from "./Window";
 import Footer from "./Footer";
+import Instance from "./Instance";
+import Console from "./Console";
+import Error from "./Error";
 
 export default class Turmoil extends React.Component
 {
 	render() {
 		return (
 			<div>
-				<Header/>
+				<Error />
+				<Header />
 
 				<div className="turmoilContainer">
 					<div id="turmoilBody" className="turmoilBody">
@@ -19,11 +22,13 @@ export default class Turmoil extends React.Component
 							<div className="shadowBottom"/>
 						</div>
 
-						<Window ident="instance"/>
+						<Instance />
+						<Console />
+
 					</div>
 				</div>
 
-				<Footer/>
+				<Footer />
 			</div>
 		);
 	}

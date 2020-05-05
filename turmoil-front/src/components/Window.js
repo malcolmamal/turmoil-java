@@ -1,5 +1,5 @@
 import React from "react";
-import Instance, {CharacterUnit, EnemyUnit} from "./Instance";
+import Instance from "./Instance";
 import {
 	bringToTheTop,
 	switchMinimizeMaximize,
@@ -27,11 +27,7 @@ class WindowIcon extends React.Component {
 export default class Window extends React.Component
 {
 	render() {
-		const windowContainerInnerStyle = {
-			backgroundImage: "url('/images/backgrounds/background_grunge_650x550.png')",
-			width: '650px',
-			height: '550px',
-		};
+		const windowContainerInnerStyle = this.props.background;
 		const ident = this.props.ident;
 
 		return (
@@ -84,9 +80,7 @@ export default class Window extends React.Component
 									<div id={ident + 'ContainerWrapper'} className={ident + 'ContainerWrapper'}>
 										<div id={ident + 'Container'} className={ident + 'Container'}>
 
-											<Instance/>
-											<CharacterUnit/>
-											<EnemyUnit/>
+											{this.props.children}
 
 										</div>
 									</div>

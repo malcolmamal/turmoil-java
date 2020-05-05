@@ -73,8 +73,10 @@ function getPolygonForUnit(unit)
 	return jQuery('#' + jQuery(unit).data('previousPolygonId'));
 }
 
-export function actionOnUnit(unit)
+export function actionOnUnit(unitId)
 {
+	let unit = jQuery('#' + unitId);
+
 	jQuery(unit).hasClass('enemyUnit')
 	{
 		var polygon = jQuery(getPolygonForUnit(unit));
@@ -199,7 +201,10 @@ function handleMoveToPolygon(polygon, unit)
 	//jQuery('#testElement').css('left', centerX);
 	//jQuery('#testElement').css('top', centerY);
 
+	console.log('moving to: ', polygon.attr('id') );
+
 	unit.data('previousPolygonId', polygon.attr('id'));
+	console.log('moving to after: ', unit.data('previousPolygonId'), unit.attr('id'));
 	polygon.data('unit', unit.attr('id'));
 }
 

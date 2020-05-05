@@ -2,6 +2,7 @@ import jQuery from "jquery";
 import {playAudio, hideSpinnerWithDelay} from '../js/turmoil-general';
 import {hideAllTooltips} from '../js/turmoil-tooltip';
 import {bringToTheTop, initWindow} from '../js/turmoil-windows';
+import "jquery-ui/themes/base/all.css";
 
 
 function switchWindow(windowType)
@@ -190,11 +191,13 @@ jQuery(function () {
 	//initWindow('stats', true);
 	//initWindow('stash', true);
 	//initWindow('equipment',true);
-	//initWindow('console', true);
+
+	window.windowSizes.consoleWidth = 600;
+	window.windowSizes.consoleHeight = 160;
+	initWindow('console', true);
 
 	window.windowSizes.instanceWidth = 650;
 	window.windowSizes.instanceHeight = 550;
-
 	initWindow('instance', true);
 
 /*			
@@ -208,15 +211,22 @@ jQuery(function () {
 		switchWindow('stash')
 	});
 */
+
+	/**
+	 * TODO: fix
+	 *
+	 * seems to react to any key...
+	 */
+
+	/*
 	jQuery(document).bind('keydown', 'n', function () {
 		switchWindow('instance')
 	});
-/*			
+
 	jQuery(document).bind('keydown', 'o', function () {
 		switchWindow('console')
 	});
-*/
-
+	 */
 
 	/*
 	  init for instance window

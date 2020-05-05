@@ -1,7 +1,11 @@
 import jQuery from "jquery";
 import moment from "moment";
+import "jquery-mousewheel";
+import "malihu-custom-scrollbar-plugin";
+import "malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css";
 
 window.debug = true;
+window.debugPopup = true;
 
 window.turmoil = {};
 window.turmoil.soundLoops = {};
@@ -149,6 +153,12 @@ function handleAjaxError(responseText, errorThrown)
 	{
 		console.log('Error in ajax call', errorThrown);
 		window.turmoil.ajax.debugInfo = responseText;
+
+		if (window.debugPopup)
+		{
+			jQuery('#modalContent').html(responseText);
+			window.modal.style.display = "block";
+		}
 	}
 
 	hideSpinner();
@@ -352,12 +362,15 @@ jQuery(function() {
 
 	addEvent(window, "resize", resizeEvent);
 
+	/**
+	 * TODO: maybe replace it with https://scotch.io/tutorials/implementing-smooth-scrolling-in-react
+	 */
 	var scrollableContainer = jQuery('.scrollableContainer');
 	if (scrollableContainer.length)
 	{
 		if (jQuery.isFunction(jQuery().mCustomScrollbar))
 		{
-			scrollableContainer.mCustomScrollbar();
+			scrollableContainer.mCustomScrollbar({theme:'dark'});
 		}
 		else if (window.debug)
 		{
@@ -367,8 +380,6 @@ jQuery(function() {
 
 	jQuery.each(jQuery('.flatMenu').find('li'), function(index, value) {jQuery(value).click(function(){showSpinner();});})
 
-	
-	
 	// TODO: handle browser window resize
 });
 
