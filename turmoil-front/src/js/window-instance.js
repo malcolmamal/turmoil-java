@@ -103,7 +103,7 @@ function actionOnPolygon(polygon, unit)
 		unit = activeUnit;
 	}
 
-	var url = 'account/';
+	var url = '';//'account/';
 	if (unit.hasClass('enemyUnit'))
 	{
 		url += 'instanceActionEnemy/' + unit.attr('id');
@@ -210,13 +210,16 @@ function handleMoveToPolygon(polygon, unit)
 
 function finalizeActionOnPolygon(data)
 {
+	console.log('finalize data', data);
 	if (data != null && data.success === true && typeof(data.polygonId) != 'undefined')
 	{
 		var unit = activeUnit;
 
 		var polygon = jQuery('#' + data.polygonId);
+		console.log('finalize polygon', polygon);
 		if (polygon.length > 0 && typeof(data.actionType) != 'undefined')
 		{
+			console.log('finalize type', data.actionType);
 			if (data.actionType === 'attack')
 			{
 				if (typeof(data.attackingUnit) != 'undefined')

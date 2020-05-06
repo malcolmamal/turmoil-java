@@ -3,11 +3,17 @@ import moment from "moment";
 import "jquery-mousewheel";
 import "malihu-custom-scrollbar-plugin";
 import "malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css";
+import soundMoveLeather from "../media/audio/move_leather.wav";
 
 window.debug = true;
 window.debugPopup = true;
 
 window.turmoil = {};
+
+window.turmoil.sounds = {
+	'soundMoveLeather': soundMoveLeather
+};
+
 window.turmoil.soundLoops = {};
 window.turmoil.windowSettings = {};
 
@@ -81,10 +87,14 @@ window.turmoil.logCombat = function(content)
  *
  * @type {{baseUrl: string, exec: exec}}
  */
+
+window.baseUrl = 'http://localhost:8080/';
+//window.baseUrl + params.url
+//'http://foxlinux:8005/api/v2/rest/projects/?auth=Basic%20bHVkd2lnOjA5NDVmYzk2MTFmNTVmZDBlMTgzZmI4YjA0NGYxYWZl=&clientId=1&projectIds=26'
 window.turmoil.ajax = {
 
 	debugInfo: '',
-	baseUrl: '/turmoil/',
+	//baseUrl: '/turmoil/',
 	exec: function()
 	{
 		if (arguments.length === 1)
@@ -102,18 +112,23 @@ window.turmoil.ajax = {
 
 				showSpinner();
 				jQuery.ajax({
-					type: "POST",
-					url: this.baseUrl + params.url,
+					type: "GET",
+					crossDomain: true,
+					dataType: 'json',
+					url: window.baseUrl + params.url,
 					data: dataString,
 					//dataType:"script",
-					success: function(data, textStatus) {
+					success: function(data, textStatus, xhr) {
+						console.log('complete success ', xhr.status);
 						if (textStatus === 'success')
 						{
 							if (typeof(params.eval) !== 'undefined' && params.eval === true) {
 								eval(data);
+								console.log('result1', eval(data));
 							}
 
 							if (typeof(params.onSuccess) !== 'undefined') {
+								console.log('result2', data);
 								params.onSuccess(data);
 							}
 						}
@@ -124,7 +139,13 @@ window.turmoil.ajax = {
 						hideSpinner();
 					},
 					error: function(XMLHttpRequest, textStatus, errorThrown) {
+						console.log('grr', XMLHttpRequest.toString());
+						console.log("was error", errorThrown, XMLHttpRequest.responseText);
 						handleAjaxError(XMLHttpRequest.responseText, errorThrown);
+					},
+					complete: function(xhr, textStatus) {
+						console.log('complete', xhr.status);
+						console.log('complete url', window.baseUrl + params.url);
 					}
 				});
 			}
@@ -185,7 +206,10 @@ export function playAudio(audio)
 export function playAudioLoop(audio, suffix)
 {
 	var ident = audio + '_' + suffix;
-	var sound = document.getElementById(audio);
+	console.log('audio ident', audio);
+	console.log('soundsss', window.turmoil.sounds);
+	var sound = new Audio(window.turmoil.sounds[audio]); //document.getElementById(audio);
+	console.log('sound is ', sound);
 	window.turmoil.soundLoops[ident] = sound;
 	window.turmoil.soundLoops[ident + '_loop'] = true;
 
@@ -203,6 +227,7 @@ export function playAudioLoop(audio, suffix)
 export function stopAudioLoop(audio, suffix)
 {
 	var ident = audio + '_' + suffix;
+	console.log("ident", ident);
 	if (typeof(window.turmoil.soundLoops[ident]) != 'undefined')
 	{
 		var sound = window.turmoil.soundLoops[ident];
