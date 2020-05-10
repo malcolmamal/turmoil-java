@@ -200,6 +200,10 @@ jQuery(function () {
 	window.windowSizes.instanceHeight = 550;
 	initWindow('instance', true);
 
+	window.windowSizes.instanceWidth = 800;
+	window.windowSizes.instanceHeight = 830;
+	initWindow('equipment', true);
+
 /*			
 	jQuery(document).bind('keydown', 'i', function () {
 		switchWindow('equipment')

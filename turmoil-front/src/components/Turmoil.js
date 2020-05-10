@@ -4,6 +4,7 @@ import Footer from "./Footer";
 import Instance from "./Instance";
 import Console from "./Console";
 import Error from "./Error";
+import Equipment from "./Equipment";
 
 export default class Turmoil extends React.Component
 {
@@ -24,6 +25,7 @@ export default class Turmoil extends React.Component
 
 						<Instance />
 						<Console />
+						<Equipment />
 
 					</div>
 				</div>

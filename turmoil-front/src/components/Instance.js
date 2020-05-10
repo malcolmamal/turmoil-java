@@ -101,7 +101,7 @@ export default class Instance extends React.Component
 
 		const background = {
 			backgroundImage: "url('/images/backgrounds/background_grunge_650x550.png')",
-				width: '650px',
+			width: '650px',
 			height: '550px',
 		};
 

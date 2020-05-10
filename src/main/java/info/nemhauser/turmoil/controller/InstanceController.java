@@ -11,10 +11,11 @@ import info.nemhauser.turmoil.engine.helpers.InstanceHelper;
 import info.nemhauser.turmoil.engine.instances.CombatState;
 import info.nemhauser.turmoil.engine.world.map.graph.Instance;
 import info.nemhauser.turmoil.engine.world.map.graph.Pathing;
+import info.nemhauser.turmoil.response.EnemyUnitResponse;
 import info.nemhauser.turmoil.response.MoveResponse;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
+import net.minidev.json.JSONArray;
+import net.minidev.json.JSONObject;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -23,38 +24,14 @@ import java.util.Map;
 @RestController
 class InstanceController {
 
-//
-//	{"ident": "testEnemy", portrait: "male/male_portrait_055.png", position: "polygon-8-3"},
-//	{ident: "testEnemy2", portrait: "male/male_portrait_054.png", position: "polygon-8-5"},
-//	{ident: "testEnemy3", portrait: "male/male_portrait_053.png", position: "polygon-8-1"},
-//			]
-
 	@RequestMapping(value = "/initializeUnits", produces = "application/json")
 	public @ResponseBody
 	JSONObject instanceInitializeUnits()
 	{
 		JSONArray array = new JSONArray();
-		array.add(
-			new JSONObject(Map.of(
-					"ident", "testEnemy",
-					"portrait", "male/male_portrait_055.png",
-					"position", "polygon-8-3"
-			))
-		);
-		array.add(
-				new JSONObject(Map.of(
-						"ident", "testEnemy2",
-						"portrait", "male/male_portrait_054.png",
-						"position", "polygon-8-5"
-				))
-		);
-		array.add(
-				new JSONObject(Map.of(
-						"ident", "testEnemy3",
-						"portrait", "male/male_portrait_053.png",
-						"position", "polygon-8-1"
-				))
-		);
+		array.add(new EnemyUnitResponse("testEnemy", "male/male_portrait_055.png", "polygon-8-3"));
+		array.add(new EnemyUnitResponse("testEnemy2", "male/male_portrait_054.png", "polygon-8-5"));
+		array.add(new EnemyUnitResponse("testEnemy3", "male/male_portrait_053.png", "polygon-8-1"));
 
 		JSONObject object = new JSONObject();
 		object.put("enemyUnits", array);

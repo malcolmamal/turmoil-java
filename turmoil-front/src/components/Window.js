@@ -73,8 +73,8 @@ export default class Window extends React.Component
 							 onClick={() => bringToTheTop(ident)}
 						>
 							<div id={'window_' + ident}
-								 className={'windowContent ' + ident + 'WindowContent'}
-								 style={{transform: 'scale(1)', WebkitTransform: 'scale(1)', MozTransform: 'scale(1)', OTransform: 'scale(1)'}}>
+								className={'windowContent ' + ident + 'WindowContent'}
+								style={{transform: 'scale(1)', WebkitTransform: 'scale(1)', MozTransform: 'scale(1)', OTransform: 'scale(1)'}}>
 								<div className="windowContentInner"
 									 style={windowContainerInnerStyle}>
 									<div id={ident + 'ContainerWrapper'} className={ident + 'ContainerWrapper'}>
