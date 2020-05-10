@@ -4,6 +4,9 @@ import "jquery-mousewheel";
 import "malihu-custom-scrollbar-plugin";
 import "malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css";
 import soundMoveLeather from "../media/audio/move_leather.wav";
+import soundAttackMelee1 from "../media/audio/attack_melee_001.wav";
+import soundAttackMelee2 from "../media/audio/attack_melee_002.wav";
+import soundAttackMelee3 from "../media/audio/attack_melee_003.wav";
 
 window.debug = true;
 window.debugPopup = true;
@@ -11,7 +14,10 @@ window.debugPopup = true;
 window.turmoil = {};
 
 window.turmoil.sounds = {
-	'soundMoveLeather': soundMoveLeather
+	'soundMoveLeather': soundMoveLeather,
+	'soundAttackMelee1': soundAttackMelee1,
+	'soundAttackMelee2': soundAttackMelee2,
+	'soundAttackMelee3': soundAttackMelee3,
 };
 
 window.turmoil.soundLoops = {};
@@ -129,7 +135,13 @@ window.turmoil.ajax = {
 
 							if (typeof(params.onSuccess) !== 'undefined') {
 								console.log('result2', data);
-								params.onSuccess(data);
+
+								if (typeof(params.onSuccessThis) !== 'undefined') {
+									params.onSuccess(data, params.onSuccessThis);
+								}
+								else {
+									params.onSuccess(data);
+								}
 							}
 						}
 						else if (window.debug)
@@ -198,7 +210,9 @@ function getCurrentDateTime()
 
 export function playAudio(audio)
 {
-	var sound = document.getElementById(audio);
+	console.log("playing sound: ", audio);
+
+	let sound = new Audio(window.turmoil.sounds[audio]);
 	sound.load();
 	sound.play();
 }

@@ -2,12 +2,13 @@ package info.nemhauser.turmoil.sandbox;
 
 import groovy.util.ConfigObject;
 import groovy.util.ConfigSlurper;
+import info.nemhauser.turmoil.TurmoilApplication;
 import info.nemhauser.turmoil.engine.domain.Character;
 import info.nemhauser.turmoil.engine.domain.Item;
 import info.nemhauser.turmoil.engine.enums.ItemRarity;
 import info.nemhauser.turmoil.engine.helpers.*;
 import info.nemhauser.turmoil.engine.instances.CombatState;
-import org.jgrapht.Graph;
+
 import org.jgrapht.GraphPath;
 import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
 import org.jgrapht.alg.shortestpath.KShortestSimplePaths;
@@ -26,15 +27,26 @@ public class Sandbox
 	{
 		System.out.println("Sandbox started...");
 
+		DefaultUndirectedGraph<String, DefaultEdge> graph = InstanceHelper.getInstanceGraph();
+		//List<DefaultEdge> sp = (List<DefaultEdge>)DijkstraShortestPath.findPathBetween(graph, enemyPosition, characterPosition);
+		DijkstraShortestPath<String, DefaultEdge> dijkstraGraph = new DijkstraShortestPath<String, DefaultEdge>(graph);
+		GraphWalk<String, DefaultEdge> graphWalk = (GraphWalk<String, DefaultEdge>) dijkstraGraph.getPath("8-3", "1-4");
+		//KShortestSimplePaths pathing = new KShortestSimplePaths(graph, cs.enemy.instancePosition.substring(8), 1);
+		//List<GraphPath<String, DefaultEdge>> path = pathing.getPaths(cs.friend.instancePosition.substring(8));
+
+		System.out.println("Results: " + graphWalk.toString());
+		System.out.println("Edges2: " + graph.getEdgeSource(graphWalk.getEdgeList().get(0)));
+
+
 		//ItemTemplatesHelper.parseCommonAccessories();
 
 		//ItemRarity rarity = (ItemRarity) ServerHelper.getEnumValues().getProperRandomItemRarity();
 		//System.out.println(rarity.toString());
 
 		//*
-		Character character = new Character();
+		//Character character = new Character();
 
-		instanceActionEnemy(character, "polygon-5-4");
+		//instanceActionEnemy(character, "polygon-5-4");
 
 
 		//DefaultUndirectedGraph<String, DefaultEdge> graph = InstanceHelper.getInstanceGraph();
@@ -48,7 +60,7 @@ public class Sandbox
 		JSONObject json = new JSONObject();
 		if (position != null && character != null)
 		{
-			CombatState cs = InstanceHelper.getCombatState(character);
+			CombatState cs = TurmoilApplication.getCombatState();
 			cs.friend.instancePosition = position;
 
 			json.put("success", true);

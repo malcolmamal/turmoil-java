@@ -1,24 +1,37 @@
 import React from "react";
 import '../stylesheets/window-instance.css';
 import '../js/window-instance';
-import {actionOnUnit} from "../js/window-instance";
+import {actionOnUnit, handleMoveToPolygon} from "../js/window-instance";
 import Window from "./Window";
+import jQuery from "jquery";
 
 export class CharacterUnit extends React.Component
 {
 	render()
 	{
+		const ident = this.props.ident;
 		const unitStyle = {
-			width: '40px',
+			width: '60px',
 		}
 		return(
-			<div className="instanceElement" id="testElement">
+			<div className="instanceElement" id={ident}>
 				<div className="instancePortraitHealthBar">
-					<div className="instancePortraitHealthBarInner" id="testElementHealth" style={unitStyle}/>
+					<div className="instancePortraitHealthBarInner" id={ident + "Health"} style={unitStyle}/>
 				</div>
-				<img alt="character" className="instancePortrait" src="/images/portraits/male/male_portrait_052.png"/>
-				<div id="testElementEffect"/>
+				<img alt="character" className="instancePortrait"
+					 src="/images/portraits/male/male_portrait_052.png"/>
+				<div id={ident + "Effect"}/>
 			</div>
+		);
+	}
+
+	componentDidMount()
+	{
+		let that = this;
+		const ident = that.props.ident;
+		setTimeout(function() {
+			handleMoveToPolygon(jQuery('#polygon-1-4'), jQuery('#' + ident));
+			}, 100
 		);
 	}
 }
@@ -27,35 +40,81 @@ export class EnemyUnit extends React.Component
 {
 	render()
 	{
+		const ident = this.props.ident;
+		const portrait = this.props.portrait;
 		const unitStyle = {
-			width: '35px',
+			width: '60px',
 		}
+
+		console.log("we will render unit: " + ident);
 		return(
-			<div className="instanceElement enemyUnit" id="testEnemy" onClick={() => actionOnUnit('testEnemy')} >
+			<div className="instanceElement enemyUnit" id={ident} onClick={() => actionOnUnit(ident)} >
 				<div className="instancePortraitHealthBar">
-					<div className="instancePortraitHealthBarInner" id="testEnemyHealth" style={unitStyle}/>
+					<div className="instancePortraitHealthBarInner" id={ident + "Health"} style={unitStyle}/>
 				</div>
 				<img alt="enemy" className="instancePortrait instancePortraitFlipped instanceEnemy"
-					 src="/images/portraits/male/male_portrait_055.png"/>
-				<div id="testEnemyEffect"/>
+					 src={"/images/portraits/" + portrait}/>
+				<div id={ident + "Effect"}/>
 			</div>
+		);
+	}
+
+	componentDidMount()
+	{
+		let that = this;
+		const ident = that.props.ident;
+		const position = that.props.position;
+
+		setTimeout(function() {
+				console.log("we will move unit: " + ident);
+				handleMoveToPolygon(jQuery('#' + position), jQuery('#' + ident));
+			}, 100
 		);
 	}
 }
 
 export default class Instance extends React.Component
 {
+	getUnits() {
+		return window.turmoil.instance.enemies;
+	}
+
+	updateUnits(content, that)
+	{
+		window.turmoil.instance.enemies = content.enemyUnits;
+
+		that.setState({enemyUnits: that.getUnits()});
+	}
+
+	componentDidMount() {
+		window.turmoil.ajax.exec({
+			url: 'initializeUnits',
+			onSuccess: this.updateUnits,
+			onSuccessThis: this
+		});
+	}
+
 	render() {
+		this.state = {
+			enemyUnits: this.getUnits()
+		}
+
 		const background = {
 			backgroundImage: "url('/images/backgrounds/background_grunge_650x550.png')",
 				width: '650px',
 			height: '550px',
 		};
 
+		//	<EnemyUnit ident="testEnemy" portrait="male/male_portrait_055.png" position="polygon-8-3"/>
+
 		return (
 			<Window ident="instance" background={background}>
-				<CharacterUnit/>
-				<EnemyUnit/>
+				<CharacterUnit ident="testElement"/>
+
+				{this.state.enemyUnits.map(unit => (
+					<EnemyUnit ident={unit.ident} portrait={unit.portrait} position={unit.position} key={unit.ident}/>
+				))}
+
 				<div className="instanceSvg">
 					<svg width="600" height="545" id="svgElement">
 						<g>

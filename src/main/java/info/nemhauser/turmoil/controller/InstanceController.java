@@ -1,82 +1,183 @@
 package info.nemhauser.turmoil.controller;
 
+import info.nemhauser.turmoil.TurmoilApplication;
+import info.nemhauser.turmoil.config.Logger;
 import info.nemhauser.turmoil.engine.domain.Character;
+import info.nemhauser.turmoil.engine.domain.Item;
+import info.nemhauser.turmoil.engine.helpers.CharacterStateHelper;
+import info.nemhauser.turmoil.engine.helpers.CombatHelper;
+import info.nemhauser.turmoil.engine.helpers.ExperienceHelper;
+import info.nemhauser.turmoil.engine.helpers.InstanceHelper;
+import info.nemhauser.turmoil.engine.instances.CombatState;
+import info.nemhauser.turmoil.engine.world.map.graph.Instance;
+import info.nemhauser.turmoil.engine.world.map.graph.Pathing;
 import info.nemhauser.turmoil.response.MoveResponse;
-import info.nemhauser.turmoil.sandbox.Sandbox;
+
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
-
+import java.util.Map;
 
 
 @RestController
 class InstanceController {
 
-	private String currentPosition;
-	private String previousPosition;
+//
+//	{"ident": "testEnemy", portrait: "male/male_portrait_055.png", position: "polygon-8-3"},
+//	{ident: "testEnemy2", portrait: "male/male_portrait_054.png", position: "polygon-8-5"},
+//	{ident: "testEnemy3", portrait: "male/male_portrait_053.png", position: "polygon-8-1"},
+//			]
+
+	@RequestMapping(value = "/initializeUnits", produces = "application/json")
+	public @ResponseBody
+	JSONObject instanceInitializeUnits()
+	{
+		JSONArray array = new JSONArray();
+		array.add(
+			new JSONObject(Map.of(
+					"ident", "testEnemy",
+					"portrait", "male/male_portrait_055.png",
+					"position", "polygon-8-3"
+			))
+		);
+		array.add(
+				new JSONObject(Map.of(
+						"ident", "testEnemy2",
+						"portrait", "male/male_portrait_054.png",
+						"position", "polygon-8-5"
+				))
+		);
+		array.add(
+				new JSONObject(Map.of(
+						"ident", "testEnemy3",
+						"portrait", "male/male_portrait_053.png",
+						"position", "polygon-8-1"
+				))
+		);
+
+		JSONObject object = new JSONObject();
+		object.put("enemyUnits", array);
+
+		return object;
+	}
 
 	@RequestMapping(value = "/instanceMove/{position}", produces = "application/json")
 	public @ResponseBody
 	MoveResponse instanceMove(@PathVariable String position) {
-		//, final HttpServletResponse response
-		//@CrossOrigin(origins = "http://localhost:3000", maxAge = 3600, allowCredentials = "true")
-		System.out.println("!!!!!! doing stuff for " + position);
+		Logger.log("Moving character to " + position);
 
-		if (currentPosition != null)
-		{
-			previousPosition = currentPosition;
-		}
-		currentPosition = position;
+		CombatState cs = TurmoilApplication.getCombatState();
+		cs.friend.instancePosition = position;
 
 		return new MoveResponse("move", true, true, position);
+	}
 
-		//response.setHeader("X-Content-Type-Options", "");
-		//response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
-//@CrossOrigin(origins = "http://localhost:3000")
-		//return "{\"actionType\":\"move\",\"friendlyTurn\":true,\"success\":true,\"polygonId\":\"polygon-3-3\"}";
-		//System.out.println("Position was: " + position);
-		//Character character = new Character();
-		//return Sandbox.instanceMove(character, position);
+	@RequestMapping(value = "/instanceAttack/{position}", produces = "application/json")
+	public @ResponseBody
+	JSONObject instanceAttack(@PathVariable String position)
+	{
+		Logger.log("Attacking unit at " + position);
+		// todo
+		double healthBarValue = 60;
+
+		if (position != null)// && character != null)
+		{
+			CombatState cs = TurmoilApplication.getCombatState();
+
+			long computedAttack = 6; //CombatHelper.computeDamageToDeal(character);
+			int damageDealt = (int)computedAttack;//computedAttack['damageToDeal'];
+			cs.enemy.currentHealth -= damageDealt;
+
+			if (cs.enemy.currentHealth < 0)
+			{
+				Item item = cs.enemy.lootBag.get("loot");
+				if (item != null)
+				{
+					//itemService.saveItem(item, character);
+
+					//json.put("stashedItemId", item.toStringFull());
+
+
+					//todo
+					//json.put( << [stashedItemContent: g.render(contextPath: "../character/", template: "item_slot_stash", model: [item: item])];
+				}
+
+				//cs.enemy = InstanceHelper.createMonster(character);
+				//json.put("newEnemyPosition", cs.enemy.instancePosition);
+
+				//TODO: handle it properly
+//				character.experience += 10;
+//				if (character.experience >= ExperienceHelper.getRequiredExperience(character.level+1))
+//				{
+//					character.level++;
+//					character.experience = ExperienceHelper.getRequiredExperience(character.level) - character.experience;
+//				}
+//				CharacterStateHelper.computeValuesForCharacterState(character);
+			}
+
+			//if (computedAttack['isCriticalHit'])
+			{
+				//json.put("type", "critical");
+			}
+
+			return new JSONObject(Map.of(
+					"success", true,
+					"friendlyTurn", true,
+					"actionType", "attack",
+					"polygonId", position,
+					"damageDealt", damageDealt,
+					"healthBar", Math.floor(cs.enemy.currentHealth * healthBarValue / cs.enemy.health)
+			));
+		}
+		return new JSONObject();
 	}
 
 	@RequestMapping(value = "/instanceActionEnemy/{enemy}", produces = "application/json")
 	public @ResponseBody
 	JSONObject instanceActionEnemy(@PathVariable String enemy) {
 
-		System.out.println("!!!!!! doing stuff for " + enemy);
+		//TODO
+		double healthBarValue = 60;
 
-		JSONObject json = new JSONObject();
+		Logger.log("!!!!!! doing stuff for " + enemy);
 
-		json.put("success", true);
-		json.put("polygonId", (previousPosition == null) ? "polygon-5-2" : previousPosition);
-		json.put("actionType", "move");
-		json.put("unitToMove", enemy);
-		json.put("path", "polygon-5-2");
+		CombatState cs = TurmoilApplication.getCombatState();
 
-		return json;
+		String enemyPosition = cs.enemy.instancePosition.substring(8);
+		String characterPosition = cs.friend.instancePosition.substring(8);
 
-		//			json.put("polygonId", newPolygon);
-		//			if (path.first().getEdgeList().size() == 1)
-		//			{
-		//				cs.friend.currentHealth -= 5;
-		//
-		//				json.put("actionType", "attack");
-		//				json.put("attackingUnit", position);
-		//				json.put("damageDealt", 5);
-		//				json.put("healthBar", Math.floor(cs.friend.currentHealth * healthBarValue / cs.friend.health));
-		//			}
-		//			else
-		//			{
-		//				cs.enemy.instancePosition = newPolygon;
-		//
-//						json.put("actionType", "move");
-//						json.put("unitToMove", enemy);
-//						json.put("path", path);
-		//			}
+		Pathing pathing = new Pathing(Instance.getInstanceGraph(), enemyPosition, characterPosition);
 
+		String moveTo = "polygon-" + pathing.getNextPosition();
 
-		//return new MoveResponse("move", true, true, position);
+		Logger.log("Move distance: " + pathing.getDistance());
+		Logger.log("enemy will move to: " + moveTo);
 
+		if (moveTo.equals(cs.friend.instancePosition))
+		{
+			Logger.log("Enemy should attack!");
+
+			cs.friend.currentHealth -= 5;
+
+			return new JSONObject(Map.of(
+					"success", true,
+					"polygonId", moveTo,
+					"actionType", "attack",
+					"damageDealt", 5,
+					"healthBar", Math.floor(cs.friend.currentHealth * healthBarValue / cs.friend.health),
+					"attackingUnit", enemy
+			));
+		}
+
+		cs.enemy.instancePosition = moveTo;
+
+		return new JSONObject(Map.of(
+				"success", true,
+				"polygonId", moveTo,
+				"actionType", "move",
+				"unitToMove", enemy,
+				"path", "polygon-5-2"
+		));
 	}
 }

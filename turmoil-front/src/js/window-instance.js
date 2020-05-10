@@ -1,3 +1,4 @@
+import React from "react";
 import jQuery from "jquery";
 import "jquery-ui/ui/widgets/draggable";
 import "jquery-ui/ui/widgets/resizable";
@@ -5,6 +6,15 @@ import "jquery-ui/ui/widgets/resizable";
 import {resetZIndex} from '../js/turmoil-windows';
 import {stopAudioLoop, playAudio, playAudioLoop, randomInt} from '../js/turmoil-general';
 import {putItemToStash} from '../js/turmoil-start';
+import {EnemyUnit} from "../components/Instance";
+import ReactDOM from "react-dom";
+import Turmoil from "../components/Turmoil";
+
+window.turmoil.instance = {};
+window.turmoil.instance.enemies = [
+	//{"ident": "testEnemy", portrait: "male/male_portrait_055.png", position: "polygon-8-3"},
+	//{ident: "testEnemy2", portrait: "male/male_portrait_054.png", position: "polygon-8-5"},
+];
 
 function svgAddClass(element, className)
 {
@@ -80,7 +90,7 @@ export function actionOnUnit(unitId)
 	jQuery(unit).hasClass('enemyUnit')
 	{
 		var polygon = jQuery(getPolygonForUnit(unit));
-		var url = 'account/instanceAttack/' + polygon.attr('id');
+		var url = 'instanceAttack/' + polygon.attr('id');
 
 		if (svgHasClass(polygon, 'instancePolygonEnemy'))
 		{
@@ -133,7 +143,7 @@ function actionOnPolygon(polygon, unit)
 	});
 }
 
-function handleMoveToPolygon(polygon, unit)
+export function handleMoveToPolygon(polygon, unit)
 {
 	window.turmoil.log('Unit ' + unit.attr('id') + ' moves to ' + polygon.attr('id'));
 
@@ -251,7 +261,9 @@ function finalizeActionOnPolygon(data)
 
 		if (typeof(data.friendlyTurn) != 'undefined' && data.friendlyTurn === true)
 		{
-			setTimeout(function(){actionOnPolygon(null, jQuery('#testEnemy'));}, 350);
+			//let items = Array('', '2', '3');
+			let item = '';//items[Math.floor(Math.random() * items.length)]
+			setTimeout(function(){actionOnPolygon(null, jQuery('#testEnemy' + item));}, 350);
 		}
 	}
 }
@@ -358,8 +370,6 @@ function addDamageIndicator(unit, value, type)
 }
 
 jQuery(function() {
-	handleMoveToPolygon(jQuery('#polygon-1-4'), jQuery('#testElement'));
-	handleMoveToPolygon(jQuery('#polygon-8-3'), jQuery('#testEnemy'));
 
 	jQuery(".instancePolygon").click(function() {
 		var polygon = jQuery(this);
