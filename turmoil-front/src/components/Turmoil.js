@@ -5,6 +5,8 @@ import Instance from "./Instance";
 import Console from "./Console";
 import Error from "./Error";
 import Equipment from "./Equipment";
+import Stash from "./Stash";
+import Stats from "./Stats";
 
 export default class Turmoil extends React.Component
 {
@@ -26,6 +28,8 @@ export default class Turmoil extends React.Component
 						<Instance />
 						<Console />
 						<Equipment />
+						<Stash />
+						<Stats />
 
 					</div>
 				</div>

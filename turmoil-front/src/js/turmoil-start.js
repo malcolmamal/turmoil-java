@@ -188,23 +188,29 @@ jQuery(function () {
 
 	window.windowSizes = [];
 
-	//initWindow('stats', true);
-	//initWindow('stash', true);
-	//initWindow('equipment',true);
+
 
 	window.windowSizes.consoleWidth = 600;
 	window.windowSizes.consoleHeight = 160;
 	initWindow('console', true);
 
 	window.windowSizes.instanceWidth = 650;
-	window.windowSizes.instanceHeight = 550;
+	window.windowSizes.instanceHeight = 610;
 	initWindow('instance', true);
 
-	window.windowSizes.instanceWidth = 800;
-	window.windowSizes.instanceHeight = 830;
+	window.windowSizes.equipmentWidth = 800;
+	window.windowSizes.equipmentHeight = 830;
 	initWindow('equipment', true);
 
-/*			
+	window.windowSizes.stashWidth = 500;
+	window.windowSizes.stashHeight = 700;
+	initWindow('stash', true);
+
+	window.windowSizes.statsWidth = 300;
+	window.windowSizes.statsHeight = 700;
+	initWindow('stats', true);
+
+/*
 	jQuery(document).bind('keydown', 'i', function () {
 		switchWindow('equipment')
 	});

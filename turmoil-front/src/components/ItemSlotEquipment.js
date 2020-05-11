@@ -20,7 +20,7 @@ export default class ItemSlotEquipment extends React.Component
 			return (
 				<span className={"d3-icon d3-icon-item d3-icon-item-large d3-icon-item-" + {rarity}}
 						style={{opacity: opacity}}
-						onContextMenu={onContextMenuAction}
+						onContextMenu={{onContextMenuAction}}
 				>
 					<span className="icon-item-gradient">
 						<span
@@ -37,7 +37,7 @@ export default class ItemSlotEquipment extends React.Component
 		return (
 			<span className={"d3-icon d3-icon-item d3-icon-item-large d3-icon-item-gray"}
 				style={{opacity: opacity}}
-				onContextMenu={"return false;"}
+				onContextMenu={() => { return false; }}
 			>
 				<span className="icon-item-gradient">
 					<span className={"icon-item-inner icon-item-" + iconItemSize}/>

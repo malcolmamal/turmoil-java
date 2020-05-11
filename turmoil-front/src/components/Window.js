@@ -69,7 +69,7 @@ export default class Window extends React.Component
 							</div>
 						</div>
 						<div id={'window_' + ident + '_content_wrapper'}
-							 style={{position: 'absolute', top: '40px', left: '0px'}}
+							 style={{position: 'absolute', top: '40px', left: '0'}}
 							 onClick={() => bringToTheTop(ident)}
 						>
 							<div id={'window_' + ident}

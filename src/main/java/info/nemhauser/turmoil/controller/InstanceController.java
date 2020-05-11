@@ -18,20 +18,58 @@ import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 
 @RestController
 class InstanceController {
 
+	private static final ArrayList<EnemyUnitResponse> enemyUnits = new ArrayList<>();
+	private static int iterator = 0;
+	private static int portrait = 10;
+
 	@RequestMapping(value = "/initializeUnits", produces = "application/json")
 	public @ResponseBody
 	JSONObject instanceInitializeUnits()
 	{
+		if (enemyUnits.size() == 0)
+		{
+			EnemyUnitResponse enemy = new EnemyUnitResponse("testEnemy", "male/male_portrait_055.png", "polygon-8-3");
+			EnemyUnitResponse enemy2 = new EnemyUnitResponse("testEnemy2", "male/male_portrait_054.png", "polygon-8-5");
+			EnemyUnitResponse enemy3 = new EnemyUnitResponse("testEnemy3", "male/male_portrait_053.png", "polygon-8-1");
+
+			enemyUnits.add(enemy);
+			enemyUnits.add(enemy2);
+			enemyUnits.add(enemy3);
+
+			iterator = 4;
+		}
+
 		JSONArray array = new JSONArray();
-		array.add(new EnemyUnitResponse("testEnemy", "male/male_portrait_055.png", "polygon-8-3"));
-		array.add(new EnemyUnitResponse("testEnemy2", "male/male_portrait_054.png", "polygon-8-5"));
-		array.add(new EnemyUnitResponse("testEnemy3", "male/male_portrait_053.png", "polygon-8-1"));
+		array.addAll(enemyUnits);
+
+		JSONObject object = new JSONObject();
+		object.put("enemyUnits", array);
+
+		return object;
+	}
+
+	@RequestMapping(value = "/instanceAddEnemy", produces = "application/json")
+	public @ResponseBody
+	JSONObject instanceAddEnemy()
+	{
+		iterator++;
+		portrait++;
+		EnemyUnitResponse enemy = new EnemyUnitResponse(
+				"testEnemy" + iterator,
+				"male/male_portrait_0" + portrait + ".png",
+				"polygon-" + (int)(Math.floor(Math.random() * 7) + 1) + "-" + (int)(Math.floor(Math.random() * 5) + 1));
+
+		enemyUnits.add(enemy);
+
+		JSONArray array = new JSONArray();
+		array.addAll(enemyUnits);
 
 		JSONObject object = new JSONObject();
 		object.put("enemyUnits", array);

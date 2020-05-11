@@ -83,6 +83,8 @@ export default class Instance extends React.Component
 	{
 		window.turmoil.instance.enemies = content.enemyUnits;
 
+		console.log("newly arrived units", content.enemyUnits);
+
 		that.setState({enemyUnits: that.getUnits()});
 	}
 
@@ -94,6 +96,16 @@ export default class Instance extends React.Component
 		});
 	}
 
+	addUnit()
+	{
+		window.turmoil.ajax.exec({
+			url: 'instanceAddEnemy',
+			onSuccess: this.updateUnits,
+			onSuccessThis: this
+		});
+
+	}
+
 	render() {
 		this.state = {
 			enemyUnits: this.getUnits()
@@ -102,7 +114,7 @@ export default class Instance extends React.Component
 		const background = {
 			backgroundImage: "url('/images/backgrounds/background_grunge_650x550.png')",
 			width: '650px',
-			height: '550px',
+			height: '580px',
 		};
 
 		//	<EnemyUnit ident="testEnemy" portrait="male/male_portrait_055.png" position="polygon-8-3"/>
@@ -114,6 +126,8 @@ export default class Instance extends React.Component
 				{this.state.enemyUnits.map(unit => (
 					<EnemyUnit ident={unit.ident} portrait={unit.portrait} position={unit.position} key={unit.ident}/>
 				))}
+
+				<div><button onClick={() => { this.addUnit() }}>add</button></div>
 
 				<div className="instanceSvg">
 					<svg width="600" height="545" id="svgElement">
