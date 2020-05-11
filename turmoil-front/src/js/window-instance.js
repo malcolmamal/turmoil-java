@@ -1,4 +1,3 @@
-import React from "react";
 import jQuery from "jquery";
 import "jquery-ui/ui/widgets/draggable";
 import "jquery-ui/ui/widgets/resizable";
@@ -6,9 +5,6 @@ import "jquery-ui/ui/widgets/resizable";
 import {resetZIndex} from '../js/turmoil-windows';
 import {stopAudioLoop, playAudio, playAudioLoop, randomInt} from '../js/turmoil-general';
 import {putItemToStash} from '../js/turmoil-start';
-import {EnemyUnit} from "../components/Instance";
-import ReactDOM from "react-dom";
-import Turmoil from "../components/Turmoil";
 
 window.turmoil.instance = {};
 window.turmoil.instance.enemies = [
@@ -87,7 +83,7 @@ export function actionOnUnit(unitId)
 {
 	let unit = jQuery('#' + unitId);
 
-	jQuery(unit).hasClass('enemyUnit')
+	if (jQuery(unit).hasClass('enemyUnit'))
 	{
 		var polygon = jQuery(getPolygonForUnit(unit));
 		var url = 'instanceAttack/' + polygon.attr('id');
