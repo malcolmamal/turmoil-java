@@ -14,13 +14,14 @@ import java.util.List;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter
 {
-
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
+		httpSecurity.csrf().disable();
+
 		httpSecurity.cors().configurationSource(request -> {
 			var cors = new CorsConfiguration();
 			cors.setAllowedOrigins(List.of("http://localhost:4200", "http://127.0.0.1:80", "http://localhost:3000", "http://localhost:8080"));
-			cors.setAllowedMethods(List.of("GET","POST", "PUT", "DELETE", "OPTIONS"));
+			cors.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
 			cors.setAllowedHeaders(List.of("*"));
 			return cors;
 		});

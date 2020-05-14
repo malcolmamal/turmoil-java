@@ -40,6 +40,11 @@ function reopenTooltipIfNotVisible(element, tooltipId)
 	}
 }
 
+function doNothing()
+{
+
+}
+
 function handleItemTooltipContent(element)
 {
 	var item = element.attr('item');
@@ -56,7 +61,8 @@ function handleItemTooltipContent(element)
 
 		jQuery.ajax({
 			type:'POST',
-			url:'/turmoil/tooltip/showItem/' + item,
+			crossDomain: true,
+			url: window.baseUrl + 'tooltip/' + item,
 			success: function(data, textStatus) {
 				if (textStatus === 'success')
 				{
