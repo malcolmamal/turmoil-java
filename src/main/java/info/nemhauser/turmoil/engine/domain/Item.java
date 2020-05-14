@@ -7,9 +7,11 @@ import info.nemhauser.turmoil.engine.templates.ItemTemplate;
 
 public class Item
 {
-	String itemCode;
+	public int id = 1; // will be filled by hibernate later on
+
+	public String itemCode;
 	public String itemName;
-	public Integer level;
+	public Integer level = 1;
 
 	Integer durability = 1;
 	Integer priceValue = 1;

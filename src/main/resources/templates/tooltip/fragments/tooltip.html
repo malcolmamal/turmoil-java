@@ -2,16 +2,16 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <body>
 
-<div th:fragment="headline">
-	<div class="tooltip-head tooltip-head-${item.getRarityClass()}">
-		<h3 class="d3-color-${item.getRarityClass()}">
-			${item.itemName}
-			turmoil.item.${item.itemType.toString().toLowerCase()}.${item.itemCode}
+<div th:fragment="headline (item)">
+	<div th:class="'tooltip-head tooltip-head-' + ${item.getRarityClass()}">
+		<h3 th:class="'d3-color-' + ${item.getRarityClass()}">
+			[[${item.itemName}]]
+			turmoil.item.${item.itemType.toString().toLowerCase()}. [[${item.itemCode}]]
 		</h3>
 	</div>
 </div>
 
-<div th:fragment="flavor">
+<div th:fragment="flavor (item)">
 	<div class="tooltip-extension ">
 		<div class="flavor">
 			Lorem ipsum dolor sit amet, consectetur adipisicing elit,
@@ -20,7 +20,7 @@
 	</div>
 </div>
 
-<div th:fragment="attributes">
+<div th:fragment="attributes (item)">
 	<ul class="item-effects">
 
 		<p class="item-property-category">turmoil.item.info.effects</p>
@@ -51,24 +51,24 @@
 	</ul>
 </div>
 
-<div th:fragment="rarity">
+<div th:fragment="rarity (item)">
 	<ul class="item-type">
-		<li><span class="d3-color-${rarityClass}">turmoil.item.rarity.${item.rarity}</span></li>
+		<li><span th:class="'d3-color-' + ${item.getRarityClass()}">turmoil.item.rarity. [[${item.rarity}]]</span></li>
 	</ul>
 </div>
 
-<div th:fragment="requirements">
+<div th:fragment="requirements (item)">
 	<ul class="item-extras">
 		<li class="item-reqlevel">
-			<span class="d3-color-gold">code="turmoil.item.info.required.level": </span><span class="value">${item.level}</span>
+			<span class="d3-color-gold">code="turmoil.item.info.required.level": </span><span class="value">[[${item.level}]]</span>
 		</li>
 	</ul>
 
 	<span class="item-unique-equipped">code="turmoil.item.info.unique.equipped"</span>
 </div>
 
-<div th:fragment="itemSlotTooltip">
-<span class="d3-icon d3-icon-item d3-icon-item-large  d3-icon-item-${item.getRarityClass()}">
+<div th:fragment="itemSlotTooltip (item)">
+<span th:class="'d3-icon d3-icon-item d3-icon-item-large d3-icon-item-' + ${item.getRarityClass()}">
 	<span class="icon-item-gradient">
 		<span	class="icon-item-inner icon-item-${itemTypeClass}"
 				 >

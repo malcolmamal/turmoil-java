@@ -16,6 +16,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
 {
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
+
+		/*
+		 * TODO: https://www.baeldung.com/csrf-thymeleaf-with-spring-security / https://portswigger.net/web-security/csrf
+		 */
 		httpSecurity.csrf().disable();
 
 		httpSecurity.cors().configurationSource(request -> {
