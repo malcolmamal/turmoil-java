@@ -1,7 +1,12 @@
 package info.nemhauser.turmoil.controller;
 
+import info.nemhauser.turmoil.config.Logger;
 import info.nemhauser.turmoil.engine.domain.Armor;
+import info.nemhauser.turmoil.engine.domain.Attribute;
+import info.nemhauser.turmoil.engine.enums.ArmorType;
 import info.nemhauser.turmoil.engine.enums.ItemRarity;
+import info.nemhauser.turmoil.engine.enums.ItemType;
+import info.nemhauser.turmoil.engine.generators.ItemAttributeGenerator;
 import info.nemhauser.turmoil.engine.templates.ArmorTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,9 +31,19 @@ public class TooltipController
 		template.isLegendary = true;
 		template.armorValue = 135;
 		template.rarity = ItemRarity.LEGENDARY;
-		template.itemCode = "SWORD_OF_HATE";
+		template.itemCode = "FROSTBURN";
 
 		Armor armor = new Armor(template);
+		armor.itemName = "Dupcia Anety";
+		armor.itemType = ItemType.ARMOR;
+		armor.armorType = ArmorType.CHEST;
+
+		armor.attributes = ItemAttributeGenerator.rollAttributes(armor).toArray(new Attribute[0]);
+		for (Attribute atr : armor.attributes)
+		{
+			Logger.log(atr.toString());
+		}
+
 		model.addAttribute("item", armor);
 
 		return "tooltip/armor";

@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<body>
+<body style="margin: 0;">
 
-<div class="d3-tooltip d3-tooltip-item" th:attr="item=${item.getFileCode()} + '_' + ${item.id}">
+<div class="turmoil-tooltip d3-tooltip d3-tooltip-item" th:attr="item=${item.getFileCode()} + '_' + ${item.id}">
 
 	<div th:insert="tooltip/fragments/tooltip :: headline (item=${item})"></div>
 
@@ -13,14 +13,14 @@
 		<div class="d3-item-properties">
 
 			<ul class="item-type-right">
-				<li class="item-slot">code="turmoil.item.type.armor.${item.armorType}</li>
+				<li class="item-slot" th:text="#{${'turmoil.item.type.armor.' + item.armorType}}"></li>
 			</ul>
 
 			<div th:insert="tooltip/fragments/tooltip :: rarity (item=${item})"></div>
 
 			<ul class="item-armor-weapon item-armor-armor">
 				<li class="big"><span class="value" th:text="${item.armorValue}"></span></li>
-				<li>code="turmoil.item.info.armor [[${item.armorValue}]]</li>
+				<li th:text="#{turmoil.item.info.armor}"></li>
 			</ul>
 
 			<div class="item-before-effects"></div>

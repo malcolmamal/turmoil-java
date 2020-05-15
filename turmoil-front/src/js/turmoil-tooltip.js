@@ -1,5 +1,6 @@
 import jQuery from "jquery";
 import "jquery-ui/ui/widgets/tooltip";
+import '../stylesheets/turmoil-tooltip.css';
 
 var emptyContent = "<div id='something-_ID_'>_CONTENT_</div>";
 var tooltipContents = {};

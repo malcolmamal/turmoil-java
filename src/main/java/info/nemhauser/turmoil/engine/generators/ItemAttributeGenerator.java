@@ -1,5 +1,6 @@
 package info.nemhauser.turmoil.engine.generators;
 
+import info.nemhauser.turmoil.config.Logger;
 import info.nemhauser.turmoil.engine.domain.Accessory;
 import info.nemhauser.turmoil.engine.domain.Armor;
 import info.nemhauser.turmoil.engine.domain.Attribute;
@@ -15,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
-class ItemAttributeGenerator
+public class ItemAttributeGenerator
 {
 	public static ArrayList<AttributeType> pickAppropriateAttributeTypes(Item item)
 	{

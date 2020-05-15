@@ -10,7 +10,7 @@ public class Attribute
 
 	public double primaryValue = 0;
 	public double secondaryValue = 0;
-	double tertiaryValue = 0;
+	public double tertiaryValue = 0;
 
 	public Attribute(Item item, AttributeType attributeType, double primaryValue, double secondaryValue, double tertiaryValue)
 	{
@@ -22,7 +22,7 @@ public class Attribute
 	}
 
 	public String toString() {
-		return "${type} [${primaryValue}, ${secondaryValue}, ${tertiaryValue}]";
+		return type + " [" + primaryValue + ", " + secondaryValue + ", " + tertiaryValue + "]";
 	}
 
 	public String toStringFull()
@@ -35,8 +35,8 @@ public class Attribute
 				" ]";
 	}
 
-	public void getValues()
+	public double[] getValues()
 	{
-		//return [primaryValue, secondaryValue, tertiaryValue];
+		return new double[] {primaryValue, secondaryValue, tertiaryValue};
 	}
 }

@@ -1,5 +1,4 @@
 import React from "react";
-import '../stylesheets/turmoil-tooltip.css';
 import Window from "./Window";
 import ItemSlotEquipment from "./ItemSlotEquipment";
 

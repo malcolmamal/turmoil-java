@@ -16,6 +16,7 @@ public class Armor extends Item
 
 		itemType = ItemType.ARMOR;
 		armorType = template.armorType;
+		rarity = template.rarity;
 		armorValue = template.armorValue;
 	}
 

@@ -3,12 +3,19 @@ package info.nemhauser.turmoil.sandbox;
 import groovy.util.ConfigObject;
 import groovy.util.ConfigSlurper;
 import info.nemhauser.turmoil.TurmoilApplication;
+import info.nemhauser.turmoil.config.Logger;
+import info.nemhauser.turmoil.engine.domain.Armor;
+import info.nemhauser.turmoil.engine.domain.Attribute;
 import info.nemhauser.turmoil.engine.domain.Character;
 import info.nemhauser.turmoil.engine.domain.Item;
+import info.nemhauser.turmoil.engine.enums.ArmorType;
 import info.nemhauser.turmoil.engine.enums.ItemRarity;
+import info.nemhauser.turmoil.engine.enums.ItemType;
+import info.nemhauser.turmoil.engine.generators.ItemAttributeGenerator;
 import info.nemhauser.turmoil.engine.helpers.*;
 import info.nemhauser.turmoil.engine.instances.CombatState;
 
+import info.nemhauser.turmoil.engine.templates.ArmorTemplate;
 import org.jgrapht.GraphPath;
 import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
 import org.jgrapht.alg.shortestpath.KShortestSimplePaths;
@@ -27,15 +34,34 @@ public class Sandbox
 	{
 		System.out.println("Sandbox started...");
 
-		DefaultUndirectedGraph<String, DefaultEdge> graph = InstanceHelper.getInstanceGraph();
-		//List<DefaultEdge> sp = (List<DefaultEdge>)DijkstraShortestPath.findPathBetween(graph, enemyPosition, characterPosition);
-		DijkstraShortestPath<String, DefaultEdge> dijkstraGraph = new DijkstraShortestPath<String, DefaultEdge>(graph);
-		GraphWalk<String, DefaultEdge> graphWalk = (GraphWalk<String, DefaultEdge>) dijkstraGraph.getPath("8-3", "1-4");
-		//KShortestSimplePaths pathing = new KShortestSimplePaths(graph, cs.enemy.instancePosition.substring(8), 1);
-		//List<GraphPath<String, DefaultEdge>> path = pathing.getPaths(cs.friend.instancePosition.substring(8));
 
-		System.out.println("Results: " + graphWalk.toString());
-		System.out.println("Edges2: " + graph.getEdgeSource(graphWalk.getEdgeList().get(0)));
+		ArmorTemplate template = new ArmorTemplate();
+		template.isLegendary = true;
+		template.armorValue = 135;
+		template.rarity = ItemRarity.LEGENDARY;
+		template.itemCode = "SWORD_OF_HATE";
+
+		Armor armor = new Armor(template);
+		armor.itemName = "Dupcia Anety";
+		armor.itemType = ItemType.ARMOR;
+		armor.armorType = ArmorType.CHEST;
+
+		armor.attributes = ItemAttributeGenerator.rollAttributes(armor).toArray(new Attribute[0]);
+		Logger.log("size: " + armor.attributes.length);
+		for (Attribute atr : armor.attributes)
+		{
+			Logger.log(atr.toString());
+		}
+
+
+		//System.out.println(ItemRarity.LEGENDARY.getAttributesQuantity());
+
+//		DefaultUndirectedGraph<String, DefaultEdge> graph = InstanceHelper.getInstanceGraph();
+//		DijkstraShortestPath<String, DefaultEdge> dijkstraGraph = new DijkstraShortestPath<String, DefaultEdge>(graph);
+//		GraphWalk<String, DefaultEdge> graphWalk = (GraphWalk<String, DefaultEdge>) dijkstraGraph.getPath("8-3", "1-4");
+//
+//		System.out.println("Results: " + graphWalk.toString());
+//		System.out.println("Edges2: " + graph.getEdgeSource(graphWalk.getEdgeList().get(0)));
 
 
 		//ItemTemplatesHelper.parseCommonAccessories();
