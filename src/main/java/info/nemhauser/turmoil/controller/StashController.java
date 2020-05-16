@@ -46,6 +46,8 @@ public class StashController
 	public @ResponseBody
 	JSONObject addToStash()
 	{
+		Logger.log("Started rolling item");
+
 		TurmoilApplication.getServerState().addItem(ItemGenerator.rollItem(TurmoilApplication.getCharacter("fox")));
 
 		Logger.log("Added item to stash");

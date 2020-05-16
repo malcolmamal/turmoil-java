@@ -73,28 +73,39 @@ public class EnumValues
 		2% EPIC
 		*/
 
-		switch (new Random().nextInt(100) + 1)
+		int rolledValue = new Random().nextInt(100) + 1;
+
+		if (rolledValue <= 2)
 		{
-			case 1: case 2:
-				return ItemRarity.EPIC;
-			case 3: case 4: case 5:
-				return ItemRarity.UNIQUE;
-			case 6: case 7: case 8: case 9: case 10:
-				return ItemRarity.SET;
-			case 11: case 12: case 13: case 14: case 15:
-				return ItemRarity.LEGENDARY;
-
-				//TODO: some different idea for the switch
-				/*
-			case 16..35:
-				return ItemRarity.RARE;
-			case 36..65:
-				return ItemRarity.MAGIC;
-				 */
-
-			default:
-				return ItemRarity.COMMON;
+			return ItemRarity.EPIC;
 		}
+
+		if (rolledValue <= 5)
+		{
+			return ItemRarity.UNIQUE;
+		}
+
+		if (rolledValue <= 10)
+		{
+			return ItemRarity.SET;
+		}
+
+		if (rolledValue <= 15)
+		{
+			return ItemRarity.LEGENDARY;
+		}
+
+		if (rolledValue <= 35)
+		{
+			return ItemRarity.RARE;
+		}
+
+		if (rolledValue <= 65)
+		{
+			return ItemRarity.MAGIC;
+		}
+
+		return ItemRarity.COMMON;
 	}
 
 	@SuppressWarnings("rawtypes")

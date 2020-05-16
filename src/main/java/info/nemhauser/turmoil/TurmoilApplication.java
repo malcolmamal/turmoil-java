@@ -32,6 +32,7 @@ public class TurmoilApplication
 	private static void initializeState()
 	{
 		serverState = new ServerState();
+		serverState.getItemTemplates().initialize();
 
 		character = new Character();
 		character.setName("Fox Nemhauser");

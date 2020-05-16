@@ -39,6 +39,7 @@ public class Item
 		id = globalId;
 		globalId++;
 
+		rarity = template.rarity;
 		itemCode = template.itemCode;
 	}
 

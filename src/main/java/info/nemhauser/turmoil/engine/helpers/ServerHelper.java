@@ -1,5 +1,6 @@
 package info.nemhauser.turmoil.engine.helpers;
 
+import info.nemhauser.turmoil.TurmoilApplication;
 import info.nemhauser.turmoil.engine.domain.Character;
 import info.nemhauser.turmoil.engine.domain.CharacterState;
 import info.nemhauser.turmoil.engine.enums.Gender;
@@ -22,10 +23,7 @@ public class ServerHelper
 
 	public static ItemTemplates getItemTemplates()
 	{
-		ItemTemplates itemTemplates = new ItemTemplates();
-		itemTemplates.initialize();
-
-		return itemTemplates;
+		return TurmoilApplication.getServerState().getItemTemplates();
 	}
 
 	public static CharacterState getCharacterState(Character character)

@@ -7,8 +7,10 @@ import java.util.HashMap;
 
 public class ServerState
 {
-	private HashMap<String, Character> characters = new HashMap<>();
+	private final HashMap<String, Character> characters = new HashMap<>();
 	private static final HashMap<String, Item> items = new HashMap<>();
+
+	private static final ItemTemplates itemTemplates = new ItemTemplates();
 
 	public HashMap<String, Character> getCharacters()
 	{
@@ -33,5 +35,10 @@ public class ServerState
 		}
 
 		return items.get(key);
+	}
+
+	public ItemTemplates getItemTemplates()
+	{
+		return itemTemplates;
 	}
 }

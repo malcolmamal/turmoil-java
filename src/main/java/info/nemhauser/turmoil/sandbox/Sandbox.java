@@ -27,17 +27,12 @@ import org.json.simple.JSONObject;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class Sandbox
 {
-	/*
-	 * TODO: knows issues
-	 * {"ident":"ident-3","fileCode":"maximus","filePath":"/images/items/weapons/swords/maximus.png","rarity":"white"}]}
-	 * Maximus generated as white
-	 */
-
-
 	public static void main(String[] args)
 	{
 		System.out.println("Sandbox started...");

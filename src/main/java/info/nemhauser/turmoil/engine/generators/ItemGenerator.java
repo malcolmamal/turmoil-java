@@ -1,5 +1,6 @@
 package info.nemhauser.turmoil.engine.generators;
 
+import info.nemhauser.turmoil.config.Logger;
 import info.nemhauser.turmoil.engine.domain.Accessory;
 import info.nemhauser.turmoil.engine.domain.Armor;
 import info.nemhauser.turmoil.engine.domain.Attribute;
@@ -37,6 +38,7 @@ public class ItemGenerator
 			addAttributes(item);
 			rollStats(item);
 		}
+
 		return item;
 	}
 

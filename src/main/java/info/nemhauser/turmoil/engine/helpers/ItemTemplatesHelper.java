@@ -160,48 +160,6 @@ public class ItemTemplatesHelper
 
 	public static AccessoryTemplate[] parseCommonAccessories()
 	{
-		/*
-		ArrayList<AccessoryTemplate> accessoryTemplates = new ArrayList<AccessoryTemplate>();
-		try
-		{
-			ConfigObject configObject = new ConfigSlurper().parse(new URL("file:properties/items-accessories.groovy")); // items-accessories.groovy
-
-			ConfigObject accessories = (ConfigObject)configObject.get("accessories"); //accessories legendaries
-			Iterator iterator = accessories.keySet().iterator();
-
-			while (iterator.hasNext())
-			{
-				String key = iterator.next().toString();
-				ConfigObject values = (ConfigObject)accessories.get(key);
-
-				System.out.println(key);
-				Set set = values.entrySet();
-
-				Iterator setIterator = set.iterator();
-				while (setIterator.hasNext())
-				{
-					Map.Entry<String, Object> map = (Map.Entry<String, Object>)setIterator.next();
-					System.out.println(map.getKey());
-					System.out.println(map.getValue());
-					System.out.println(map.getValue().getClass());
-
-					AccessoryTemplate template = new AccessoryTemplate();
-					template.itemCode = key;
-					template.accessoryType = (AccessoryType) map.getValue();
-					accessoryTemplates.add(template);
-				}
-			}
-		}
-		catch (MalformedURLException e)
-		{
-			e.printStackTrace();
-		}
-
-		//log.info "Common Accessory Templates loaded (" + accessoryTemplates.size() + ")";
-
-		return accessoryTemplates.toArray(new AccessoryTemplate[0]);
-
-		 */
 		ItemTemplate[] itemTemplates = parseItems("accessories", false);
 		ArrayList<AccessoryTemplate> accessoryTemplates = new ArrayList<AccessoryTemplate>();
 
@@ -209,8 +167,6 @@ public class ItemTemplatesHelper
 			accessoryTemplates.add((AccessoryTemplate)element);
 		}
 		return accessoryTemplates.toArray(new AccessoryTemplate[0]);
-
-		//return (AccessoryTemplate[]) parseItems("accessories", false);
 	}
 
 	public static AccessoryTemplate[] parseLegendaryAccessories()

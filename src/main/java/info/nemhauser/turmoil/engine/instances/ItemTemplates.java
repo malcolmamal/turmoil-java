@@ -1,5 +1,6 @@
 package info.nemhauser.turmoil.engine.instances;
 
+import info.nemhauser.turmoil.config.Logger;
 import info.nemhauser.turmoil.engine.helpers.ItemTemplatesHelper;
 
 import info.nemhauser.turmoil.engine.templates.AccessoryTemplate;
