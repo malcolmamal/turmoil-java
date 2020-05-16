@@ -12,6 +12,7 @@ import info.nemhauser.turmoil.engine.enums.ArmorType;
 import info.nemhauser.turmoil.engine.enums.ItemRarity;
 import info.nemhauser.turmoil.engine.enums.ItemType;
 import info.nemhauser.turmoil.engine.generators.ItemAttributeGenerator;
+import info.nemhauser.turmoil.engine.generators.ItemGenerator;
 import info.nemhauser.turmoil.engine.helpers.*;
 import info.nemhauser.turmoil.engine.instances.CombatState;
 
@@ -30,28 +31,39 @@ import java.util.List;
 
 public class Sandbox
 {
+	/*
+	 * TODO: knows issues
+	 * {"ident":"ident-3","fileCode":"maximus","filePath":"/images/items/weapons/swords/maximus.png","rarity":"white"}]}
+	 * Maximus generated as white
+	 */
+
+
 	public static void main(String[] args)
 	{
 		System.out.println("Sandbox started...");
 
+		Character character = new Character();
+		Item item = ItemGenerator.rollItem(character);
 
-		ArmorTemplate template = new ArmorTemplate();
-		template.isLegendary = true;
-		template.armorValue = 135;
-		template.rarity = ItemRarity.LEGENDARY;
-		template.itemCode = "SWORD_OF_HATE";
+		System.out.println(item.toStringFull());
 
-		Armor armor = new Armor(template);
-		armor.itemName = "Dupcia Anety";
-		armor.itemType = ItemType.ARMOR;
-		armor.armorType = ArmorType.CHEST;
-
-		armor.attributes = ItemAttributeGenerator.rollAttributes(armor).toArray(new Attribute[0]);
-		Logger.log("size: " + armor.attributes.length);
-		for (Attribute atr : armor.attributes)
-		{
-			Logger.log(atr.toString());
-		}
+//		ArmorTemplate template = new ArmorTemplate();
+//		template.isLegendary = true;
+//		template.armorValue = 135;
+//		template.rarity = ItemRarity.LEGENDARY;
+//		template.itemCode = "SWORD_OF_HATE";
+//
+//		Armor armor = new Armor(template);
+//		armor.itemName = "Dupcia Anety";
+//		armor.itemType = ItemType.ARMOR;
+//		armor.armorType = ArmorType.CHEST;
+//
+//		armor.attributes = ItemAttributeGenerator.rollAttributes(armor).toArray(new Attribute[0]);
+//		Logger.log("size: " + armor.attributes.length);
+//		for (Attribute atr : armor.attributes)
+//		{
+//			Logger.log(atr.toString());
+//		}
 
 
 		//System.out.println(ItemRarity.LEGENDARY.getAttributesQuantity());

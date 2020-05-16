@@ -110,4 +110,15 @@ public class Weapon extends Item
 				"avgDamage: "	+ getAverageDamage()	+
 				" ]";
 	}
+
+	public String getTooltipEffectClass()
+	{
+		return damageType.toString().toLowerCase();
+	}
+
+	public String getItemTypeClass()
+	{
+		return "weapon." + weaponType.toString();
+	}
+
 }

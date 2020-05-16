@@ -63,4 +63,9 @@ public class Accessory extends Item
 				"accessoryType: "	+ accessoryType			+
 				" ]";
 	}
+
+	public String getItemTypeClass()
+	{
+		return "accessory." + accessoryType.toString();
+	}
 }

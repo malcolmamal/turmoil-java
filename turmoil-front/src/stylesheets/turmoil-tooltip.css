@@ -1,3 +1,7 @@
+.ui-tooltip {
+	padding: 0 !important;
+}
+
 .turmoil-tooltip {
 	background-color: #000000;
 }

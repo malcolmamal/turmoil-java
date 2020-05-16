@@ -11,11 +11,12 @@ export default class ItemSlotStash extends React.Component
 	}
 
 	render() {
-		const iconItemSize = 'big'; //default
+		const iconItemSize = 'big'; //default // TODO: size
+
 		const itemId = this.props.item;
-		const itemFileCode = 'shard_of_hate';
-		const itemRarityClass = 'common'; //default
-		const itemImageFile = "url('/images/items/weapons/shard_of_hate.png'";
+		const itemFileCode = this.props.fileCode;
+		const itemRarityClass = this.props.rarity;
+		const itemImageFile = "url('" + this.props.filePath + "'";
 
 		return (
 			<li className="stashItemListEntry" id={"stash_item_" + itemId} item={itemId}

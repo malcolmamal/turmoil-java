@@ -11,6 +11,8 @@ public class Character extends Person
 
 	Account owner;
 
+	String name;
+
 	Weapon slotRightHand;
 	Item slotLeftHand; // Weapon or Accessory
 
@@ -241,5 +243,15 @@ public class Character extends Person
 			//item.save();
 		}
 		return replacedItem;
+	}
+
+	public String getName()
+	{
+		return name;
+	}
+
+	public void setName(String name)
+	{
+		this.name = name;
 	}
 }

@@ -1,5 +1,6 @@
 package info.nemhauser.turmoil.controller;
 
+import info.nemhauser.turmoil.TurmoilApplication;
 import info.nemhauser.turmoil.config.Logger;
 import info.nemhauser.turmoil.engine.domain.Armor;
 import info.nemhauser.turmoil.engine.domain.Attribute;
@@ -27,24 +28,26 @@ public class TooltipController
 	@RequestMapping("/tooltip/{item}")
 	public String getTooltipAdvanced(@PathVariable String item, Model model) {
 
-		ArmorTemplate template = new ArmorTemplate();
-		template.isLegendary = true;
-		template.armorValue = 135;
-		template.rarity = ItemRarity.LEGENDARY;
-		template.itemCode = "FROSTBURN";
+//		ArmorTemplate template = new ArmorTemplate();
+//		template.isLegendary = true;
+//		template.armorValue = 135;
+//		template.rarity = ItemRarity.LEGENDARY;
+//		template.itemCode = "FROSTBURN";
+//
+//		Armor armor = new Armor(template);
+//		armor.itemName = "Dupcia Anety";
+//		armor.itemType = ItemType.ARMOR;
+//		armor.armorType = ArmorType.CHEST;
+//
+//		armor.attributes = ItemAttributeGenerator.rollAttributes(armor).toArray(new Attribute[0]);
+//		for (Attribute atr : armor.attributes)
+//		{
+//			Logger.log(atr.toString());
+//		}
 
-		Armor armor = new Armor(template);
-		armor.itemName = "Dupcia Anety";
-		armor.itemType = ItemType.ARMOR;
-		armor.armorType = ArmorType.CHEST;
+		//TODO: handle not found
 
-		armor.attributes = ItemAttributeGenerator.rollAttributes(armor).toArray(new Attribute[0]);
-		for (Attribute atr : armor.attributes)
-		{
-			Logger.log(atr.toString());
-		}
-
-		model.addAttribute("item", armor);
+		model.addAttribute("item", TurmoilApplication.getServerState().getItem(item));
 
 		return "tooltip/armor";
 	}

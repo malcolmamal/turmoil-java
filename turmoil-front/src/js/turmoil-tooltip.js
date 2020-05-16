@@ -96,15 +96,6 @@ function handleItemTooltipContent(element)
 
 jQuery(function() {
 
-	/*
-	$(document).tooltip({
-		items:'.tooltip',
-		content: function () {
-			return $(this).prop('title');
-		},
-	});
-	*/
-
 	jQuery(document).tooltip({
 		items:'.tooltip',
 		hide: false,

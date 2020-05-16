@@ -2,8 +2,11 @@ package info.nemhauser.turmoil;
 
 import info.nemhauser.turmoil.config.Logger;
 import info.nemhauser.turmoil.engine.domain.Character;
+import info.nemhauser.turmoil.engine.domain.Item;
+import info.nemhauser.turmoil.engine.generators.ItemGenerator;
 import info.nemhauser.turmoil.engine.helpers.InstanceHelper;
 import info.nemhauser.turmoil.engine.instances.CombatState;
+import info.nemhauser.turmoil.engine.instances.ServerState;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -11,7 +14,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class TurmoilApplication
 {
 	private static CombatState combatState;
-	private static Character character;
+	private static Character character; //TODO: remove it
+
+	private static ServerState serverState;
 
 	public static void main(String[] args)
 	{
@@ -26,7 +31,16 @@ public class TurmoilApplication
 
 	private static void initializeState()
 	{
+		serverState = new ServerState();
+
 		character = new Character();
+		character.setName("Fox Nemhauser");
+		serverState.getCharacters().put("fox", character);
+
+		serverState.addItem(ItemGenerator.rollItem(character));
+		serverState.addItem(ItemGenerator.rollItem(character));
+		serverState.addItem(ItemGenerator.rollItem(character));
+
 		combatState = InstanceHelper.getCombatState(character);
 
 		combatState.friend.instancePosition = "polygon-1-4";
@@ -38,8 +52,13 @@ public class TurmoilApplication
 		return combatState;
 	}
 
-	public static Character getCharacter()
+	public static Character getCharacter(String key)
 	{
-		return character;
+		return serverState.getCharacters().get(key);
+	}
+
+	public static ServerState getServerState()
+	{
+		return serverState;
 	}
 }

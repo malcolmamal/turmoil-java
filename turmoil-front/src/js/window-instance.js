@@ -11,6 +11,16 @@ window.turmoil.instance.enemies = [
 	//{"ident": "testEnemy", portrait: "male/male_portrait_055.png", position: "polygon-8-3"},
 	//{ident: "testEnemy2", portrait: "male/male_portrait_054.png", position: "polygon-8-5"},
 ];
+window.turmoil.stash = {};
+window.turmoil.stash.items = [
+	// {"ident": "itemA", rarity: "white"},
+	// {"ident": "itemB", rarity: "blue"},
+	// {"ident": "itemC", rarity: "yellow"},
+	// {"ident": "itemD", rarity: "orange"},
+	// {"ident": "itemE", rarity: "green"},
+	// {"ident": "itemF", rarity: "red"},
+	// {"ident": "itemG", rarity: "purple"},
+];
 
 function svgAddClass(element, className)
 {

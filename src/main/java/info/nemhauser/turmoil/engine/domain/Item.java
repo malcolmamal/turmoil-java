@@ -7,6 +7,8 @@ import info.nemhauser.turmoil.engine.templates.ItemTemplate;
 
 public class Item
 {
+	public static int globalId = 1;
+
 	public int id = 1; // will be filled by hibernate later on
 
 	public String itemCode;
@@ -34,6 +36,9 @@ public class Item
 
 	public Item(ItemTemplate template)
 	{
+		id = globalId;
+		globalId++;
+
 		itemCode = template.itemCode;
 	}
 
@@ -48,25 +53,16 @@ public class Item
 
 	public String getRarityClass()
 	{
-		switch (rarity)
+		return switch (rarity)
 		{
-			case COMMON:
-				return "white";
-			case MAGIC:
-				return "blue";
-			case RARE:
-				return "yellow";
-			case LEGENDARY:
-				return "orange";
-			case SET:
-				return "green";
-			case UNIQUE:
-				return "red";
-			case EPIC:
-				return "purple";
-		}
-
-		return "";
+			case COMMON -> "white";
+			case MAGIC -> "blue";
+			case RARE -> "yellow";
+			case LEGENDARY -> "orange";
+			case SET -> "green";
+			case UNIQUE -> "red";
+			case EPIC -> "purple";
+		};
 	}
 
 	public String[] getItemProperties()
@@ -85,12 +81,17 @@ public class Item
 
 	public String getImagePath()
 	{
-		return "images/items/";
+		return "/images/items/";
 	}
 
 	public String getImageFile()
 	{
 		return getFileCode() + ".png";
+	}
+
+	public String getFullImagePath()
+	{
+		return getImagePath() + "/" + getFileCode() + ".png";
 	}
 
 	public String toStringFull()
@@ -119,5 +120,60 @@ public class Item
 		value += "]";
 
 		return value;
+	}
+
+	public boolean isSquareLayout()
+	{
+		return false;
+	}
+
+	public boolean isLongLayout()
+	{
+		return false;
+	}
+
+	public String getTooltipShapeClass()
+	{
+		if (isSquareLayout())
+		{
+			return "square";
+		}
+
+		if (isLongLayout())
+		{
+			return "long";
+		}
+
+		return "default";
+	}
+
+	public String getTooltipEffectClass()
+	{
+		return "";
+	}
+
+	public String getItemTypeClass()
+	{
+		return "";
+	}
+
+	public String getIdent()
+	{
+		return "ident-" + id;
+	}
+
+	public boolean isArmor()
+	{
+		return itemType == ItemType.ARMOR;
+	}
+
+	public boolean isWeapon()
+	{
+		return itemType == ItemType.WEAPON;
+	}
+
+	public boolean isAccessory()
+	{
+		return itemType == ItemType.ACCESSORY;
 	}
 }

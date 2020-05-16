@@ -70,8 +70,8 @@
 <div th:fragment="itemSlotTooltip (item)">
 <span th:class="'d3-icon d3-icon-item d3-icon-item-large d3-icon-item-' + ${item.getRarityClass()}">
 	<span class="icon-item-gradient">
-		<span class="icon-item-inner icon-item-big"
-			th:style="'background-image:url(' + @{/images/items/weapons/shard_of_hate.png} + ');'" > <!-- item type class to do, look at item_slot_tooltip -->
+		<span th:class="'icon-item-inner icon-item-' + ${item.getTooltipShapeClass()}"
+			th:style="'background-image:url(' + ${item.getFullImagePath()} + ');'" >
 		</span>
 	</span>
 </span>

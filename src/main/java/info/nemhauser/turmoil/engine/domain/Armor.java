@@ -67,4 +67,14 @@ public class Armor extends Item
 				"armorValue: "	+ armorValue			+
 				" ]";
 	}
+
+	public String getTooltipEffectClass()
+	{
+		return "armor";
+	}
+
+	public String getItemTypeClass()
+	{
+		return "armor." + armorType.toString();
+	}
 }
