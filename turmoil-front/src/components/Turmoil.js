@@ -28,7 +28,7 @@ export default class Turmoil extends React.Component
 						<Instance />
 						<Console />
 						<Equipment />
-						<Stash />
+						<Stash items={window.turmoil.stash.items} />
 						<Stats />
 
 					</div>

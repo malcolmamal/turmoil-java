@@ -125,16 +125,13 @@ window.turmoil.ajax = {
 					data: dataString,
 					//dataType:"script",
 					success: function(data, textStatus, xhr) {
-						console.log('complete success ', xhr.status);
 						if (textStatus === 'success')
 						{
 							if (typeof(params.eval) !== 'undefined' && params.eval === true) {
 								eval(data);
-								console.log('result1', eval(data));
 							}
 
 							if (typeof(params.onSuccess) !== 'undefined') {
-								console.log('result2', data);
 
 								if (typeof(params.onSuccessThis) !== 'undefined') {
 									params.onSuccess(data, params.onSuccessThis);
@@ -151,13 +148,11 @@ window.turmoil.ajax = {
 						hideSpinner();
 					},
 					error: function(XMLHttpRequest, textStatus, errorThrown) {
-						console.log('grr', XMLHttpRequest.toString());
-						console.log("was error", errorThrown, XMLHttpRequest.responseText);
 						handleAjaxError(XMLHttpRequest.responseText, errorThrown);
 					},
 					complete: function(xhr, textStatus) {
-						console.log('complete', xhr.status);
-						console.log('complete url', window.baseUrl + params.url);
+						//console.log('complete', xhr.status);
+						//console.log('complete url', window.baseUrl + params.url);
 					}
 				});
 			}
@@ -204,14 +199,12 @@ export function randomInt(max)
 
 function getCurrentDateTime()
 {
-	var currentDate = new Date();
+	let currentDate = new Date();
 	return currentDate.toJSON().slice(0,10) + ' ' + currentDate.getHours() + ':' + currentDate.getMinutes() + ':' + currentDate.getSeconds() + '.' + currentDate.getMilliseconds();
 }
 
 export function playAudio(audio)
 {
-	console.log("playing sound: ", audio);
-
 	let sound = new Audio(window.turmoil.sounds[audio]);
 	sound.load();
 	sound.play();
@@ -219,11 +212,8 @@ export function playAudio(audio)
 
 export function playAudioLoop(audio, suffix)
 {
-	var ident = audio + '_' + suffix;
-	console.log('audio ident', audio);
-	console.log('soundsss', window.turmoil.sounds);
-	var sound = new Audio(window.turmoil.sounds[audio]); //document.getElementById(audio);
-	console.log('sound is ', sound);
+	let ident = audio + '_' + suffix;
+	let sound = new Audio(window.turmoil.sounds[audio]); //document.getElementById(audio);
 	window.turmoil.soundLoops[ident] = sound;
 	window.turmoil.soundLoops[ident + '_loop'] = true;
 
@@ -240,11 +230,10 @@ export function playAudioLoop(audio, suffix)
 
 export function stopAudioLoop(audio, suffix)
 {
-	var ident = audio + '_' + suffix;
-	console.log("ident", ident);
+	let ident = audio + '_' + suffix;
 	if (typeof(window.turmoil.soundLoops[ident]) != 'undefined')
 	{
-		var sound = window.turmoil.soundLoops[ident];
+		let sound = window.turmoil.soundLoops[ident];
 		sound.pause();
 		window.turmoil.soundLoops[ident + '_loop'] = false;
 	}

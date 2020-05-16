@@ -35,11 +35,9 @@ public class ServerHelper
 		return null;
 	}
 
-	public static CharacterState setCharacterState(Character character, CharacterState characterState)
+	public static void setCharacterState(Character character, CharacterState characterState)
 	{
 		getCharacterStates().put(character.toString(), characterState);
-
-		return null;
 	}
 
 	private static HashMap<String, CharacterState> getCharacterStates()

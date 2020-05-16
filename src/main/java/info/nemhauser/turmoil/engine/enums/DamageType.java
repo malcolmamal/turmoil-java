@@ -7,6 +7,7 @@ public enum DamageType {
 	COLD,
 	LIGHTNING,
 	POISON,
-	ARCANE
+	ARCANE,
+	HEALING
 
 }

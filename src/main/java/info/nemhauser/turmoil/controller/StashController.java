@@ -28,8 +28,7 @@ public class StashController
 
 			for (Item item : TurmoilApplication.getServerState().getItems().values())
 			{
-				ItemInStashResponse itemInStash = new ItemInStashResponse(item.getIdent(), item.getFileCode(), item.getFullImagePath(), item.getRarityClass());
-				items.add(itemInStash);
+				addItem(item);
 			}
 		}
 
@@ -40,6 +39,16 @@ public class StashController
 		object.put("items", array);
 
 		return object;
+	}
+
+	public static void addItem(Item item)
+	{
+		items.add(convertItemToItemInStashResponse(item));
+	}
+
+	public static ItemInStashResponse convertItemToItemInStashResponse(Item item)
+	{
+		return new ItemInStashResponse(item.getIdent(), item.getFileCode(), item.getFullImagePath(), item.getRarityClass());
 	}
 
 	@RequestMapping(value = "/addToStash", produces = "application/json")

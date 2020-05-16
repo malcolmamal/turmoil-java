@@ -214,28 +214,22 @@ export function handleMoveToPolygon(polygon, unit)
 			stopAudioLoop('soundMoveLeather', unit.attr('id'));
 		}
 	);
-	//jQuery('#testElement').css('left', centerX);
-	//jQuery('#testElement').css('top', centerY);
 
 	console.log('moving to: ', polygon.attr('id') );
 
 	unit.data('previousPolygonId', polygon.attr('id'));
-	console.log('moving to after: ', unit.data('previousPolygonId'), unit.attr('id'));
 	polygon.data('unit', unit.attr('id'));
 }
 
 function finalizeActionOnPolygon(data)
 {
-	console.log('finalize data', data);
 	if (data != null && data.success === true && typeof(data.polygonId) != 'undefined')
 	{
 		var unit = activeUnit;
 
 		var polygon = jQuery('#' + data.polygonId);
-		console.log('finalize polygon', polygon);
 		if (polygon.length > 0 && typeof(data.actionType) != 'undefined')
 		{
-			console.log('finalize type', data.actionType);
 			if (data.actionType === 'attack')
 			{
 				if (typeof(data.attackingUnit) != 'undefined')
@@ -260,6 +254,13 @@ function finalizeActionOnPolygon(data)
 			handleMoveToPolygon(jQuery('#' + data.newEnemyPosition), jQuery('#testEnemy'));
 		}
 
+		if (typeof(data.stashedItemId) != 'undefined')
+		{
+			console.log("stashedItemId looks good", data);
+			window.turmoil.stash.items.push({"ident": data.stashedItemId, rarity: "purple", filePath: "/images/items/weapons/thunderfury.png", fileCode: "thunderfury"});
+			//{"ident": "itemG", rarity: "purple"}
+		}
+
 		if (typeof(data.stashedItemId) != 'undefined' && typeof(data.stashedItemContent) != 'undefined')
 		{
 			putItemToStash(data);
@@ -276,6 +277,8 @@ function finalizeActionOnPolygon(data)
 
 function handleAttackPolygon(polygon, unit, data)
 {
+	//TODO: make sure that it is not possible to do actions when enemy is doing stuff
+
 	var targetUnit = jQuery('#' + polygon.data('unit'));
 
 	var damageDealt = 0;

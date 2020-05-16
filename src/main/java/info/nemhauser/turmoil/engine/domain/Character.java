@@ -13,7 +13,7 @@ public class Character extends Person
 
 	String name;
 
-	Weapon slotRightHand;
+	public Weapon slotRightHand;
 	Item slotLeftHand; // Weapon or Accessory
 
 	Armor slotHelm;

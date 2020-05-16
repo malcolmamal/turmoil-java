@@ -17,6 +17,9 @@ import java.util.ArrayList;
 
 public class CharacterStateHelper
 {
+	/**
+	 * @deprecated
+	 */
 	public static CharacterState getCharacterState(Character character)
 	{
 		CharacterState characterState = ServerHelper.getCharacterState(character);
@@ -43,7 +46,7 @@ public class CharacterStateHelper
 		characterState.level = character.level;
 
 		characterState.experience = character.experience;
-		characterState.requiredExperience = ExperienceHelper.getRequiredExperience(character.level + 1);
+		characterState.requiredExperience = 1000; // ExperienceHelper.getRequiredExperience(character.level + 1); TODO: reimplement
 
 		characterState.applyResistAll();
 		characterState.applyPercentageDamage();
@@ -116,9 +119,10 @@ public class CharacterStateHelper
 
 		if (item.attributes != null && item.attributes.length > 0)
 		{
-//			item.attributes.each {
-//				updateCharacterStateWithAttribute(characterState, it);
-//			}
+			for (Attribute attribute : item.attributes)
+			{
+				updateCharacterStateWithAttribute(characterState, attribute);
+			}
 		}
 	}
 

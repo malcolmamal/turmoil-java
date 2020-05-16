@@ -133,7 +133,7 @@ public class CharacterState
 
 		damageAvg = 0;
 
-		critChance = 0;
+		critChance = 33; //TODO: only for tests
 		critDamage = 100;
 
 		armor = 0;

@@ -2,6 +2,7 @@ package info.nemhauser.turmoil.controller;
 
 import info.nemhauser.turmoil.TurmoilApplication;
 import info.nemhauser.turmoil.config.Logger;
+import info.nemhauser.turmoil.engine.combat.effects.DamageDealt;
 import info.nemhauser.turmoil.engine.domain.Character;
 import info.nemhauser.turmoil.engine.domain.Item;
 import info.nemhauser.turmoil.engine.helpers.CharacterStateHelper;
@@ -93,57 +94,53 @@ class InstanceController {
 	JSONObject instanceAttack(@PathVariable String position)
 	{
 		Logger.log("Attacking unit at " + position);
-		// todo
+		Character character = TurmoilApplication.getCharacter("fox");
+
 		double healthBarValue = 60;
 
-		if (position != null)// && character != null)
+		if (position != null)
 		{
 			CombatState cs = TurmoilApplication.getCombatState();
 
-			long computedAttack = 6; //CombatHelper.computeDamageToDeal(character);
-			int damageDealt = (int)computedAttack;//computedAttack['damageToDeal'];
-			cs.enemy.currentHealth -= damageDealt;
+			DamageDealt damageDealt = CombatHelper.computeDamageToDeal(character);
+			cs.enemy.currentHealth -= (int)damageDealt.getValue();
+
+			JSONObject object = new JSONObject(Map.of(
+					"success", true,
+					"friendlyTurn", true,
+					"actionType", "attack",
+					"type", damageDealt.isCritical() ? "critical" : "",
+					"polygonId", position,
+					"damageDealt", damageDealt.getValue(),
+					"healthBar", Math.floor(cs.enemy.currentHealth * healthBarValue / cs.enemy.health)
+			));
 
 			if (cs.enemy.currentHealth < 0)
 			{
 				Item item = cs.enemy.lootBag.get("loot");
 				if (item != null)
 				{
-					//itemService.saveItem(item, character);
+					TurmoilApplication.getServerState().addItem(item);
 
-					//json.put("stashedItemId", item.toStringFull());
-
-
+					object.put("stashedItemId", item.getIdent());
 					//todo
-					//json.put( << [stashedItemContent: g.render(contextPath: "../character/", template: "item_slot_stash", model: [item: item])];
+					//json.put("stashedItemId", item.toStringFull());
 				}
 
-				//cs.enemy = InstanceHelper.createMonster(character);
-				//json.put("newEnemyPosition", cs.enemy.instancePosition);
+				cs.enemy = InstanceHelper.createMonster(character);
+				object.put("newEnemyPosition", cs.enemy.instancePosition);
 
 				//TODO: handle it properly
-//				character.experience += 10;
+				character.experience += 10;
 //				if (character.experience >= ExperienceHelper.getRequiredExperience(character.level+1))
 //				{
 //					character.level++;
 //					character.experience = ExperienceHelper.getRequiredExperience(character.level) - character.experience;
 //				}
-//				CharacterStateHelper.computeValuesForCharacterState(character);
+				CharacterStateHelper.computeValuesForCharacterState(character);
 			}
 
-			//if (computedAttack['isCriticalHit'])
-			{
-				//json.put("type", "critical");
-			}
-
-			return new JSONObject(Map.of(
-					"success", true,
-					"friendlyTurn", true,
-					"actionType", "attack",
-					"polygonId", position,
-					"damageDealt", damageDealt,
-					"healthBar", Math.floor(cs.enemy.currentHealth * healthBarValue / cs.enemy.health)
-			));
+			return object;
 		}
 		return new JSONObject();
 	}

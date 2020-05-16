@@ -2,8 +2,14 @@ package info.nemhauser.turmoil;
 
 import info.nemhauser.turmoil.config.Logger;
 import info.nemhauser.turmoil.engine.domain.Character;
+import info.nemhauser.turmoil.engine.domain.CharacterState;
 import info.nemhauser.turmoil.engine.domain.Item;
+import info.nemhauser.turmoil.engine.domain.Weapon;
+import info.nemhauser.turmoil.engine.enums.ItemRarity;
+import info.nemhauser.turmoil.engine.enums.ItemSlot;
+import info.nemhauser.turmoil.engine.enums.ItemType;
 import info.nemhauser.turmoil.engine.generators.ItemGenerator;
+import info.nemhauser.turmoil.engine.helpers.CharacterStateHelper;
 import info.nemhauser.turmoil.engine.helpers.InstanceHelper;
 import info.nemhauser.turmoil.engine.instances.CombatState;
 import info.nemhauser.turmoil.engine.instances.ServerState;
@@ -15,6 +21,7 @@ public class TurmoilApplication
 {
 	private static CombatState combatState;
 	private static Character character; //TODO: remove it
+	private static CharacterState characterState;
 
 	private static ServerState serverState;
 
@@ -38,6 +45,23 @@ public class TurmoilApplication
 		character.setName("Fox Nemhauser");
 		serverState.getCharacters().put("fox", character);
 
+		characterState = new CharacterState();
+		characterState.character = character;
+		characterState.resetValues();
+
+		character.slotRightHand = (Weapon) ItemGenerator.rollItemOfRarityAndType(character, ItemRarity.LEGENDARY, ItemType.WEAPON);
+
+		CharacterStateHelper.updateCharacterStateWithItem(characterState, character.slotRightHand, ItemSlot.RIGHT_HAND);
+
+		//		items.each {
+		//			updateCharacterStateWithItem(characterState, it, it.itemSlot);
+		//		}
+
+		CharacterStateHelper.computeValuesForCharacterState(characterState, character);
+
+		serverState.addItem(ItemGenerator.rollItem(character));
+		serverState.addItem(ItemGenerator.rollItem(character));
+		serverState.addItem(ItemGenerator.rollItem(character));
 		serverState.addItem(ItemGenerator.rollItem(character));
 		serverState.addItem(ItemGenerator.rollItem(character));
 		serverState.addItem(ItemGenerator.rollItem(character));
@@ -56,6 +80,11 @@ public class TurmoilApplication
 	public static Character getCharacter(String key)
 	{
 		return serverState.getCharacters().get(key);
+	}
+
+	public static CharacterState getCharacterState()
+	{
+		return characterState;
 	}
 
 	public static ServerState getServerState()

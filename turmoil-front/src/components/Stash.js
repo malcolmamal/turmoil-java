@@ -6,6 +6,17 @@ import ItemSlotStash from "./ItemSlotStash";
 
 export default class Stash extends React.Component
 {
+	constructor(props) {
+		super(props);
+		this.updateStateFromConstruct();
+	}
+
+	updateStateFromConstruct()
+	{
+		console.log("updating state because constructor and props and stuff");
+		this.setState({items: this.getItems()});
+	}
+
 	componentDidMount() {
 		initializeStash()
 
@@ -43,6 +54,7 @@ export default class Stash extends React.Component
 			<Window ident="stash" background={background}>
 				<div id="stashItemContainerWrapper">
 					<div id="stashItemContainer" className="stashItemContainer">
+						<div><button onClick={() => { this.updateStateFromConstruct() }}>update</button></div>
 						<ul id="stashItemListContainer">
 
 							{this.state.items.map(item => (

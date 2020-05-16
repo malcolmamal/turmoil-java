@@ -104,58 +104,6 @@ public class Sandbox
 		return json.toJSONString();
 	}
 
-	public static String instanceAttack(Character character, String position)
-	{
-		// todo
-		double healthBarValue = 100;
-
-		JSONObject json = new JSONObject();
-		if (position != null && character != null)
-		{
-			CombatState cs = InstanceHelper.getCombatState(character);
-			long computedAttack = CombatHelper.computeDamageToDeal(character);
-			int damageDealt = (int)computedAttack;//computedAttack['damageToDeal'];
-			cs.enemy.currentHealth -= damageDealt;
-
-			if (cs.enemy.currentHealth < 0)
-			{
-				Item item = cs.enemy.lootBag.get("loot");
-				if (item != null)
-				{
-					//itemService.saveItem(item, character);
-
-					json.put("stashedItemId", item.toStringFull());
-					//todo
-					//json.put( << [stashedItemContent: g.render(contextPath: "../character/", template: "item_slot_stash", model: [item: item])];
-				}
-
-				cs.enemy = InstanceHelper.createMonster(character);
-				json.put("newEnemyPosition", cs.enemy.instancePosition);
-
-				//TODO: handle it properly
-				character.experience += 10;
-				if (character.experience >= ExperienceHelper.getRequiredExperience(character.level+1))
-				{
-					character.level++;
-					character.experience = ExperienceHelper.getRequiredExperience(character.level) - character.experience;
-				}
-				CharacterStateHelper.computeValuesForCharacterState(character);
-			}
-
-			json.put("success", true);
-			json.put("friendlyTurn", true);
-			json.put("actionType", "attack");
-			//if (computedAttack['isCriticalHit'])
-			{
-				json.put("type", "critical");
-			}
-			json.put("polygonId", position);
-			json.put("damageDealt", damageDealt);
-			json.put("healthBar", Math.floor(cs.enemy.currentHealth * healthBarValue / cs.enemy.health));
-		}
-		return json.toJSONString();
-	}
-
 	public static String instanceActionEnemy(Character character, String position)
 	{
 		// todo
