@@ -33,14 +33,14 @@ function finalizeUpdateStatisticsWindow(content)
 	jQuery('#statsContent').html(content);
 }
 
-function actionRightClickOnEquipment(itemId)
+export function actionRightClickOnEquipment(itemIdent)
 {
 	hideAllTooltips();
 
-	if (itemId > 0)
+	if (itemIdent)
 	{
 		window.turmoil.ajax.exec({
-			url: 'account/unequip/' + itemId,
+			url: 'account/unequip/' + itemIdent,
 			onSuccess: finalizeRightClickOnEquipment
 		});
 	}
@@ -82,7 +82,7 @@ function finalizeRightClickOnEquipment(data)
 	}
 }
 
-function actionRightClickOnStashedItem(itemId)
+export function actionRightClickOnStashedItem(itemId)
 {
 	hideAllTooltips();
 

@@ -89,7 +89,7 @@ export default class Instance extends React.Component
 	constructor(props) {
 		super(props);
 
-		this.updateItems = this.updateItems.bind(this);
+		this.updateStashItems = this.updateStashItems.bind(this);
 	}
 
 	getUnits() {
@@ -105,8 +105,8 @@ export default class Instance extends React.Component
 		that.setState({enemyUnits: that.getUnits()});
 	}
 
-	updateItems() {
-		this.props.updateItems(window.turmoil.stash);
+	updateStashItems() {
+		this.props.updateStashItems(window.turmoil.stash);
 	}
 
 	componentDidMount() {
@@ -145,12 +145,12 @@ export default class Instance extends React.Component
 				<CharacterUnit ident="testElement"/>
 
 				{this.state.enemyUnits.map(unit => (
-					<EnemyUnit ident={unit.ident} portrait={unit.portrait} position={unit.position} key={unit.ident} updateStash={this.updateItems}/>
+					<EnemyUnit ident={unit.ident} portrait={unit.portrait} position={unit.position} key={unit.ident} updateStash={this.updateStashItems}/>
 				))}
 
 				<div>
 					<button onClick={() => { this.addUnit() }}>add</button>
-					<button onClick={() => { this.updateItems() }}>stash</button>
+					<button onClick={() => { this.updateStashItems() }}>stash</button>
 				</div>
 
 				<div className="instanceSvg">

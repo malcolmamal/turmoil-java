@@ -7,27 +7,43 @@ import Error from "./Error";
 import Equipment from "./Equipment";
 import Stash from "./Stash";
 import Stats from "./Stats";
+import {updateItemInSlot} from "../js/window-instance";
 
 export default class Turmoil extends React.Component
 {
 	constructor(props) {
 		super(props);
 
-		this.updateItems = this.updateItems.bind(this)
+		this.updateStashItems = this.updateStashItems.bind(this)
+		this.updateEquipmentItems = this.updateEquipmentItems.bind(this)
 
-		this.state = { items: [] };
+		this.state = { stashItems: [], equipmentItems: this.getEquipmentItems() };
 	}
 
-	updateItems(content) {
+	updateStashItems(content) {
 		window.turmoil.stash.items = content.items;
 
 		console.log("newly arrived items", content.items);
 
-		this.setState({items: this.getItems()});
+		this.setState({stashItems: this.getStashItems()});
+
+		let itemToAdd = {item: this.state.stashItems[0], slot: "slot_helm"};
+
+		console.log("item to add", itemToAdd);
+		updateItemInSlot(itemToAdd.slot, itemToAdd);
+		this.updateEquipmentItems();
 	}
 
-	getItems() {
+	getStashItems() {
 		return window.turmoil.stash.items;
+	}
+
+	updateEquipmentItems() {
+		this.setState({equipmentItems: this.getEquipmentItems()});
+	}
+
+	getEquipmentItems() {
+		return window.turmoil.equipment.items;
 	}
 
 	render() {
@@ -45,10 +61,10 @@ export default class Turmoil extends React.Component
 							<div className="shadowBottom"/>
 						</div>
 
-						<Instance updateItems={this.updateItems} />
+						<Instance updateStashItems={this.updateStashItems} />
 						<Console />
-						<Equipment />
-						<Stash items={this.state.items} updateItems={this.updateItems} />
+						<Equipment items={this.state.equipmentItems} updateItems={this.updateEquipmentItems} />
+						<Stash items={this.state.stashItems} updateItems={this.updateStashItems} />
 						<Stats />
 
 					</div>

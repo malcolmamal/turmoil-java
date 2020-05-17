@@ -1,13 +1,13 @@
 import React from "react";
+import {actionRightClickOnStashedItem} from "../js/turmoil-start";
 
 export default class ItemSlotStash extends React.Component
 {
-	handleOnContextMenu(itemId)
+	onContextMenuHandler(event, itemId)
 	{
+		event.preventDefault();
 		//TODO:
-		//actionRightClickOnStashedItem(itemId);
-
-		return false;
+		actionRightClickOnStashedItem(itemId);
 	}
 
 	render() {
@@ -20,7 +20,8 @@ export default class ItemSlotStash extends React.Component
 
 		return (
 			<li className="stashItemListEntry" id={"stash_item_" + itemId} item={itemId}
-				onContextMenu={() => { this.handleOnContextMenu(itemId); }}>
+				onContextMenu={(event) => { this.onContextMenuHandler(event, itemId) }}
+			>
 				<a className="slot slot-mainHand tooltip itemTooltip" id={"tooltip_" + itemFileCode + "_" + itemId}
 					item={itemId}>
 					<span className={"stashItem d3-icon d3-icon-item stash-icon-item-large d3-icon-item-" + itemRarityClass}>
