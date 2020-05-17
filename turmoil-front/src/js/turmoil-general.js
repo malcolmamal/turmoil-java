@@ -95,8 +95,6 @@ window.turmoil.logCombat = function(content)
  */
 
 window.baseUrl = 'http://localhost:8080/';
-//window.baseUrl + params.url
-//'http://foxlinux:8005/api/v2/rest/projects/?auth=Basic%20bHVkd2lnOjA5NDVmYzk2MTFmNTVmZDBlMTgzZmI4YjA0NGYxYWZl=&clientId=1&projectIds=26'
 window.turmoil.ajax = {
 
 	debugInfo: '',
