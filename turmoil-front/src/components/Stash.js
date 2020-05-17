@@ -8,13 +8,8 @@ export default class Stash extends React.Component
 {
 	constructor(props) {
 		super(props);
-		this.updateStateFromConstruct();
-	}
 
-	updateStateFromConstruct()
-	{
-		console.log("updating state because constructor and props and stuff");
-		this.setState({items: this.getItems()});
+		this.updateItems = this.updateItems.bind(this);
 	}
 
 	componentDidMount() {
@@ -22,21 +17,12 @@ export default class Stash extends React.Component
 
 		window.turmoil.ajax.exec({
 			url: 'initializeStash',
-			onSuccess: this.updateItems,
-			onSuccessThis: this
+			onSuccess: this.updateItems
 		});
 	}
 
-	updateItems(content, that) {
-		window.turmoil.stash.items = content.items;
-
-		console.log("newly arrived items", content.items);
-
-		that.setState({items: that.getItems()});
-	}
-
-	getItems() {
-		return window.turmoil.stash.items;
+	updateItems(content) {
+		this.props.updateItems(content);
 	}
 
 	render() {
@@ -46,18 +32,13 @@ export default class Stash extends React.Component
 			height: '700px',
 		};
 
-		this.state = {
-			items: this.getItems()
-		}
-
 		return (
 			<Window ident="stash" background={background}>
 				<div id="stashItemContainerWrapper">
 					<div id="stashItemContainer" className="stashItemContainer">
-						<div><button onClick={() => { this.updateStateFromConstruct() }}>update</button></div>
 						<ul id="stashItemListContainer">
 
-							{this.state.items.map(item => (
+							{this.props.items.map(item => (
 								<ItemSlotStash item={item.ident}
 											   rarity={item.rarity}
 											   key={item.ident}

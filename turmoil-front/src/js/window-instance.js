@@ -89,7 +89,7 @@ function getPolygonForUnit(unit)
 	return jQuery('#' + jQuery(unit).data('previousPolygonId'));
 }
 
-export function actionOnUnit(unitId)
+export function actionOnUnit(unitId, updateStash)
 {
 	let unit = jQuery('#' + unitId);
 
@@ -102,7 +102,8 @@ export function actionOnUnit(unitId)
 		{
 			window.turmoil.ajax.exec({
 				url: url,
-				onSuccess: finalizeActionOnPolygon
+				onSuccess: finalizeActionOnPolygon,
+				onSuccessThis: updateStash
 			});
 		}
 	}
@@ -119,7 +120,7 @@ function actionOnPolygon(polygon, unit)
 		unit = activeUnit;
 	}
 
-	var url = '';//'account/';
+	var url = '';
 	if (unit.hasClass('enemyUnit'))
 	{
 		url += 'instanceActionEnemy/' + unit.attr('id');
@@ -221,7 +222,7 @@ export function handleMoveToPolygon(polygon, unit)
 	polygon.data('unit', unit.attr('id'));
 }
 
-function finalizeActionOnPolygon(data)
+function finalizeActionOnPolygon(data, callbackFunction)
 {
 	if (data != null && data.success === true && typeof(data.polygonId) != 'undefined')
 	{
@@ -251,14 +252,25 @@ function finalizeActionOnPolygon(data)
 
 		if (typeof(data.newEnemyPosition) != 'undefined')
 		{
+			if (typeof(data.healthBar) != 'undefined')
+			{
+				jQuery('#' + polygon.data('unit') + 'Health').css('width', data.healthBar);
+			}
 			handleMoveToPolygon(jQuery('#' + data.newEnemyPosition), jQuery('#testEnemy'));
 		}
 
 		if (typeof(data.stashedItemId) != 'undefined')
 		{
 			console.log("stashedItemId looks good", data);
-			window.turmoil.stash.items.push({"ident": data.stashedItemId, rarity: "purple", filePath: "/images/items/weapons/thunderfury.png", fileCode: "thunderfury"});
-			//{"ident": "itemG", rarity: "purple"}
+			window.turmoil.stash.items.push({"ident": data.stashedItemId, rarity: data.rarity, filePath: data.filePath, fileCode: data.fileCode});
+
+			//TODO: handle windows positon save, maybe as props
+
+			if (typeof(callbackFunction) === 'function')
+			{
+				console.log('calling function!');
+				callbackFunction();
+			}
 		}
 
 		if (typeof(data.stashedItemId) != 'undefined' && typeof(data.stashedItemContent) != 'undefined')
@@ -268,9 +280,8 @@ function finalizeActionOnPolygon(data)
 
 		if (typeof(data.friendlyTurn) != 'undefined' && data.friendlyTurn === true)
 		{
-			//let items = Array('', '2', '3');
-			let item = '';//items[Math.floor(Math.random() * items.length)]
-			setTimeout(function(){actionOnPolygon(null, jQuery('#testEnemy' + item));}, 350);
+			//TODO: what is the meaning of this?
+			setTimeout(function(){actionOnPolygon(null, jQuery('#testEnemy'));}, 350);
 		}
 	}
 }

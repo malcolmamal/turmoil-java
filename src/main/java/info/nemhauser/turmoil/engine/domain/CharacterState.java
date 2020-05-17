@@ -88,9 +88,7 @@ public class CharacterState
 	public double chanceToShock;
 	public double chanceToDevastate;
 
-	public Character character;
-
-	public HashMap<String, Item> items = new HashMap<String, Item>();
+	private HashMap<String, Item> items = new HashMap<String, Item>();
 
 	public void resetValues()
 	{
@@ -284,5 +282,10 @@ public class CharacterState
 		{
 			evasionParry = 75;
 		}
+	}
+
+	public void putItem(String itemSlotKey, Item item)
+	{
+		items.put(itemSlotKey, item);
 	}
 }

@@ -123,12 +123,14 @@ class InstanceController {
 					TurmoilApplication.getServerState().addItem(item);
 
 					object.put("stashedItemId", item.getIdent());
-					//todo
-					//json.put("stashedItemId", item.toStringFull());
+					object.put("filePath", item.getFullImagePath());
+					object.put("fileCode", item.getFileCode());
+					object.put("rarity", item.getRarityClass());
 				}
 
 				cs.enemy = InstanceHelper.createMonster(character);
 				object.put("newEnemyPosition", cs.enemy.instancePosition);
+				object.put("healthBar", healthBarValue);
 
 				//TODO: handle it properly
 				character.experience += 10;

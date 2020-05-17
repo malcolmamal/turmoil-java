@@ -38,6 +38,17 @@ export class CharacterUnit extends React.Component
 
 export class EnemyUnit extends React.Component
 {
+	constructor(props) {
+		super(props);
+
+		this.actionOnUnitHandler = this.actionOnUnitHandler.bind(this);
+	}
+
+	actionOnUnitHandler(ident)
+	{
+		actionOnUnit(ident, this.props.updateStash);
+	}
+
 	render()
 	{
 		const ident = this.props.ident;
@@ -48,7 +59,7 @@ export class EnemyUnit extends React.Component
 
 		console.log("we will render unit: " + ident);
 		return(
-			<div className="instanceElement enemyUnit" id={ident} onClick={() => actionOnUnit(ident)} >
+			<div className="instanceElement enemyUnit" id={ident} onClick={() => this.actionOnUnitHandler(ident)} >
 				<div className="instancePortraitHealthBar">
 					<div className="instancePortraitHealthBarInner" id={ident + "Health"} style={unitStyle}/>
 				</div>
@@ -75,6 +86,12 @@ export class EnemyUnit extends React.Component
 
 export default class Instance extends React.Component
 {
+	constructor(props) {
+		super(props);
+
+		this.updateItems = this.updateItems.bind(this);
+	}
+
 	getUnits() {
 		return window.turmoil.instance.enemies;
 	}
@@ -86,6 +103,10 @@ export default class Instance extends React.Component
 		console.log("newly arrived units", content.enemyUnits);
 
 		that.setState({enemyUnits: that.getUnits()});
+	}
+
+	updateItems() {
+		this.props.updateItems(window.turmoil.stash);
 	}
 
 	componentDidMount() {
@@ -124,10 +145,13 @@ export default class Instance extends React.Component
 				<CharacterUnit ident="testElement"/>
 
 				{this.state.enemyUnits.map(unit => (
-					<EnemyUnit ident={unit.ident} portrait={unit.portrait} position={unit.position} key={unit.ident}/>
+					<EnemyUnit ident={unit.ident} portrait={unit.portrait} position={unit.position} key={unit.ident} updateStash={this.updateItems}/>
 				))}
 
-				<div><button onClick={() => { this.addUnit() }}>add</button></div>
+				<div>
+					<button onClick={() => { this.addUnit() }}>add</button>
+					<button onClick={() => { this.updateItems() }}>stash</button>
+				</div>
 
 				<div className="instanceSvg">
 					<svg width="600" height="545" id="svgElement">

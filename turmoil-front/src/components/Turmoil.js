@@ -10,6 +10,26 @@ import Stats from "./Stats";
 
 export default class Turmoil extends React.Component
 {
+	constructor(props) {
+		super(props);
+
+		this.updateItems = this.updateItems.bind(this)
+
+		this.state = { items: [] };
+	}
+
+	updateItems(content) {
+		window.turmoil.stash.items = content.items;
+
+		console.log("newly arrived items", content.items);
+
+		this.setState({items: this.getItems()});
+	}
+
+	getItems() {
+		return window.turmoil.stash.items;
+	}
+
 	render() {
 		return (
 			<div>
@@ -25,10 +45,10 @@ export default class Turmoil extends React.Component
 							<div className="shadowBottom"/>
 						</div>
 
-						<Instance />
+						<Instance updateItems={this.updateItems} />
 						<Console />
 						<Equipment />
-						<Stash items={window.turmoil.stash.items} />
+						<Stash items={this.state.items} updateItems={this.updateItems} />
 						<Stats />
 
 					</div>

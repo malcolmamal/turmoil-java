@@ -26,7 +26,6 @@ public class CharacterStateHelper
 		if (characterState == null)
 		{
 			characterState = new CharacterState();
-			characterState.character = character;
 		}
 		return characterState;
 	}
@@ -87,7 +86,7 @@ public class CharacterStateHelper
 	public static void updateCharacterStateForItem(Character character, Item item, ItemSlot itemSlot)
 	{
 		CharacterState characterState = ServerHelper.getCharacterState(character);
-		characterState.items.put(itemSlot.toString(), item);
+		characterState.putItem(itemSlot.toString(), item);
 		characterState.resetValues();
 
 //		characterState.items.each {
@@ -103,7 +102,9 @@ public class CharacterStateHelper
 
 	public static void updateCharacterStateWithItem(CharacterState characterState, Item item, ItemSlot itemSlot)
 	{
-		characterState.items.put(itemSlot.toString(), item);
+		//TODO: i'm sorry but it has to be done that every time an item changes ->
+		// we either recompute all or remove first the previous item and add stats from the new one
+		characterState.putItem(itemSlot.toString(), item);
 		switch (item.itemType)
 		{
 			case ACCESSORY:

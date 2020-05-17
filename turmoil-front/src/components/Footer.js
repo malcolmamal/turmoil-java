@@ -1,4 +1,5 @@
 import React from "react";
+import {FormattedMessage} from "react-intl";
 
 export default class Footer extends React.Component
 {
@@ -10,9 +11,9 @@ export default class Footer extends React.Component
 		return (
 			<div id="turmoilFooter" className="turmoilFooter" role="contentinfo">
 				<div className="footerBlock">
-					Logout - (logged as application.loggedAccount.username)
+					<FormattedMessage id="turmoil.footer.logout" /> - (logged as application.loggedAccount.username)
 				</div>
-				<div id="spinner" className="spinner" style={spinnerDisplayStyle}>Loading&hellip;</div>
+				<div id="spinner" className="spinner" style={spinnerDisplayStyle}><FormattedMessage id="turmoil.footer.loading" />&hellip;</div>
 			</div>
 		);
 	}

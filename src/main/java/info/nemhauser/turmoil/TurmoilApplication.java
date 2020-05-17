@@ -46,7 +46,6 @@ public class TurmoilApplication
 		serverState.getCharacters().put("fox", character);
 
 		characterState = new CharacterState();
-		characterState.character = character;
 		characterState.resetValues();
 
 		character.slotRightHand = (Weapon) ItemGenerator.rollItemOfRarityAndType(character, ItemRarity.LEGENDARY, ItemType.WEAPON);
