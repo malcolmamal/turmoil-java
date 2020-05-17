@@ -33,7 +33,7 @@ public class TurmoilApplication
 
 		initializeState();
 
-		Logger.log("-> Initialed Character and Combat State!");
+		Logger.log("-> Initialized Character and Combat State!");
 	}
 
 	private static void initializeState()

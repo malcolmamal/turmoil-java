@@ -3,11 +3,23 @@ import {actionRightClickOnStashedItem} from "../js/turmoil-start";
 
 export default class ItemSlotStash extends React.Component
 {
+	constructor(props) {
+		super(props);
+
+		this.updateItems = this.updateItems.bind(this);
+	}
+
 	onContextMenuHandler(event, itemId)
 	{
 		event.preventDefault();
-		//TODO:
-		actionRightClickOnStashedItem(itemId);
+
+		actionRightClickOnStashedItem(itemId, this.updateItems);
+	}
+
+	updateItems()
+	{
+		this.props.updateStash();
+		this.props.updateEquipment();
 	}
 
 	render() {

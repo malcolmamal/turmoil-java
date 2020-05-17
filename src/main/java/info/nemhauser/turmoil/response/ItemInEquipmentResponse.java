@@ -1,28 +1,33 @@
 package info.nemhauser.turmoil.response;
 
 import info.nemhauser.turmoil.engine.domain.Item;
+import info.nemhauser.turmoil.engine.domain.Weapon;
 
-public class ItemInStashResponse
+public class ItemInEquipmentResponse
 {
 	private String ident;
 	private String fileCode;
 	private String filePath;
 	private String rarity;
 
-	public ItemInStashResponse(String ident, String fileCode, String filePath, String rarity)
+	private String slot;
+
+	public ItemInEquipmentResponse(String ident, String fileCode, String filePath, String rarity, String slot)
 	{
 		this.ident = ident;
 		this.fileCode = fileCode;
 		this.filePath = filePath;
 		this.rarity = rarity;
+		this.slot = slot;
 	}
 
-	public ItemInStashResponse(Item item)
+	public ItemInEquipmentResponse(Item item, String slot)
 	{
 		this.ident = item.getIdent();
 		this.fileCode = item.getFileCode();
 		this.filePath = item.getFullImagePath();
 		this.rarity = item.getRarityClass();
+		this.slot = slot;
 	}
 
 	public String getIdent()
@@ -43,5 +48,10 @@ public class ItemInStashResponse
 	public String getRarity()
 	{
 		return rarity;
+	}
+
+	public String getSlot()
+	{
+		return slot;
 	}
 }

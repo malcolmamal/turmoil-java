@@ -4,6 +4,7 @@ import info.nemhauser.turmoil.TurmoilApplication;
 import info.nemhauser.turmoil.config.Logger;
 import info.nemhauser.turmoil.engine.domain.Item;
 import info.nemhauser.turmoil.engine.generators.ItemGenerator;
+import info.nemhauser.turmoil.engine.instances.ServerState;
 import info.nemhauser.turmoil.response.ItemInStashResponse;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
@@ -22,7 +23,8 @@ public class StashController
 	public @ResponseBody
 	JSONObject getItemsInStash()
 	{
-		if (items.size() != TurmoilApplication.getServerState().getItems().size())
+		if (items.size() != TurmoilApplication.getServerState().getItems().size()
+			|| TurmoilApplication.getServerState().getStashHasChanged())
 		{
 			items.clear();
 
@@ -30,6 +32,8 @@ public class StashController
 			{
 				addItem(item);
 			}
+
+			TurmoilApplication.getServerState().setStashHasChanged(false);
 		}
 
 		JSONArray array = new JSONArray();

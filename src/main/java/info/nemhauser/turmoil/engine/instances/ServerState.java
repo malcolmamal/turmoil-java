@@ -11,6 +11,7 @@ public class ServerState
 	private static final HashMap<String, Item> items = new HashMap<>();
 
 	private static final ItemTemplates itemTemplates = new ItemTemplates();
+	private static boolean stashHasChanged = false;
 
 	public HashMap<String, Character> getCharacters()
 	{
@@ -24,7 +25,14 @@ public class ServerState
 
 	public void addItem(Item item)
 	{
+		stashHasChanged = true;
 		items.put(item.getIdent(), item);
+	}
+
+	public void removeItem(Item item)
+	{
+		stashHasChanged = true;
+		items.remove(item.getIdent());
 	}
 
 	public Item getItem(String key)
@@ -40,5 +48,15 @@ public class ServerState
 	public ItemTemplates getItemTemplates()
 	{
 		return itemTemplates;
+	}
+
+	public boolean getStashHasChanged()
+	{
+		return stashHasChanged;
+	}
+
+	public void setStashHasChanged(boolean stashHasChanged)
+	{
+		ServerState.stashHasChanged = stashHasChanged;
 	}
 }

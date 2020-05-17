@@ -3,12 +3,19 @@ import {actionRightClickOnEquipment} from "../js/turmoil-start";
 
 export default class ItemSlotEquipment extends React.Component
 {
+	constructor(props) {
+		super(props);
+
+		this.onContextMenuHandler = this.onContextMenuHandler.bind(this);
+	}
+
 	onContextMenuHandler(event, item)
 	{
+		//TODO: handle putting item from equipment into stash
 		event.preventDefault();
 		if (item.ident)
 		{
-			actionRightClickOnEquipment(item.ident);
+			actionRightClickOnEquipment(item);
 		}
 	}
 
@@ -18,7 +25,6 @@ export default class ItemSlotEquipment extends React.Component
 
 		const rarity = item.rarity ? item.rarity : "gray";
 		const itemIdent = item.ident ? item.ident : "";
-		//const onContextMenuAction = item.ident ? "actionRightClickOnEquipment('" + item.ident + "'')" : "return false;";
 
 		const tooltipId = item.ident ? "tooltip_" + item.fileCode + "_" + item.ident : "";
 		const tooltipClass = item.ident ? " tooltip itemTooltip" : "";

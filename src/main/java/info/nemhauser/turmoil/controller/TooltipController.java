@@ -4,6 +4,7 @@ import info.nemhauser.turmoil.TurmoilApplication;
 import info.nemhauser.turmoil.config.Logger;
 import info.nemhauser.turmoil.engine.domain.Armor;
 import info.nemhauser.turmoil.engine.domain.Attribute;
+import info.nemhauser.turmoil.engine.domain.Item;
 import info.nemhauser.turmoil.engine.enums.ArmorType;
 import info.nemhauser.turmoil.engine.enums.ItemRarity;
 import info.nemhauser.turmoil.engine.enums.ItemType;
@@ -26,8 +27,8 @@ public class TooltipController
 	}
 
 	@RequestMapping("/tooltip/{item}")
-	public String getTooltipAdvanced(@PathVariable String item, Model model) {
-
+	public String getTooltipAdvanced(@PathVariable String item, Model model) throws Exception
+	{
 //		ArmorTemplate template = new ArmorTemplate();
 //		template.isLegendary = true;
 //		template.armorValue = 135;
@@ -47,7 +48,18 @@ public class TooltipController
 
 		//TODO: handle not found
 
-		model.addAttribute("item", TurmoilApplication.getServerState().getItem(item));
+		Item itemForTooltip = TurmoilApplication.getServerState().getItem(item);
+		if (itemForTooltip == null)
+		{
+			itemForTooltip = TurmoilApplication.getCharacter("fox").slotRightHand;
+			if (!itemForTooltip.getIdent().equals(item))
+			{
+				throw new Exception("Tried to find item in right hand but failed, for code:" + item
+						+ ". Right hand item has code: " + itemForTooltip.getIdent());
+			}
+		}
+
+		model.addAttribute("item", itemForTooltip);
 
 		return "tooltip/armor";
 	}

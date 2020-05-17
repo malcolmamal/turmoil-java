@@ -9,7 +9,10 @@ export default class Stash extends React.Component
 	constructor(props) {
 		super(props);
 
-		this.updateItems = this.updateItems.bind(this);
+		this.updateStashItems = this.updateStashItems.bind(this);
+		this.updateItemsInStash = this.updateItemsInStash.bind(this);
+		this.updateEquipmentItems = this.updateEquipmentItems.bind(this);
+		this.updateItemsInEquipment = this.updateItemsInEquipment.bind(this);
 	}
 
 	componentDidMount() {
@@ -17,12 +20,24 @@ export default class Stash extends React.Component
 
 		window.turmoil.ajax.exec({
 			url: 'initializeStash',
-			onSuccess: this.updateItems
+			onSuccess: this.updateItemsInStash
 		});
 	}
 
-	updateItems(content) {
-		this.props.updateItems(content);
+	updateStashItems() {
+		this.props.updateStashItems(window.turmoil.stash);
+	}
+
+	updateEquipmentItems() {
+		this.props.updateEquipmentItems(window.turmoil.equipment);
+	}
+
+	updateItemsInStash(content) {
+		this.props.updateItemsInStash(content);
+	}
+
+	updateItemsInEquipment(content) {
+		this.props.updateItemsInEquipment(content);
 	}
 
 	render() {
@@ -44,6 +59,8 @@ export default class Stash extends React.Component
 											   key={item.ident}
 											   filePath={item.filePath}
 											   fileCode={item.fileCode}
+											   updateStash={this.updateStashItems}
+											   updateEquipment={this.updateEquipmentItems}
 								/>
 							))}
 

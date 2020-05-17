@@ -3,6 +3,7 @@ import {playAudio, hideSpinnerWithDelay} from '../js/turmoil-general';
 import {hideAllTooltips} from '../js/turmoil-tooltip';
 import {bringToTheTop, initWindow} from '../js/turmoil-windows';
 import "jquery-ui/themes/base/all.css";
+import {removeItemFromStash, updateItemInSlot} from "./window-instance";
 
 
 function switchWindow(windowType)
@@ -33,14 +34,14 @@ function finalizeUpdateStatisticsWindow(content)
 	jQuery('#statsContent').html(content);
 }
 
-export function actionRightClickOnEquipment(itemIdent)
+export function actionRightClickOnEquipment(item)
 {
 	hideAllTooltips();
 
-	if (itemIdent)
+	if (item.ident)
 	{
 		window.turmoil.ajax.exec({
-			url: 'account/unequip/' + itemIdent,
+			url: 'character/unequip/' + item.ident,
 			onSuccess: finalizeRightClickOnEquipment
 		});
 	}
@@ -48,6 +49,8 @@ export function actionRightClickOnEquipment(itemIdent)
 
 function finalizeRightClickOnEquipment(data)
 {
+	console.log("finalize right click on equipment", data);
+
 	if (data != null && data.success === true)
 	{
 		if (typeof(data.stashedItemId) !== 'undefined' && typeof(data.stashedItemContent) !== 'undefined')
@@ -82,60 +85,87 @@ function finalizeRightClickOnEquipment(data)
 	}
 }
 
-export function actionRightClickOnStashedItem(itemId)
+export function actionRightClickOnStashedItem(itemId, updateItems)
 {
 	hideAllTooltips();
 
 	window.turmoil.ajax.exec({
-		url: 'account/equip/' + itemId,
-		onSuccess: finalizeRightClickOnStashedItem
+		url: 'character/equip/' + itemId,
+		onSuccess: finalizeRightClickOnStashedItem,
+		onSuccessThis: updateItems
 	});
 }
 
-function finalizeRightClickOnStashedItem(data)
+function finalizeRightClickOnStashedItem(data, callbackFunction)
 {
+	console.log("finalize right click on stash", data);
+
 	if (data != null && data.success === true)
 	{
-		if (typeof(data.equippedItemId) != 'undefined' && typeof(data.equippedItemContent) != 'undefined' && typeof(data.equippedItemSlot) != 'undefined')
+//		if (typeof(data.equippedItemId) != 'undefined' && typeof(data.equippedItemContent) != 'undefined' && typeof(data.equippedItemSlot) != 'undefined')
 		{
-			//TODO find proper position to put the item
-			jQuery('#' + data.equippedItemSlot).html(data.equippedItemContent);
+			// //TODO find proper position to put the item
+			// jQuery('#' + data.equippedItemSlot).html(data.equippedItemContent);
 
-			if (data.equippedItemSlot === 'slot_right_hand' || data.equippedItemSlot === 'slot_left_hand')
+			//TODO: also handle effect for weapons
+
+			// if (data.equippedItemSlot === 'slot_right_hand' || data.equippedItemSlot === 'slot_left_hand')
+			// {
+			// 	jQuery('#' + data.equippedItemSlot + '_effect').removeClass();
+			//
+			// 	if (typeof(data.equippedWeaponDamageType) != 'undefined') {
+			// 		jQuery('#' + data.equippedItemSlot + '_effect').addClass('item-weapon-bg-' + data.equippedWeaponDamageType);
+			// 	}
+			// }
+
+			if (data.itemForEquipment !== 'undefined')
 			{
-				jQuery('#' + data.equippedItemSlot + '_effect').removeClass();
-
-				if (typeof(data.equippedWeaponDamageType) != 'undefined') {
-					jQuery('#' + data.equippedItemSlot + '_effect').addClass('item-weapon-bg-' + data.equippedWeaponDamageType);
-				}
+				console.log("removing from stash");
+				removeItemFromStash(data.itemForEquipment.ident);
+				console.log("adding to equipment");
+				updateItemInSlot(data.itemForEquipment.slot, data.itemForEquipment);
 			}
 
-			if (typeof(data.equippedItemType) != 'undefined')
+			if (data.itemForStash !== 'undefined')
 			{
-				//TODO perhaps generate the proper resource name in groovy so enums could be used
-				switch (data.equippedItemType)
-				{
-					case 'ACCESSORY':
-						playAudio('soundAccessoryJewellery');
-						break;
-					case 'ARMOR':
-						playAudio('soundMediumArmor');
-						break;
-					case 'WEAPON':
-						playAudio('soundWeapon');
-						break;
-				}
+				console.log("adding to stash");
+				window.turmoil.stash.items.push({"ident": data.itemForStash.ident, rarity: data.itemForStash.rarity, filePath: data.itemForStash.filePath, fileCode: data.itemForStash.fileCode});
 			}
 
-			updateStatisticsWindow();
+			if (typeof(callbackFunction) === 'function')
+			{
+				console.log('calling function!');
+				callbackFunction();
+			}
+
+			//TODO: sound
+			// if (typeof(data.equippedItemType) != 'undefined')
+			// {
+			// 	//TODO perhaps generate the proper resource name in groovy so enums could be used
+			// 	switch (data.equippedItemType)
+			// 	{
+			// 		case 'ACCESSORY':
+			// 			playAudio('soundAccessoryJewellery');
+			// 			break;
+			// 		case 'ARMOR':
+			// 			playAudio('soundMediumArmor');
+			// 			break;
+			// 		case 'WEAPON':
+			// 			playAudio('soundWeapon');
+			// 			break;
+			// 	}
+			// }
+
+			//TODO: handle updating of statistic window
+			//updateStatisticsWindow();
 		}
 
-		if (typeof(data.equippedItemId) != 'undefined')
-		{
-			jQuery('#stash_item_' + data.equippedItemId).remove();
-		}
+		// if (typeof(data.equippedItemId) != 'undefined')
+		// {
+		// 	jQuery('#stash_item_' + data.equippedItemId).remove();
+		// }
 
-		putItemToStash(data);
+		//putItemToStash(data);
 	}
 }
 

@@ -27,18 +27,25 @@ export default class Turmoil extends React.Component
 
 		this.setState({stashItems: this.getStashItems()});
 
-		let itemToAdd = {item: this.state.stashItems[0], slot: "slot_helm"};
-
-		console.log("item to add", itemToAdd);
-		updateItemInSlot(itemToAdd.slot, itemToAdd);
-		this.updateEquipmentItems();
+		//let itemToAdd = {item: this.state.stashItems[0], slot: "slot_right_hand"};
+		// console.log("item to add", itemToAdd);
+		// updateItemInSlot(itemToAdd.slot, itemToAdd);
+		// this.updateEquipmentItems();
 	}
 
 	getStashItems() {
 		return window.turmoil.stash.items;
 	}
 
-	updateEquipmentItems() {
+	updateEquipmentItems(content) {
+		console.log("items before", window.turmoil.equipment.items);
+
+		content.items.map((item) => {
+			updateItemInSlot(item.slot, item);
+		})
+
+		console.log("items after", window.turmoil.equipment.items);
+
 		this.setState({equipmentItems: this.getEquipmentItems()});
 	}
 
@@ -63,8 +70,12 @@ export default class Turmoil extends React.Component
 
 						<Instance updateStashItems={this.updateStashItems} />
 						<Console />
-						<Equipment items={this.state.equipmentItems} updateItems={this.updateEquipmentItems} />
-						<Stash items={this.state.stashItems} updateItems={this.updateStashItems} />
+						<Equipment items={this.state.equipmentItems} updateItemsInEquipment={this.updateEquipmentItems} updateItemsInStash={this.updateStashItems}/>
+						<Stash items={this.state.stashItems}
+							   updateItemsInStash={this.updateStashItems}
+							   updateItemsInEquipment={this.updateEquipmentItems}
+							   updateStashItems={this.updateStashItems}
+							   updateEquipmentItems={this.updateEquipmentItems}/>
 						<Stats />
 
 					</div>

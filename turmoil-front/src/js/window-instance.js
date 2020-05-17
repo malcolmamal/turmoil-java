@@ -13,25 +13,9 @@ window.turmoil.instance.enemies = [
 ];
 
 window.turmoil.equipment = {};
-window.turmoil.equipment.items = [
-	{ slot: "slot_right_hand", top: 175, left: 90, item: {}},
-	{ slot: "slot_left_hand", top: 175, left: 660, item: {}},
+window.turmoil.equipment.items = [];
 
-	{ slot: "slot_amulet", top: 170, left: 450, item: {}, iconItemSize: "square"},
-	{ slot: "slot_ring_one", top: 100, left: 10, item: {}, iconItemSize: "square"},
-	{ slot: "slot_ring_two", top: 90, left: 705, item: {}, iconItemSize: "square"},
-	{ slot: "slot_ring_three", top: 175, left: 10, item: {}, iconItemSize: "square"},
-	{ slot: "slot_ring_four", top: 90, left: 630, item: {}, iconItemSize: "square"},
-
-	{ slot: "slot_helm", top: 35, left: 355, item: {}},
-	{ slot: "slot_chest", top: 210, left: 355, item: {}},
-	{ slot: "slot_belt", top: 365, left: 345, item: {}, iconItemSize: "long"},
-	{ slot: "slot_pants", top: 460, left: 355, item: {}},
-	{ slot: "slot_boots", top: 635, left: 355, item: {}},
-	{ slot: "slot_pauldrons", top: 90, left: 220, item: {}},
-	{ slot: "slot_gloves", top: 0, left: 90, item: {}},
-	{ slot: "slot_bracers", top: 90, left: 530, item: {}},
-];
+console.log("items at instance", window.turmoil.equipment.items);
 
 window.turmoil.stash = {};
 window.turmoil.stash.items = [
@@ -46,18 +30,73 @@ window.turmoil.stash.items = [
 
 export function updateItemInSlot(slot, item)
 {
-	removeItem(slot);
-	window.turmoil.equipment.items.push(item);
+	console.log("items before update", window.turmoil.equipment.items);
+
+	console.log("updating item", item);
+
+	let itemToPush = {};
+	itemToPush.item = item;
+	itemToPush.slot = slot;
+
+	let removedItem = removeItem(slot, item.ident);
+	if (removedItem.top)
+	{
+		itemToPush.top = removedItem.top;
+		itemToPush.left = removedItem.left;
+		itemToPush.iconItemSize = removedItem.iconItemSize;
+	}
+
+	if (removedItem.noChange)
+	{
+		console.log("we will not add to items since we did not remove and the existing one is already there");
+		return;
+	}
+
+	window.turmoil.equipment.items.push(itemToPush);
 }
 
-function removeItem(slot)
+function removeItem(slot, ident)
 {
 	let index;
 
 	for (index = window.turmoil.equipment.items.length; index-- > 0 && window.turmoil.equipment.items[index].slot !== slot;) {}
 	if (index > -1) {
+		let removedItem = window.turmoil.equipment.items[index];
+
+		if (removedItem.ident === ident)
+		{
+			// do not remove actually, because it's the same
+			console.log("do not remove item for ident/slot", ident, slot)
+
+			return {noChange: true};
+		}
+
 		window.turmoil.equipment.items.splice(index, 1);
+
+		console.log("removed item for slot", slot, removedItem);
+
+		return removedItem;
 	}
+
+	return {};
+}
+
+export function removeItemFromStash(ident)
+{
+	//TODO: unify both functions (this and removeItem)
+	let index;
+
+	for (index = window.turmoil.stash.items.length; index-- > 0 && window.turmoil.stash.items[index].ident !== ident;) {}
+	if (index > -1) {
+		let removedItem = window.turmoil.stash.items[index];
+		window.turmoil.stash.items.splice(index, 1);
+
+		console.log("removed item for ident from stash", ident, removedItem);
+
+		return removedItem;
+	}
+
+	return {};
 }
 
 function svgAddClass(element, className)
@@ -302,7 +341,7 @@ function finalizeActionOnPolygon(data, callbackFunction)
 			console.log("stashedItemId looks good", data);
 			window.turmoil.stash.items.push({"ident": data.stashedItemId, rarity: data.rarity, filePath: data.filePath, fileCode: data.fileCode});
 
-			//TODO: handle windows positon save, maybe as props
+			//TODO: handle windows position save, maybe as props
 
 			if (typeof(callbackFunction) === 'function')
 			{
@@ -311,6 +350,7 @@ function finalizeActionOnPolygon(data, callbackFunction)
 			}
 		}
 
+		//TODO: i think it's not used anymore, but take a look at spinner action
 		if (typeof(data.stashedItemId) != 'undefined' && typeof(data.stashedItemContent) != 'undefined')
 		{
 			putItemToStash(data);
