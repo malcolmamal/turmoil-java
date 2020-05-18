@@ -10,8 +10,10 @@ export default class Equipment extends React.Component
 	constructor(props) {
 		super(props);
 
-		this.updateItemsInEquipment = this.updateItemsInEquipment.bind(this);
+		this.updateStashItems = this.updateStashItems.bind(this);
 		this.updateItemsInStash = this.updateItemsInStash.bind(this);
+		this.updateEquipmentItems = this.updateEquipmentItems.bind(this);
+		this.updateItemsInEquipment = this.updateItemsInEquipment.bind(this);
 
 		window.turmoil.equipment.items = [
 			{ slot: "slot_right_hand", top: 175, left: 90, item: {}},
@@ -46,14 +48,20 @@ export default class Equipment extends React.Component
 		});
 	}
 
-	updateItemsInEquipment(content) {
-		console.log("items in equipment", content);
+	updateItemsInStash(content) {
+		this.props.updateItemsInStash(content);
+	}
 
+	updateItemsInEquipment(content) {
 		this.props.updateItemsInEquipment(content);
 	}
 
-	updateItemsInStash(content) {
-		this.props.updateItemsInStash(content);
+	updateStashItems() {
+		this.props.updateStashItems(window.turmoil.stash);
+	}
+
+	updateEquipmentItems() {
+		this.props.updateEquipmentItems(window.turmoil.equipment);
 	}
 
 	render() {
@@ -75,7 +83,16 @@ export default class Equipment extends React.Component
 							<span id="slot_left_hand_effect"   style={{position: 'absolute', top: '143px', left: '632px', width: '150px', height: '210px'}}/>
 
 							{this.props.items.map(item => (
-								<ItemSlotEquipment item={item.item} slot={item.slot} top={item.top} left={item.left} key={item.slot} iconItemSize={item.iconItemSize ? item.iconItemSize : ""}/>
+								<ItemSlotEquipment
+									item={item.item}
+									slot={item.slot}
+									top={item.top}
+									left={item.left}
+									key={item.slot}
+									iconItemSize={item.iconItemSize ? item.iconItemSize : ""}
+									updateStash={this.updateStashItems}
+									updateEquipment={this.updateEquipmentItems}
+								/>
 							))}
 
 						</div>

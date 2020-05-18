@@ -70,12 +70,18 @@ export default class Turmoil extends React.Component
 
 						<Instance updateStashItems={this.updateStashItems} />
 						<Console />
-						<Equipment items={this.state.equipmentItems} updateItemsInEquipment={this.updateEquipmentItems} updateItemsInStash={this.updateStashItems}/>
+						<Equipment items={this.state.equipmentItems}
+								   updateItemsInEquipment={this.updateEquipmentItems}
+								   updateItemsInStash={this.updateStashItems}
+								   updateStashItems={this.updateStashItems}
+								   updateEquipmentItems={this.updateEquipmentItems}
+						/>
 						<Stash items={this.state.stashItems}
 							   updateItemsInStash={this.updateStashItems}
 							   updateItemsInEquipment={this.updateEquipmentItems}
 							   updateStashItems={this.updateStashItems}
-							   updateEquipmentItems={this.updateEquipmentItems}/>
+							   updateEquipmentItems={this.updateEquipmentItems}
+						/>
 						<Stats />
 
 					</div>

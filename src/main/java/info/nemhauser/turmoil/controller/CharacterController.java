@@ -32,7 +32,7 @@ public class CharacterController
 		JSONObject object = new JSONObject();
 		Character character = TurmoilApplication.getCharacter("fox");
 
-		object.put("itemForStash", new ItemInStashResponse(character.slotRightHand));
+		object.put("itemForStash", new ItemInEquipmentResponse(character.slotRightHand, slot));
 		TurmoilApplication.getServerState().addItem(character.slotRightHand);
 
 		character.slotRightHand = null;

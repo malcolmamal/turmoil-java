@@ -7,6 +7,8 @@ export default class ItemSlotEquipment extends React.Component
 		super(props);
 
 		this.onContextMenuHandler = this.onContextMenuHandler.bind(this);
+
+		this.updateItems = this.updateItems.bind(this);
 	}
 
 	onContextMenuHandler(event, item)
@@ -15,8 +17,14 @@ export default class ItemSlotEquipment extends React.Component
 		event.preventDefault();
 		if (item.ident)
 		{
-			actionRightClickOnEquipment(item);
+			actionRightClickOnEquipment(item, this.updateItems);
 		}
+	}
+
+	updateItems()
+	{
+		this.props.updateStash();
+		this.props.updateEquipment();
 	}
 
 	render() {

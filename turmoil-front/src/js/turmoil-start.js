@@ -3,7 +3,7 @@ import {playAudio, hideSpinnerWithDelay} from '../js/turmoil-general';
 import {hideAllTooltips} from '../js/turmoil-tooltip';
 import {bringToTheTop, initWindow} from '../js/turmoil-windows';
 import "jquery-ui/themes/base/all.css";
-import {removeItemFromStash, updateItemInSlot} from "./window-instance";
+import {removeItem, removeItemFromStash, updateItemInSlot} from "./window-instance";
 
 
 function switchWindow(windowType)
@@ -34,7 +34,7 @@ function finalizeUpdateStatisticsWindow(content)
 	jQuery('#statsContent').html(content);
 }
 
-export function actionRightClickOnEquipment(item)
+export function actionRightClickOnEquipment(item, updateItems)
 {
 	hideAllTooltips();
 
@@ -42,45 +42,64 @@ export function actionRightClickOnEquipment(item)
 	{
 		window.turmoil.ajax.exec({
 			url: 'character/unequip/' + item.ident,
-			onSuccess: finalizeRightClickOnEquipment
+			onSuccess: finalizeRightClickOnEquipment,
+			onSuccessThis: updateItems
 		});
 	}
 }
 
-function finalizeRightClickOnEquipment(data)
+function finalizeRightClickOnEquipment(data, callbackFunction)
 {
 	console.log("finalize right click on equipment", data);
 
 	if (data != null && data.success === true)
 	{
-		if (typeof(data.stashedItemId) !== 'undefined' && typeof(data.stashedItemContent) !== 'undefined')
+		//if (typeof(data.stashedItemId) !== 'undefined' && typeof(data.stashedItemContent) !== 'undefined')
 		{
-			if (typeof(data.stashedItemType) !== 'undefined')
+			//TODO: sound and gfx effects
+
+			// if (typeof(data.stashedItemType) !== 'undefined')
+			// {
+			// 	switch (data.stashedItemType)
+			// 	{
+			// 		case 'ACCESSORY':
+			// 			playAudio('soundAccessoryJewellery');
+			// 			break;
+			// 		case 'ARMOR':
+			// 			playAudio('soundMediumArmor');
+			// 			break;
+			// 		case 'WEAPON':
+			// 			playAudio('soundWeapon');
+			// 			if (typeof(data.unequippedItemSlot) !== 'undefined')
+			// 			{
+			// 				jQuery('#' + data.unequippedItemSlot + '_effect').removeClass();
+			// 			}
+			// 			break;
+			// 	}
+			// }
+
+			if (typeof(data.itemForStash) !== 'undefined')
 			{
-				switch (data.stashedItemType)
-				{
-					case 'ACCESSORY':
-						playAudio('soundAccessoryJewellery');
-						break;
-					case 'ARMOR':
-						playAudio('soundMediumArmor');
-						break;
-					case 'WEAPON':
-						playAudio('soundWeapon');
-						if (typeof(data.unequippedItemSlot) !== 'undefined')
-						{
-							jQuery('#' + data.unequippedItemSlot + '_effect').removeClass();
-						}
-						break;
-				}
+				console.log("removing from equipment");
+				removeItem(data.itemForStash.slot, data.itemForStash.ident);
+
+				console.log("adding to stash");
+				window.turmoil.stash.items.push({"ident": data.itemForStash.ident, rarity: data.itemForStash.rarity, filePath: data.itemForStash.filePath, fileCode: data.itemForStash.fileCode});
 			}
 
-			jQuery('#stashItemListContainer').append(data.stashedItemContent);
-			if (typeof(data.unequippedItemSlot !== 'undefined') && typeof(data.unequippedItemContent) != 'undefined')
+			if (typeof(callbackFunction) === 'function')
 			{
-				jQuery('#' + data.unequippedItemSlot).html(data.unequippedItemContent);
+				console.log('calling function from equipment!');
+				callbackFunction();
 			}
-			updateStatisticsWindow();
+
+			// jQuery('#stashItemListContainer').append(data.stashedItemContent);
+			// if (typeof(data.unequippedItemSlot !== 'undefined') && typeof(data.unequippedItemContent) != 'undefined')
+			// {
+			// 	jQuery('#' + data.unequippedItemSlot).html(data.unequippedItemContent);
+			// }
+			//TODO: handle stats window (was done in more places)
+			//updateStatisticsWindow();
 		}
 	}
 }
@@ -118,7 +137,7 @@ function finalizeRightClickOnStashedItem(data, callbackFunction)
 			// 	}
 			// }
 
-			if (data.itemForEquipment !== 'undefined')
+			if (typeof(data.itemForEquipment) !== 'undefined')
 			{
 				console.log("removing from stash");
 				removeItemFromStash(data.itemForEquipment.ident);
@@ -126,7 +145,7 @@ function finalizeRightClickOnStashedItem(data, callbackFunction)
 				updateItemInSlot(data.itemForEquipment.slot, data.itemForEquipment);
 			}
 
-			if (data.itemForStash !== 'undefined')
+			if (typeof(data.itemForStash) !== 'undefined')
 			{
 				console.log("adding to stash");
 				window.turmoil.stash.items.push({"ident": data.itemForStash.ident, rarity: data.itemForStash.rarity, filePath: data.itemForStash.filePath, fileCode: data.itemForStash.fileCode});
@@ -134,7 +153,7 @@ function finalizeRightClickOnStashedItem(data, callbackFunction)
 
 			if (typeof(callbackFunction) === 'function')
 			{
-				console.log('calling function!');
+				console.log('calling function from stash!');
 				callbackFunction();
 			}
 

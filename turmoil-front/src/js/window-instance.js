@@ -38,7 +38,7 @@ export function updateItemInSlot(slot, item)
 	itemToPush.item = item;
 	itemToPush.slot = slot;
 
-	let removedItem = removeItem(slot, item.ident);
+	let removedItem = updateItem(slot, item.ident);
 	if (removedItem.top)
 	{
 		itemToPush.top = removedItem.top;
@@ -55,7 +55,17 @@ export function updateItemInSlot(slot, item)
 	window.turmoil.equipment.items.push(itemToPush);
 }
 
-function removeItem(slot, ident)
+export function removeItem(slot, ident)
+{
+	return removeOrUpdateItem(slot, ident, false);
+}
+
+function updateItem(slot, ident)
+{
+	return removeOrUpdateItem(slot, ident, true);
+}
+
+function removeOrUpdateItem(slot, ident, onlyUpdate)
 {
 	let index;
 
@@ -63,7 +73,7 @@ function removeItem(slot, ident)
 	if (index > -1) {
 		let removedItem = window.turmoil.equipment.items[index];
 
-		if (removedItem.ident === ident)
+		if (onlyUpdate && removedItem.ident === ident)
 		{
 			// do not remove actually, because it's the same
 			console.log("do not remove item for ident/slot", ident, slot)
@@ -75,10 +85,31 @@ function removeItem(slot, ident)
 
 		console.log("removed item for slot", slot, removedItem);
 
+		if (!onlyUpdate)
+		{
+			window.turmoil.equipment.items.push(restoreEmptySlot(removedItem, slot));
+		}
+
 		return removedItem;
 	}
 
+	console.log("did not find item to remove for slot/ident", slot, ident);
+
 	return {};
+}
+
+function restoreEmptySlot(removedItem, slot)
+{
+	let emptySlot = {
+		slot: slot, top: removedItem.top, left: removedItem, item: {}
+	};
+
+	if (typeof(removedItem.iconItemSize) !== 'undefined')
+	{
+		emptySlot.iconItemSize = removedItem.iconItemSize;
+	}
+
+	return emptySlot;
 }
 
 export function removeItemFromStash(ident)

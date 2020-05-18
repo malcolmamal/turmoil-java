@@ -31,7 +31,7 @@ export class CharacterUnit extends React.Component
 		const ident = that.props.ident;
 		setTimeout(function() {
 			handleMoveToPolygon(jQuery('#polygon-1-4'), jQuery('#' + ident));
-			}, 100
+			}, 175
 		);
 	}
 }
@@ -79,7 +79,7 @@ export class EnemyUnit extends React.Component
 		setTimeout(function() {
 				console.log("we will move unit: " + ident);
 				handleMoveToPolygon(jQuery('#' + position), jQuery('#' + ident));
-			}, 100
+			}, 125
 		);
 	}
 }
