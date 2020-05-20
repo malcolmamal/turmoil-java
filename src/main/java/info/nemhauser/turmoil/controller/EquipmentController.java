@@ -17,7 +17,10 @@ public class EquipmentController
 	JSONObject getItemsInEquipment()
 	{
 		JSONArray array = new JSONArray();
-		array.add(convertItemToItemInEquipmentResponse(TurmoilApplication.getCharacter("fox").slotRightHand));
+		for (Item item : TurmoilApplication.getCharacter("fox").getEquippedItems())
+		{
+			array.add(convertItemToItemInEquipmentResponse(item));
+		}
 
 		JSONObject object = new JSONObject();
 		object.put("items", array);
@@ -27,6 +30,6 @@ public class EquipmentController
 
 	public static ItemInEquipmentResponse convertItemToItemInEquipmentResponse(Item item)
 	{
-		return new ItemInEquipmentResponse(item.getIdent(), item.getFileCode(), item.getFullImagePath(), item.getRarityClass(), "slot_right_hand");
+		return new ItemInEquipmentResponse(item.getIdent(), item.getFileCode(), item.getFullImagePath(), item.getRarityClass(), item.getItemSlot());
 	}
 }

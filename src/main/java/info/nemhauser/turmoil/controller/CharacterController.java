@@ -3,6 +3,7 @@ package info.nemhauser.turmoil.controller;
 import info.nemhauser.turmoil.TurmoilApplication;
 import info.nemhauser.turmoil.engine.domain.Character;
 import info.nemhauser.turmoil.engine.domain.CharacterState;
+import info.nemhauser.turmoil.engine.domain.Item;
 import info.nemhauser.turmoil.engine.domain.Weapon;
 import info.nemhauser.turmoil.response.ItemInEquipmentResponse;
 import info.nemhauser.turmoil.response.ItemInStashResponse;
@@ -32,10 +33,10 @@ public class CharacterController
 		JSONObject object = new JSONObject();
 		Character character = TurmoilApplication.getCharacter("fox");
 
-		object.put("itemForStash", new ItemInEquipmentResponse(character.slotRightHand, slot));
-		TurmoilApplication.getServerState().addItem(character.slotRightHand);
+		Item itemForStash = character.unequip(itemKey);
 
-		character.slotRightHand = null;
+		object.put("itemForStash", new ItemInEquipmentResponse(itemForStash, itemForStash.getItemSlot()));
+		TurmoilApplication.getServerState().addItem(itemForStash);
 
 		object.put("success", true);
 
@@ -48,17 +49,17 @@ public class CharacterController
 	{
 		JSONObject object = new JSONObject();
 
-		Weapon item = (Weapon) TurmoilApplication.getServerState().getItems().get(itemKey);
 		Character character = TurmoilApplication.getCharacter("fox");
-		if (character.slotRightHand != null)
+		Item itemToEquip = TurmoilApplication.getServerState().getItems().get(itemKey);
+		Item itemForStash = character.equip(itemToEquip);
+		if (itemForStash != null)
 		{
-			object.put("itemForStash", new ItemInStashResponse(character.slotRightHand));
-			TurmoilApplication.getServerState().addItem(character.slotRightHand);
+			object.put("itemForStash", new ItemInStashResponse(itemForStash));
+			TurmoilApplication.getServerState().addItem(itemForStash);
 		}
 
-		TurmoilApplication.getServerState().removeItem(item);
-		character.slotRightHand = item;
-		object.put("itemForEquipment", new ItemInEquipmentResponse(character.slotRightHand, slot));
+		TurmoilApplication.getServerState().removeItem(itemToEquip);
+		object.put("itemForEquipment", new ItemInEquipmentResponse(itemToEquip, itemToEquip.getItemSlot()));
 
 		object.put("success", true);
 

@@ -43,6 +43,16 @@ public class Item
 		itemCode = template.itemCode;
 	}
 
+	public ItemSlot getItemSlot()
+	{
+		return itemSlot;
+	}
+
+	public void setItemSlot(ItemSlot itemSlot)
+	{
+		this.itemSlot = itemSlot;
+	}
+
 	public String toString() {
 		return itemName + " [" + itemType + "]";
 	}

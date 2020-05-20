@@ -49,6 +49,7 @@ public class TurmoilApplication
 		characterState.resetValues();
 
 		character.slotRightHand = (Weapon) ItemGenerator.rollItemOfRarityAndType(character, ItemRarity.LEGENDARY, ItemType.WEAPON);
+		character.slotRightHand.setItemSlot(ItemSlot.RIGHT_HAND);
 
 		CharacterStateHelper.updateCharacterStateWithItem(characterState, character.slotRightHand, ItemSlot.RIGHT_HAND);
 
@@ -91,3 +92,8 @@ public class TurmoilApplication
 		return serverState;
 	}
 }
+
+/*
+ * TODO:
+ *  1. at some point make sure that initial actions are loaded in one go
+ */

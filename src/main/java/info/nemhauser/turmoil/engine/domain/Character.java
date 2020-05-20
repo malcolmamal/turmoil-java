@@ -1,7 +1,14 @@
 package info.nemhauser.turmoil.engine.domain;
 
+import info.nemhauser.turmoil.engine.enums.AccessoryType;
+import info.nemhauser.turmoil.engine.enums.ArmorType;
 import info.nemhauser.turmoil.engine.enums.ItemSlot;
 import info.nemhauser.turmoil.engine.enums.WeaponType;
+
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 
 public class Character extends Person
 {
@@ -51,198 +58,266 @@ public class Character extends Person
 		return stash;
 	}
 
-	/**
-	 * TODO split into equipAccessory / equipArmor / equipWeapon
-	 * TODO for rings and one handed weapons there should be a parameter to wear in left/rightHand and one/twoRing
-	 * TODO later: move unequipped item into some inventory/stash
-	 */
-	public Item equip(Item item, boolean saveItem)
+	public Item[] getEquippedItems()
 	{
-		Item replacedItem = null;
+		ArrayList<Item> equippedItems = new ArrayList<>();
+		try
+		{
+			for (Field field : getClass().getDeclaredFields())
+			{
+				if (!field.getName().startsWith("slot"))
+				{
+					continue;
+				}
+
+				Item equippedItem = (Item) field.get(this);
+				if (equippedItem == null)
+				{
+					continue;
+				}
+				equippedItems.add(equippedItem);
+			}
+		}
+		catch (IllegalAccessException e)
+		{
+			e.printStackTrace();
+		}
+
+		return equippedItems.toArray(new Item[0]);
+	}
+
+	public Item unequip(String itemIdent)
+	{
+		Item itemToReturn = null;
+
+		try
+		{
+			for (Field field : getClass().getDeclaredFields())
+			{
+				if (!field.getName().startsWith("slot"))
+				{
+					continue;
+				}
+
+				Item equippedItem = (Item) field.get(this);
+				if (equippedItem == null)
+				{
+					continue;
+				}
+
+				if (equippedItem.getIdent().equals(itemIdent))
+				{
+					itemToReturn = equippedItem;
+					field.set(this, null);
+				}
+			}
+		}
+		catch (IllegalAccessException e)
+		{
+			e.printStackTrace();
+		}
+
+		//		for (Item item : new Item[] {
+//			slotRightHand, slotLeftHand,
+//			slotHelm, slotChest, slotBelt, slotGloves, slotPants, slotBoots, slotBracers, slotPauldrons,
+//			slotAmulet, slotRingOne, slotRingTwo, slotRingThree, slotRingFour
+//		})
+//		{
+//			if (item != null)
+//			{
+//				itemToReturn = item;
+//			}
+//		}
+
+		return itemToReturn;
+	}
+
+	public Item equip(Item item)
+	{
 		switch (item.itemType)
 		{
-			case ARMOR:
-				switch (((Armor)item).armorType)
+			case ARMOR -> {
+				return equipArmor((Armor) item);
+			}
+			case ACCESSORY -> {
+				return equipAccessory((Accessory) item);
+			}
+			case WEAPON -> {
+				return equipWeapon((Weapon) item);
+			}
+		}
+
+		return null;
+	}
+
+	public Armor equipArmor(Armor armor)
+	{
+		Armor replacedItem = null;
+		switch (armor.armorType)
+		{
+			case HELM -> {
+				replacedItem = slotHelm;
+				slotHelm = armor;
+				slotHelm.setItemSlot(ItemSlot.HELM);
+
+				return replacedItem;
+			}
+			case CHEST -> {
+				replacedItem = slotChest;
+				slotChest = armor;
+				slotChest.setItemSlot(ItemSlot.CHEST);
+
+				return replacedItem;
+			}
+			case BELT -> {
+				replacedItem = slotBelt;
+				slotBelt = armor;
+				slotBelt.setItemSlot(ItemSlot.BELT);
+
+				return replacedItem;
+			}
+			case GLOVES -> {
+				replacedItem = slotGloves;
+				slotGloves = armor;
+				slotGloves.setItemSlot(ItemSlot.GLOVES);
+
+				return replacedItem;
+			}
+			case PANTS -> {
+				replacedItem = slotPants;
+				slotPants = armor;
+				slotPants.setItemSlot(ItemSlot.PANTS);
+
+				return replacedItem;
+			}
+			case BOOTS -> {
+				replacedItem = slotBoots;
+				slotBoots = armor;
+				slotBoots.setItemSlot(ItemSlot.BOOTS);
+
+				return replacedItem;
+			}
+			case BRACERS -> {
+				replacedItem = slotBracers;
+				slotBracers = armor;
+				slotBracers.setItemSlot(ItemSlot.BRACERS);
+
+				return replacedItem;
+			}
+			case PAULDRONS -> {
+				replacedItem = slotPauldrons;
+				slotPauldrons = armor;
+				slotPauldrons.setItemSlot(ItemSlot.PAULDRONS);
+
+				return replacedItem;
+			}
+		}
+
+		return null;
+	}
+
+	public Item equipWeapon(Weapon weapon)
+	{
+		Item replacedItem = null;
+		if (weapon.isOneHanded())
+		{
+			if (slotRightHand == null)
+			{
+				slotRightHand = weapon;
+				slotRightHand.setItemSlot(ItemSlot.RIGHT_HAND);
+			}
+			else if (slotLeftHand == null)
+			{
+				slotLeftHand = weapon;
+				slotLeftHand.setItemSlot(ItemSlot.LEFT_HAND);
+			}
+			else
+			{
+				replacedItem = slotRightHand;
+				slotRightHand = weapon;
+				slotRightHand.setItemSlot(ItemSlot.RIGHT_HAND);
+			}
+		}
+		else if (slotLeftHand == null)
+		{
+			replacedItem = slotRightHand;
+			slotRightHand = weapon;
+			slotRightHand.setItemSlot(ItemSlot.RIGHT_HAND);
+		}
+		else if (slotRightHand == null)
+		{
+			replacedItem = slotLeftHand;
+			slotRightHand = weapon;
+			slotRightHand.setItemSlot(ItemSlot.RIGHT_HAND);
+		}
+
+		return replacedItem;
+	}
+
+	public Item equipAccessory(Accessory accessory)
+	{
+		Item replacedItem = null;
+		switch (accessory.accessoryType)
+		{
+			case AMULET -> {
+				replacedItem = slotAmulet;
+				slotAmulet = accessory;
+				slotAmulet.setItemSlot(ItemSlot.AMULET);
+
+				return replacedItem;
+			}
+			case RING -> {
+				if (slotRingOne == null)
 				{
-					case HELM:
-						if (slotHelm != null)
-						{
-							replacedItem = slotHelm;
-						}
-						slotHelm = (Armor) item;
-						item.itemSlot = ItemSlot.HELM;
-						break;
-					case CHEST:
-						if (slotChest != null)
-						{
-							replacedItem = slotChest;
-						}
-						slotChest = (Armor) item;
-						item.itemSlot = ItemSlot.CHEST;
-						break;
-					case BELT:
-						if (slotBelt != null)
-						{
-							replacedItem = slotBelt;
-						}
-						slotBelt = (Armor) item;
-						item.itemSlot = ItemSlot.BELT;
-						break;
-					case GLOVES:
-						if (slotGloves != null)
-						{
-							replacedItem = slotGloves;
-						}
-						slotGloves = (Armor) item;
-						item.itemSlot = ItemSlot.GLOVES;
-						break;
-					case PANTS:
-						if (slotPants != null)
-						{
-							replacedItem = slotPants;
-						}
-						slotPants = (Armor) item;
-						item.itemSlot = ItemSlot.PANTS;
-						break;
-					case BOOTS:
-						if (slotBoots != null)
-						{
-							replacedItem = slotBoots;
-						}
-						slotBoots = (Armor) item;
-						item.itemSlot = ItemSlot.BOOTS;
-						break;
-					case BRACERS:
-						if (slotBracers != null)
-						{
-							replacedItem = slotBracers;
-						}
-						slotBracers = (Armor) item;
-						item.itemSlot = ItemSlot.BRACERS;
-						break;
-					case PAULDRONS:
-						if (slotPauldrons != null)
-						{
-							replacedItem = slotPauldrons;
-						}
-						slotPauldrons = (Armor) item;
-						item.itemSlot = ItemSlot.PAULDRONS;
-						break;
+					slotRingOne = accessory;
+					slotRingOne.setItemSlot(ItemSlot.RING_ONE);
 				}
-				break;
-			case ACCESSORY:
-				switch (((Accessory)item).accessoryType)
+				else if (slotRingTwo == null)
 				{
-					case AMULET:
-						if (slotAmulet != null)
-						{
-							replacedItem = slotAmulet;
-						}
-						slotAmulet = (Accessory) item;
-						item.itemSlot = ItemSlot.AMULET;
-						break;
-					case RING:
-						if (slotRingOne == null)
-						{
-							slotRingOne = (Accessory) item;
-							item.itemSlot = ItemSlot.RING_ONE;
-						}
-						else if (slotRingTwo == null)
-						{
-							slotRingTwo = (Accessory) item;
-							item.itemSlot = ItemSlot.RING_TWO;
-						}
-						else if (slotRingThree == null)
-						{
-							slotRingThree = (Accessory) item;
-							item.itemSlot = ItemSlot.RING_THREE;
-						}
-						else
-						{
-							slotRingFour = (Accessory) item;
-							item.itemSlot = ItemSlot.RING_FOUR;
-						}
-						break;
-					case MOJO:
-					case SOURCE:
-					case SHIELD:
-						if (slotLeftHand == null && (slotRightHand == null || slotRightHand.isOneHanded()))
-						{
-							slotLeftHand = item;
-							item.itemSlot = ItemSlot.LEFT_HAND;
-						}
-						else
-						{
-							return null;
-						}
-						break;
-					case QUIVER:
-						if (slotLeftHand == null
-							&& (slotRightHand == null || slotRightHand.weaponType == WeaponType.BOW || slotRightHand.weaponType == WeaponType.CROSSBOW))
-						{
-							slotLeftHand = item;
-							item.itemSlot = ItemSlot.LEFT_HAND;
-						}
-						else
-						{
-							return null;
-						}
-						break;
+					slotRingTwo = accessory;
+					slotRingTwo.setItemSlot(ItemSlot.RING_TWO);
 				}
-				break;
-			case WEAPON:
-				if (((Weapon)item).isOneHanded())
+				else if (slotRingThree == null)
 				{
-					if (slotRightHand == null)
-					{
-						slotRightHand = (Weapon) item;
-						item.itemSlot = ItemSlot.RIGHT_HAND;
-					}
-					else if (slotLeftHand == null)
-					{
-						slotLeftHand = item;
-						item.itemSlot = ItemSlot.LEFT_HAND;
-					}
-					else
-					{
-						replacedItem = slotRightHand;
-						slotRightHand = (Weapon) item;
-						item.itemSlot = ItemSlot.RIGHT_HAND;
-					}
-				}
-				else if (slotLeftHand == null)
-				{
-					if (slotRightHand != null)
-					{
-						replacedItem = slotRightHand;
-					}
-					slotRightHand = (Weapon) item;
-					item.itemSlot = ItemSlot.RIGHT_HAND;
-				}
-				else if (slotRightHand == null)
-				{
-					if (slotLeftHand != null)
-					{
-						replacedItem = slotLeftHand;
-					}
-					slotRightHand = (Weapon) item;
-					item.itemSlot = ItemSlot.RIGHT_HAND;
+					slotRingThree = accessory;
+					slotRingThree.setItemSlot(ItemSlot.RING_THREE);
 				}
 				else
 				{
-					return null;
+					replacedItem = slotRingFour;
+					slotRingFour = accessory;
+					slotRingFour.setItemSlot(ItemSlot.RING_FOUR);
 				}
-				break;
+
+				return replacedItem;
+			}
+			case MOJO, SOURCE, SHIELD -> {
+				if (!slotRightHand.isOneHanded())
+				{
+					replacedItem = slotRightHand;
+				}
+				else
+				{
+					replacedItem = slotLeftHand;
+				}
+				slotLeftHand = accessory;
+				slotLeftHand.setItemSlot(ItemSlot.LEFT_HAND);
+
+				return replacedItem;
+			}
+			case QUIVER -> {
+				if (slotRightHand == null || slotRightHand.weaponType == WeaponType.BOW || slotRightHand.weaponType == WeaponType.CROSSBOW)
+				{
+					replacedItem = slotRightHand;
+					slotLeftHand = accessory;
+					slotLeftHand.setItemSlot(ItemSlot.LEFT_HAND);
+				}
+
+				return replacedItem;
+			}
 		}
 
-		item.isEquipped = true;
-		item.isStashed = false;
-		item.stash = null;
-		if (saveItem)
-		{
-			//item.save();
-		}
-		return replacedItem;
+		return null;
 	}
 
 	public String getName()
