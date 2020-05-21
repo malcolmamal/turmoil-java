@@ -30,13 +30,17 @@ export default class Window extends React.Component
 		const windowContainerInnerStyle = this.props.background;
 		const ident = this.props.ident;
 
+		const windowResizerStyle = {
+			display: 'none'
+		}
+
 		return (
 			<div>
 				<WindowIcon ident={ident}/>
 
 				<div id={'window_' + ident + '_resizer'}
 					 className={'windowResizer ' + ident + 'WindowResizer'}
-					 style={{display: 'none'}}
+					 style={windowResizerStyle}
 				>
 					<div id={'window_' + ident + '_wrapper'} className="windowWrapper">
 						<div id={'handle_' + ident + '_container'}

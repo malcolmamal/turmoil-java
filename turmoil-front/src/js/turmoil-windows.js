@@ -271,9 +271,13 @@ function saveWindowsPositions(forceSave)
 		forceSave = false;
 	}
 
-/*	
-	window.turmoil.ajax.exec({
-		url: 'account/saveWindowsSettings/?settings=' + JSON.stringify(turmoil.windowSettings) + '&save=' + forceSave
-	});
-*/
+	localStorage.setItem('windowSettings', JSON.stringify(window.turmoil.windowSettings));
+
+	// window.turmoil.ajax.exec({
+	// 	url: 'account/saveWindowsSettings/' + encodeURI(JSON.stringify(window.turmoil.windowSettings))
+	// });
+
+	console.log("window settings from save", window.turmoil.windowSettings);
+
+	// + '&save=' + forceSave
 }

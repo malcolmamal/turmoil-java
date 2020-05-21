@@ -21,7 +21,7 @@ window.turmoil.sounds = {
 };
 
 window.turmoil.soundLoops = {};
-window.turmoil.windowSettings = {};
+window.turmoil.windowSettings = localStorage.getItem('windowSettings') === null ? {} : JSON.parse(localStorage.getItem('windowSettings'));
 
 window.turmoil.lastLogDate = null;
 window.turmoil.log = function(content, target)

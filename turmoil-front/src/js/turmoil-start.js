@@ -228,8 +228,6 @@ jQuery(function () {
 
 	window.windowSizes = [];
 
-
-
 	window.windowSizes.consoleWidth = 600;
 	window.windowSizes.consoleHeight = 160;
 	initWindow('console', true);
@@ -282,6 +280,6 @@ jQuery(function () {
 	  init for instance window
 	*/
 
-	switchWindow('instance');
+	//switchWindow('instance');
 
 });
