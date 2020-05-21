@@ -96,4 +96,5 @@ public class TurmoilApplication
 /*
  * TODO:
  *  1. at some point make sure that initial actions are loaded in one go
+ *  2. tooltips on equipment after reload don't show
  */

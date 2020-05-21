@@ -5,6 +5,7 @@ import info.nemhauser.turmoil.engine.domain.Character;
 import info.nemhauser.turmoil.engine.domain.CharacterState;
 import info.nemhauser.turmoil.engine.domain.Item;
 import info.nemhauser.turmoil.engine.domain.Weapon;
+import info.nemhauser.turmoil.engine.exceptions.CouldNotEquipException;
 import info.nemhauser.turmoil.response.ItemInEquipmentResponse;
 import info.nemhauser.turmoil.response.ItemInStashResponse;
 import net.minidev.json.JSONObject;
@@ -51,10 +52,23 @@ public class CharacterController
 
 		Character character = TurmoilApplication.getCharacter("fox");
 		Item itemToEquip = TurmoilApplication.getServerState().getItems().get(itemKey);
-		Item itemForStash = character.equip(itemToEquip);
+
+		Item itemForStash;
+		try
+		{
+			itemForStash = character.equip(itemToEquip);
+		}
+		catch (CouldNotEquipException e)
+		{
+			object.put("message", e.getMessage());
+			object.put("success", false);
+
+			return object;
+		}
+
 		if (itemForStash != null)
 		{
-			object.put("itemForStash", new ItemInStashResponse(itemForStash));
+			object.put("itemForStash", new ItemInEquipmentResponse(itemForStash, itemForStash.getItemSlot()));
 			TurmoilApplication.getServerState().addItem(itemForStash);
 		}
 

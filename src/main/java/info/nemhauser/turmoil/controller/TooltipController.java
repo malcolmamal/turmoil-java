@@ -29,38 +29,24 @@ public class TooltipController
 	@RequestMapping("/tooltip/{item}")
 	public String getTooltipAdvanced(@PathVariable String item, Model model) throws Exception
 	{
-//		ArmorTemplate template = new ArmorTemplate();
-//		template.isLegendary = true;
-//		template.armorValue = 135;
-//		template.rarity = ItemRarity.LEGENDARY;
-//		template.itemCode = "FROSTBURN";
-//
-//		Armor armor = new Armor(template);
-//		armor.itemName = "Dupcia Anety";
-//		armor.itemType = ItemType.ARMOR;
-//		armor.armorType = ArmorType.CHEST;
-//
-//		armor.attributes = ItemAttributeGenerator.rollAttributes(armor).toArray(new Attribute[0]);
-//		for (Attribute atr : armor.attributes)
-//		{
-//			Logger.log(atr.toString());
-//		}
-
 		//TODO: handle not found
 
 		Item itemForTooltip = TurmoilApplication.getServerState().getItem(item);
 		if (itemForTooltip == null)
 		{
-			itemForTooltip = TurmoilApplication.getCharacter("fox").slotRightHand;
-			if (!itemForTooltip.getIdent().equals(item))
+			if (TurmoilApplication.getCharacter("fox").getEquippedItems().containsKey(item))
 			{
-				throw new Exception("Tried to find item in right hand but failed, for code:" + item
-						+ ". Right hand item has code: " + itemForTooltip.getIdent());
+				itemForTooltip = TurmoilApplication.getCharacter("fox").getEquippedItems().get(item);
 			}
+		}
+
+		if (itemForTooltip == null)
+		{
+			throw new Exception("Tried to find item but failed, for code:" + item);
 		}
 
 		model.addAttribute("item", itemForTooltip);
 
-		return "tooltip/armor";
+		return "tooltip/item";
 	}
 }

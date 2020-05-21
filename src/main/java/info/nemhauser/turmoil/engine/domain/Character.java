@@ -4,6 +4,7 @@ import info.nemhauser.turmoil.engine.enums.AccessoryType;
 import info.nemhauser.turmoil.engine.enums.ArmorType;
 import info.nemhauser.turmoil.engine.enums.ItemSlot;
 import info.nemhauser.turmoil.engine.enums.WeaponType;
+import info.nemhauser.turmoil.engine.exceptions.CouldNotEquipException;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -46,21 +47,9 @@ public class Character extends Person
 
 	//TODO: remember: Unfortunately 'character' is a reserved word in MySQL therefore plural form is used as an exception
 
-	public Stash getPrimaryStash()
+	public HashMap<String, Item> getEquippedItems()
 	{
-		Stash stash = new Stash(); //Stash.findByOwner(owner);
-		if (stash == null)
-		{
-			stash = new Stash();
-			stash.owner = owner;
-			//stash.save();
-		}
-		return stash;
-	}
-
-	public Item[] getEquippedItems()
-	{
-		ArrayList<Item> equippedItems = new ArrayList<>();
+		HashMap<String, Item> equippedItems = new HashMap<>();
 		try
 		{
 			for (Field field : getClass().getDeclaredFields())
@@ -75,7 +64,7 @@ public class Character extends Person
 				{
 					continue;
 				}
-				equippedItems.add(equippedItem);
+				equippedItems.put(equippedItem.getIdent(), equippedItem);
 			}
 		}
 		catch (IllegalAccessException e)
@@ -83,7 +72,7 @@ public class Character extends Person
 			e.printStackTrace();
 		}
 
-		return equippedItems.toArray(new Item[0]);
+		return equippedItems;
 	}
 
 	public Item unequip(String itemIdent)
@@ -117,22 +106,10 @@ public class Character extends Person
 			e.printStackTrace();
 		}
 
-		//		for (Item item : new Item[] {
-//			slotRightHand, slotLeftHand,
-//			slotHelm, slotChest, slotBelt, slotGloves, slotPants, slotBoots, slotBracers, slotPauldrons,
-//			slotAmulet, slotRingOne, slotRingTwo, slotRingThree, slotRingFour
-//		})
-//		{
-//			if (item != null)
-//			{
-//				itemToReturn = item;
-//			}
-//		}
-
 		return itemToReturn;
 	}
 
-	public Item equip(Item item)
+	public Item equip(Item item) throws CouldNotEquipException
 	{
 		switch (item.itemType)
 		{
@@ -216,7 +193,7 @@ public class Character extends Person
 		return null;
 	}
 
-	public Item equipWeapon(Weapon weapon)
+	public Item equipWeapon(Weapon weapon) throws CouldNotEquipException
 	{
 		Item replacedItem = null;
 		if (weapon.isOneHanded())
@@ -250,11 +227,15 @@ public class Character extends Person
 			slotRightHand = weapon;
 			slotRightHand.setItemSlot(ItemSlot.RIGHT_HAND);
 		}
+		else
+		{
+			throw new CouldNotEquipException("Could not equip: " + weapon.itemCode);
+		}
 
 		return replacedItem;
 	}
 
-	public Item equipAccessory(Accessory accessory)
+	public Item equipAccessory(Accessory accessory) throws CouldNotEquipException
 	{
 		Item replacedItem = null;
 		switch (accessory.accessoryType)
@@ -292,11 +273,11 @@ public class Character extends Person
 				return replacedItem;
 			}
 			case MOJO, SOURCE, SHIELD -> {
-				if (!slotRightHand.isOneHanded())
+				if (slotRightHand != null && !slotRightHand.isOneHanded())
 				{
 					replacedItem = slotRightHand;
 				}
-				else
+				else if (slotLeftHand != null)
 				{
 					replacedItem = slotLeftHand;
 				}
@@ -308,9 +289,13 @@ public class Character extends Person
 			case QUIVER -> {
 				if (slotRightHand == null || slotRightHand.weaponType == WeaponType.BOW || slotRightHand.weaponType == WeaponType.CROSSBOW)
 				{
-					replacedItem = slotRightHand;
+					replacedItem = slotLeftHand;
 					slotLeftHand = accessory;
 					slotLeftHand.setItemSlot(ItemSlot.LEFT_HAND);
+				}
+				else
+				{
+					throw new CouldNotEquipException("Could not equip: " + accessory.itemCode);
 				}
 
 				return replacedItem;

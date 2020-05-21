@@ -8,14 +8,7 @@ public class ItemInStashResponse
 	private String fileCode;
 	private String filePath;
 	private String rarity;
-
-	public ItemInStashResponse(String ident, String fileCode, String filePath, String rarity)
-	{
-		this.ident = ident;
-		this.fileCode = fileCode;
-		this.filePath = filePath;
-		this.rarity = rarity;
-	}
+	private String type;
 
 	public ItemInStashResponse(Item item)
 	{
@@ -23,6 +16,7 @@ public class ItemInStashResponse
 		this.fileCode = item.getFileCode();
 		this.filePath = item.getFullImagePath();
 		this.rarity = item.getRarityClass();
+		this.type = item.itemType.toString();
 	}
 
 	public String getIdent()
@@ -38,6 +32,11 @@ public class ItemInStashResponse
 	public String getFilePath()
 	{
 		return filePath;
+	}
+
+	public String getType()
+	{
+		return type;
 	}
 
 	public String getRarity()

@@ -52,7 +52,7 @@ public class StashController
 
 	public static ItemInStashResponse convertItemToItemInStashResponse(Item item)
 	{
-		return new ItemInStashResponse(item.getIdent(), item.getFileCode(), item.getFullImagePath(), item.getRarityClass());
+		return new ItemInStashResponse(item);
 	}
 
 	@RequestMapping(value = "/addToStash", produces = "application/json")

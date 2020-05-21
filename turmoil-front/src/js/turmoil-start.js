@@ -5,6 +5,13 @@ import {bringToTheTop, initWindow} from '../js/turmoil-windows';
 import "jquery-ui/themes/base/all.css";
 import {removeItem, removeItemFromStash, updateItemInSlot} from "./window-instance";
 
+import soundAccessoryJewellery from "../media/audio/change_bling_004.wav";
+import soundMediumArmor from "../media/audio/change_medium_002.wav";
+import soundWeapon from "../media/audio/change_weapon_004.wav";
+
+window.turmoil.sounds.soundAccessoryJewellery = soundAccessoryJewellery;
+window.turmoil.sounds.soundMediumArmor = soundMediumArmor;
+window.turmoil.sounds.soundWeapon = soundWeapon;
 
 function switchWindow(windowType)
 {
@@ -54,53 +61,49 @@ function finalizeRightClickOnEquipment(data, callbackFunction)
 
 	if (data != null && data.success === true)
 	{
-		//if (typeof(data.stashedItemId) !== 'undefined' && typeof(data.stashedItemContent) !== 'undefined')
+		if (typeof(data.itemForStash) !== 'undefined')
 		{
-			//TODO: sound and gfx effects
+			console.log("removing from equipment");
+			removeItem(data.itemForStash.slot, data.itemForStash.ident);
 
-			// if (typeof(data.stashedItemType) !== 'undefined')
-			// {
-			// 	switch (data.stashedItemType)
-			// 	{
-			// 		case 'ACCESSORY':
-			// 			playAudio('soundAccessoryJewellery');
-			// 			break;
-			// 		case 'ARMOR':
-			// 			playAudio('soundMediumArmor');
-			// 			break;
-			// 		case 'WEAPON':
-			// 			playAudio('soundWeapon');
-			// 			if (typeof(data.unequippedItemSlot) !== 'undefined')
-			// 			{
-			// 				jQuery('#' + data.unequippedItemSlot + '_effect').removeClass();
-			// 			}
-			// 			break;
-			// 	}
-			// }
+			console.log("adding to stash");
+			window.turmoil.stash.items.push({"ident": data.itemForStash.ident, rarity: data.itemForStash.rarity, filePath: data.itemForStash.filePath, fileCode: data.itemForStash.fileCode});
 
-			if (typeof(data.itemForStash) !== 'undefined')
+			console.log("want to play a sound for", data.itemForStash.type);
+			switch (data.itemForStash.type)
 			{
-				console.log("removing from equipment");
-				removeItem(data.itemForStash.slot, data.itemForStash.ident);
+				case 'ACCESSORY':
+					playAudio('soundAccessoryJewellery');
+					break;
+				case 'ARMOR':
+					playAudio('soundMediumArmor');
+					break;
+				case 'WEAPON':
+					playAudio('soundWeapon');
 
-				console.log("adding to stash");
-				window.turmoil.stash.items.push({"ident": data.itemForStash.ident, rarity: data.itemForStash.rarity, filePath: data.itemForStash.filePath, fileCode: data.itemForStash.fileCode});
+					//TODO: gfx effects
+
+					// if (typeof(data.unequippedItemSlot) !== 'undefined')
+					// {
+					// 	jQuery('#' + data.unequippedItemSlot + '_effect').removeClass();
+					// }
+					break;
 			}
-
-			if (typeof(callbackFunction) === 'function')
-			{
-				console.log('calling function from equipment!');
-				callbackFunction();
-			}
-
-			// jQuery('#stashItemListContainer').append(data.stashedItemContent);
-			// if (typeof(data.unequippedItemSlot !== 'undefined') && typeof(data.unequippedItemContent) != 'undefined')
-			// {
-			// 	jQuery('#' + data.unequippedItemSlot).html(data.unequippedItemContent);
-			// }
-			//TODO: handle stats window (was done in more places)
-			//updateStatisticsWindow();
 		}
+
+		if (typeof(callbackFunction) === 'function')
+		{
+			console.log('calling function from equipment!');
+			callbackFunction();
+		}
+
+		// jQuery('#stashItemListContainer').append(data.stashedItemContent);
+		// if (typeof(data.unequippedItemSlot !== 'undefined') && typeof(data.unequippedItemContent) != 'undefined')
+		// {
+		// 	jQuery('#' + data.unequippedItemSlot).html(data.unequippedItemContent);
+		// }
+		//TODO: handle stats window (was done in more places)
+		//updateStatisticsWindow();
 	}
 }
 
@@ -121,21 +124,12 @@ function finalizeRightClickOnStashedItem(data, callbackFunction)
 
 	if (data != null && data.success === true)
 	{
-//		if (typeof(data.equippedItemId) != 'undefined' && typeof(data.equippedItemContent) != 'undefined' && typeof(data.equippedItemSlot) != 'undefined')
-		{
-			// //TODO find proper position to put the item
-			// jQuery('#' + data.equippedItemSlot).html(data.equippedItemContent);
-
-			//TODO: also handle effect for weapons
-
-			// if (data.equippedItemSlot === 'slot_right_hand' || data.equippedItemSlot === 'slot_left_hand')
-			// {
-			// 	jQuery('#' + data.equippedItemSlot + '_effect').removeClass();
-			//
-			// 	if (typeof(data.equippedWeaponDamageType) != 'undefined') {
-			// 		jQuery('#' + data.equippedItemSlot + '_effect').addClass('item-weapon-bg-' + data.equippedWeaponDamageType);
-			// 	}
-			// }
+			if (typeof(data.itemForStash) !== 'undefined')
+			{
+				console.log("adding to stash");
+				removeItem(data.itemForStash.slot, data.itemForStash.ident);
+				window.turmoil.stash.items.push({"ident": data.itemForStash.ident, rarity: data.itemForStash.rarity, filePath: data.itemForStash.filePath, fileCode: data.itemForStash.fileCode});
+			}
 
 			if (typeof(data.itemForEquipment) !== 'undefined')
 			{
@@ -143,12 +137,31 @@ function finalizeRightClickOnStashedItem(data, callbackFunction)
 				removeItemFromStash(data.itemForEquipment.ident);
 				console.log("adding to equipment");
 				updateItemInSlot(data.itemForEquipment.slot, data.itemForEquipment);
-			}
 
-			if (typeof(data.itemForStash) !== 'undefined')
-			{
-				console.log("adding to stash");
-				window.turmoil.stash.items.push({"ident": data.itemForStash.ident, rarity: data.itemForStash.rarity, filePath: data.itemForStash.filePath, fileCode: data.itemForStash.fileCode});
+				switch (data.itemForEquipment.type)
+				{
+					case 'ACCESSORY':
+						playAudio('soundAccessoryJewellery');
+						break;
+					case 'ARMOR':
+						playAudio('soundMediumArmor');
+						break;
+					case 'WEAPON':
+						playAudio('soundWeapon');
+
+						//TODO: also handle effect for weapons
+
+						// if (data.equippedItemSlot === 'slot_right_hand' || data.equippedItemSlot === 'slot_left_hand')
+						// {
+						// 	jQuery('#' + data.equippedItemSlot + '_effect').removeClass();
+						//
+						// 	if (typeof(data.equippedWeaponDamageType) != 'undefined') {
+						// 		jQuery('#' + data.equippedItemSlot + '_effect').addClass('item-weapon-bg-' + data.equippedWeaponDamageType);
+						// 	}
+						// }
+
+						break;
+				}
 			}
 
 			if (typeof(callbackFunction) === 'function')
@@ -157,32 +170,10 @@ function finalizeRightClickOnStashedItem(data, callbackFunction)
 				callbackFunction();
 			}
 
-			//TODO: sound
-			// if (typeof(data.equippedItemType) != 'undefined')
-			// {
-			// 	//TODO perhaps generate the proper resource name in groovy so enums could be used
-			// 	switch (data.equippedItemType)
-			// 	{
-			// 		case 'ACCESSORY':
-			// 			playAudio('soundAccessoryJewellery');
-			// 			break;
-			// 		case 'ARMOR':
-			// 			playAudio('soundMediumArmor');
-			// 			break;
-			// 		case 'WEAPON':
-			// 			playAudio('soundWeapon');
-			// 			break;
-			// 	}
-			// }
-
 			//TODO: handle updating of statistic window
 			//updateStatisticsWindow();
-		}
 
-		// if (typeof(data.equippedItemId) != 'undefined')
-		// {
-		// 	jQuery('#stash_item_' + data.equippedItemId).remove();
-		// }
+		//TODO: cleanup
 
 		//putItemToStash(data);
 	}

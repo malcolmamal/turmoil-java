@@ -1,7 +1,6 @@
 package info.nemhauser.turmoil.response;
 
 import info.nemhauser.turmoil.engine.domain.Item;
-import info.nemhauser.turmoil.engine.domain.Weapon;
 import info.nemhauser.turmoil.engine.enums.ItemSlot;
 
 public class ItemInEquipmentResponse
@@ -10,17 +9,13 @@ public class ItemInEquipmentResponse
 	private String fileCode;
 	private String filePath;
 	private String rarity;
+	private String type;
 
 	private String slot;
 
-	public ItemInEquipmentResponse(String ident, String fileCode, String filePath, String rarity, ItemSlot slot)
-	{
-		this.ident = ident;
-		this.fileCode = fileCode;
-		this.filePath = filePath;
-		this.rarity = rarity;
-		this.slot = slot.getClassName();
-	}
+	/*
+	 * TODO: extends ItemInEquipmentResponse
+	 */
 
 	public ItemInEquipmentResponse(Item item, ItemSlot slot)
 	{
@@ -28,6 +23,7 @@ public class ItemInEquipmentResponse
 		this.fileCode = item.getFileCode();
 		this.filePath = item.getFullImagePath();
 		this.rarity = item.getRarityClass();
+		this.type = item.itemType.toString();
 		this.slot = slot.getClassName();
 	}
 
@@ -49,6 +45,11 @@ public class ItemInEquipmentResponse
 	public String getRarity()
 	{
 		return rarity;
+	}
+
+	public String getType()
+	{
+		return type;
 	}
 
 	public String getSlot()
