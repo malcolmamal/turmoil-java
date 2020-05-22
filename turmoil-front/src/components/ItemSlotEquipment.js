@@ -3,10 +3,11 @@ import {actionRightClickOnEquipment} from "../js/turmoil-start";
 
 import { connect } from "react-redux";
 import { updateCharacterStats } from "../js/actions/index";
+import {updateCharacterState} from "../js/window-stats";
 
 function mapDispatchToProps(dispatch) {
 	return {
-		updateCharacterStats: stats => dispatch(updateCharacterStats(stats))
+		updateCharacterStats: characterState => dispatch(updateCharacterStats(characterState))
 	};
 }
 
@@ -18,6 +19,8 @@ class ConnectedItemSlotEquipment extends React.Component
 		this.onContextMenuHandler = this.onContextMenuHandler.bind(this);
 
 		this.updateItems = this.updateItems.bind(this);
+
+		this.doSomething = this.doSomething.bind(this);
 	}
 
 	onContextMenuHandler(event, item)
@@ -28,8 +31,15 @@ class ConnectedItemSlotEquipment extends React.Component
 			actionRightClickOnEquipment(item, this.updateItems);
 
 			//TODO: update stats
-			this.props.updateCharacterStats({ item });
+			updateCharacterState(this.doSomething);
 		}
+	}
+
+	doSomething(data)
+	{
+		console.log('do something', data);
+		this.props.updateCharacterStats(data);
+		console.log('do something done');
 	}
 
 	updateItems()

@@ -1,12 +1,23 @@
 import React from "react";
 import {actionRightClickOnStashedItem} from "../js/turmoil-start";
+import {updateCharacterStats} from "../js/actions";
+import {connect} from "react-redux";
+import {updateCharacterState} from "../js/window-stats";
 
-export default class ItemSlotStash extends React.Component
+function mapDispatchToProps(dispatch) {
+	return {
+		updateCharacterStats: characterState => dispatch(updateCharacterStats(characterState))
+	};
+}
+
+class ConnectedItemSlotStash extends React.Component
 {
 	constructor(props) {
 		super(props);
 
 		this.updateItems = this.updateItems.bind(this);
+
+		this.doSomething = this.doSomething.bind(this);
 	}
 
 	onContextMenuHandler(event, itemId)
@@ -14,6 +25,15 @@ export default class ItemSlotStash extends React.Component
 		event.preventDefault();
 
 		actionRightClickOnStashedItem(itemId, this.updateItems);
+
+		updateCharacterState(this.doSomething);
+	}
+
+	doSomething(data)
+	{
+		console.log('do something', data);
+		this.props.updateCharacterStats(data);
+		console.log('do something done');
 	}
 
 	updateItems()
@@ -47,3 +67,10 @@ export default class ItemSlotStash extends React.Component
 		);
 	}
 }
+
+const ItemSlotStash = connect(
+	null,
+	mapDispatchToProps
+)(ConnectedItemSlotStash);
+
+export default ItemSlotStash;

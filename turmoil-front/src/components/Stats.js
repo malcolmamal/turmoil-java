@@ -5,28 +5,6 @@ import CharacterState from "./CharacterState";
 
 export default class Stats extends React.Component
 {
-	constructor(props) {
-		super(props);
-		this.state = {
-			characterState: {}
-		}
-
-		this.updateState = this.updateState.bind(this);
-	}
-
-	componentDidMount() {
-		window.turmoil.ajax.exec({
-			url: 'character/state',
-			onSuccess: this.updateState,
-		});
-	}
-
-	updateState(content)
-	{
-		console.log("state content", content);
-		this.setState({characterState: content});
-	}
-
 	render() {
 		const background = {
 			backgroundImage: "url('/images/backgrounds/background_brown_fabric_300x700.png')",
@@ -38,7 +16,7 @@ export default class Stats extends React.Component
 			<Window ident="stats" background={background}>
 				<div id="statsContent" className="scrollableContainer statsContainer"
 					 style={{width: "284px", height: "680px"}}>
-					<CharacterState characterState={this.state.characterState}/>
+					<CharacterState/>
 				</div>
 			</Window>
 		);
