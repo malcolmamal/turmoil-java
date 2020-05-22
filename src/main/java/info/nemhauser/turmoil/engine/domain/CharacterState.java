@@ -61,6 +61,7 @@ public class CharacterState
 	public double resistArcane;
 	public double resistBleed;
 	public double resistPiercing;
+	public double resistAllElemental;
 	public double resistAll;
 
 	public double lifeHit;
@@ -88,7 +89,7 @@ public class CharacterState
 	public double chanceToShock;
 	public double chanceToDevastate;
 
-	private HashMap<String, Item> items = new HashMap<String, Item>();
+	private final HashMap<String, Item> items = new HashMap<>();
 
 	public void resetValues()
 	{
@@ -287,5 +288,22 @@ public class CharacterState
 	public void putItem(String itemSlotKey, Item item)
 	{
 		items.put(itemSlotKey, item);
+	}
+
+	public boolean removeItem(String itemSlotKey)
+	{
+		if (items.containsKey(itemSlotKey))
+		{
+			items.remove(itemSlotKey);
+
+			return true;
+		}
+
+		return false;
+	}
+
+	public HashMap<String, Item> getItems()
+	{
+		return items;
 	}
 }

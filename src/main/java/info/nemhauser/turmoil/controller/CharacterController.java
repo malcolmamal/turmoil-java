@@ -21,7 +21,7 @@ public class CharacterController
 
 	@RequestMapping(value = "/character/state", produces = "application/json")
 	public @ResponseBody
-	CharacterState getItemsInStash()
+	CharacterState getCharacterStats()
 	{
 		return TurmoilApplication.getCharacterState();
 	}

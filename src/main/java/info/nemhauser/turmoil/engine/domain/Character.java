@@ -5,6 +5,7 @@ import info.nemhauser.turmoil.engine.enums.ArmorType;
 import info.nemhauser.turmoil.engine.enums.ItemSlot;
 import info.nemhauser.turmoil.engine.enums.WeaponType;
 import info.nemhauser.turmoil.engine.exceptions.CouldNotEquipException;
+import info.nemhauser.turmoil.engine.helpers.CharacterStateHelper;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -39,7 +40,7 @@ public class Character extends Person
 	Accessory slotRingThree;
 	Accessory slotRingFour;
 
-	CharacterState characterState;
+	private CharacterState characterState;
 
 	public String toString() {
 		return name + "[" + level + "]";
@@ -106,25 +107,45 @@ public class Character extends Person
 			e.printStackTrace();
 		}
 
+		if (itemToReturn != null)
+		{
+			// TODO: do it better
+			CharacterStateHelper.removeItem(characterState, itemToReturn);
+		}
+
 		return itemToReturn;
 	}
 
 	public Item equip(Item item) throws CouldNotEquipException
 	{
+		Item itemToReturn = null;
+
 		switch (item.itemType)
 		{
 			case ARMOR -> {
-				return equipArmor((Armor) item);
+				itemToReturn = equipArmor((Armor) item);
+
+				break;
 			}
 			case ACCESSORY -> {
-				return equipAccessory((Accessory) item);
+				itemToReturn = equipAccessory((Accessory) item);
+
+				break;
 			}
 			case WEAPON -> {
-				return equipWeapon((Weapon) item);
+				itemToReturn = equipWeapon((Weapon) item);
+
+				break;
 			}
 		}
 
-		return null;
+		if (item.getItemSlot() != null)
+		{
+			// TODO: do it better
+			CharacterStateHelper.addItem(characterState, item);
+		}
+
+		return itemToReturn;
 	}
 
 	public Armor equipArmor(Armor armor)
@@ -313,5 +334,15 @@ public class Character extends Person
 	public void setName(String name)
 	{
 		this.name = name;
+	}
+
+	public CharacterState getCharacterState()
+	{
+		return characterState;
+	}
+
+	public void setCharacterState(CharacterState characterState)
+	{
+		this.characterState = characterState;
 	}
 }

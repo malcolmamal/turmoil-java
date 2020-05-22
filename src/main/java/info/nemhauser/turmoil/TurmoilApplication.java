@@ -8,6 +8,7 @@ import info.nemhauser.turmoil.engine.domain.Weapon;
 import info.nemhauser.turmoil.engine.enums.ItemRarity;
 import info.nemhauser.turmoil.engine.enums.ItemSlot;
 import info.nemhauser.turmoil.engine.enums.ItemType;
+import info.nemhauser.turmoil.engine.exceptions.CouldNotEquipException;
 import info.nemhauser.turmoil.engine.generators.ItemGenerator;
 import info.nemhauser.turmoil.engine.helpers.CharacterStateHelper;
 import info.nemhauser.turmoil.engine.helpers.InstanceHelper;
@@ -47,17 +48,20 @@ public class TurmoilApplication
 
 		characterState = new CharacterState();
 		characterState.resetValues();
+		character.setCharacterState(characterState);
 
-		character.slotRightHand = (Weapon) ItemGenerator.rollItemOfRarityAndType(character, ItemRarity.LEGENDARY, ItemType.WEAPON);
-		character.slotRightHand.setItemSlot(ItemSlot.RIGHT_HAND);
-
-		CharacterStateHelper.updateCharacterStateWithItem(characterState, character.slotRightHand, ItemSlot.RIGHT_HAND);
+		try
+		{
+			character.equip(ItemGenerator.rollItemOfRarityAndType(character, ItemRarity.LEGENDARY, ItemType.WEAPON));
+		}
+		catch (CouldNotEquipException e)
+		{
+			e.printStackTrace();
+		}
 
 		//		items.each {
 		//			updateCharacterStateWithItem(characterState, it, it.itemSlot);
 		//		}
-
-		CharacterStateHelper.computeValuesForCharacterState(characterState, character);
 
 		serverState.addItem(ItemGenerator.rollItem(character));
 		serverState.addItem(ItemGenerator.rollItem(character));
