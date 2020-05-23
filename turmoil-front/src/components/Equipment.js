@@ -4,7 +4,6 @@ import ItemSlotEquipment from "./ItemSlotEquipment";
 import {updateItemsInEquipmentAction} from "../js/actions";
 import {connect} from "react-redux";
 
-
 const mapStateToProps = state => {
 	return { equipmentItems: state.equipmentItems };
 };
@@ -23,20 +22,10 @@ class ConnectedEquipment extends React.Component
 	constructor(props) {
 		super(props);
 
-		this.updateStashItems = this.updateStashItems.bind(this);
-		this.updateItemsInStash = this.updateItemsInStash.bind(this);
-		this.updateEquipmentItems = this.updateEquipmentItems.bind(this);
-		this.updateItemsInEquipment = this.updateItemsInEquipment.bind(this);
-
 		this.wornItems = this.wornItems.bind(this);
 	}
 
 	componentDidMount() {
-
-		console.log("equipment props items at mount", this.props.equipmentItems);
-
-		console.log("items at mount", window.turmoil.equipment.items);
-
 		window.turmoil.ajax.exec({
 			url: 'initializeEquipment',
 			onSuccess: this.wornItems
@@ -46,22 +35,6 @@ class ConnectedEquipment extends React.Component
 	wornItems(content)
 	{
 		this.props.updateItems({wornItems: content});
-	}
-
-	updateItemsInStash(content) {
-		this.props.updateItemsInStash(content);
-	}
-
-	updateItemsInEquipment(content) {
-		this.props.updateItemsInEquipment(content);
-	}
-
-	updateStashItems() {
-		this.props.updateStashItems(window.turmoil.stash);
-	}
-
-	updateEquipmentItems() {
-		this.props.updateEquipmentItems(window.turmoil.equipment);
 	}
 
 	prepareEquipmentItems(equipmentItems)
@@ -75,10 +48,7 @@ class ConnectedEquipment extends React.Component
 	}
 
 	render() {
-		console.log("equipment props items at render", this.props.equipmentItems);
-
 		const backgroundImage = "url('../images/character_male.png')";
-
 		const equipmentItems = this.prepareEquipmentItems(this.props.equipmentItems);
 
 		return (
@@ -103,8 +73,6 @@ class ConnectedEquipment extends React.Component
 									left={item.left}
 									key={item.slot}
 									iconItemSize={item.iconItemSize ? item.iconItemSize : ""}
-									updateStash={this.updateStashItems}
-									updateEquipment={this.updateEquipmentItems}
 								/>
 							))}
 

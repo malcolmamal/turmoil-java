@@ -2,8 +2,6 @@ export function handleUpdateItemsInEquipment(currentState, payload)
 {
 	let newState = {};
 
-	console.log("what is payload in equipment", payload);
-
 	if (typeof payload.wornItems !== 'undefined')
 	{
 		newState.equipmentItems = [...payload.wornItems.items];
@@ -29,10 +27,6 @@ export function handleUpdateItemsInEquipment(currentState, payload)
 		removeFromArrayByIdent(ident, newState.equipmentItems);
 		newState.equipmentItems.push(window.turmoil.equipment.defaultItems[slot]);
 	}
-
-	console.log("new state is", newState.equipmentItems);
-
-	console.log("what is now in window.turmoil.equipment.items", window.turmoil.equipment.items);
 
 	return properResponse(currentState, newState);
 }

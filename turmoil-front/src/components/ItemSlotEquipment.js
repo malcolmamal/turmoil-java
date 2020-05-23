@@ -1,13 +1,12 @@
 import React from "react";
 import {actionRightClickOnEquipment} from "../js/turmoil-start";
-
-import { connect } from "react-redux";
-import {updateCharacterStats, updateItemsInStashAction, updateItemsInEquipmentAction} from "../js/actions";
+import {connect} from "react-redux";
+import {updateCharacterStatsAction, updateItemsInStashAction, updateItemsInEquipmentAction} from "../js/actions";
 import {updateCharacterState} from "../js/window-stats";
 
 function mapDispatchToProps(dispatch) {
 	return {
-		updateCharacterStats: characterState => dispatch(updateCharacterStats(characterState)),
+		updateCharacterStats: characterState => dispatch(updateCharacterStatsAction(characterState)),
 		updateEquipmentItems: equipmentItems => dispatch(updateItemsInEquipmentAction(equipmentItems)),
 		updateStashItems: stashItems => dispatch(updateItemsInStashAction(stashItems))
 	};

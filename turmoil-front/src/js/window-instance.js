@@ -4,115 +4,6 @@ import "jquery-ui/ui/widgets/resizable";
 
 import {resetZIndex} from './turmoil-windows';
 import {stopAudioLoop, playAudio, playAudioLoop, randomInt} from './turmoil-general';
-import {putItemToStash} from './turmoil-start';
-
-export function updateItemInSlot(slot, item)
-{
-	if (window.turmoil.equipment.items.length === 0)
-	{
-		window.turmoil.equipment.items = window.turmoil.equipment.defaultItems;
-	}
-
-	console.log("??????????????????????????? items before update", window.turmoil.equipment.items);
-
-	console.log("updating item", item);
-
-	let itemToPush = {};
-	itemToPush.item = item;
-	itemToPush.slot = slot;
-
-	let removedItem = updateItem(slot, item.ident);
-	if (removedItem.top)
-	{
-		itemToPush.top = removedItem.top;
-		itemToPush.left = removedItem.left;
-		itemToPush.iconItemSize = removedItem.iconItemSize;
-	}
-
-	if (removedItem.noChange)
-	{
-		console.log("we will not add to items since we did not remove and the existing one is already there");
-		return;
-	}
-
-	console.log("!!!!!!!!!!!!!!!!!!!!!!!!! pushing", window.turmoil.equipment.items.length, itemToPush, window.turmoil.equipment.items);
-	window.turmoil.equipment.items.push(itemToPush);
-}
-
-export function removeItem(slot, ident)
-{
-	return removeOrUpdateItem(slot, ident, false);
-}
-
-function updateItem(slot, ident)
-{
-	return removeOrUpdateItem(slot, ident, true);
-}
-
-function removeOrUpdateItem(slot, ident, onlyUpdate)
-{
-	let index;
-
-	for (index = window.turmoil.equipment.items.length; index-- > 0 && window.turmoil.equipment.items[index].slot !== slot;) {}
-	if (index > -1) {
-		let removedItem = window.turmoil.equipment.items[index];
-
-		if (onlyUpdate && removedItem.ident === ident)
-		{
-			// do not remove actually, because it's the same
-			console.log("do not remove item for ident/slot", ident, slot)
-
-			return {noChange: true};
-		}
-
-		window.turmoil.equipment.items.splice(index, 1);
-
-		console.log("removed item for slot", slot, removedItem);
-
-		if (!onlyUpdate)
-		{
-			window.turmoil.equipment.items.push(restoreEmptySlot(removedItem, slot));
-		}
-
-		return removedItem;
-	}
-
-	console.log("did not find item to remove for slot/ident", slot, ident);
-
-	return {};
-}
-
-function restoreEmptySlot(removedItem, slot)
-{
-	let emptySlot = {
-		slot: slot, top: removedItem.top, left: removedItem, item: {}
-	};
-
-	if (typeof(removedItem.iconItemSize) !== 'undefined')
-	{
-		emptySlot.iconItemSize = removedItem.iconItemSize;
-	}
-
-	return emptySlot;
-}
-
-export function removeItemFromStash(ident)
-{
-	//TODO: unify both functions (this and removeItem)
-	let index;
-
-	for (index = window.turmoil.stash.items.length; index-- > 0 && window.turmoil.stash.items[index].ident !== ident;) {}
-	if (index > -1) {
-		let removedItem = window.turmoil.stash.items[index];
-		window.turmoil.stash.items.splice(index, 1);
-
-		console.log("removed item for ident from stash", ident, removedItem);
-
-		return removedItem;
-	}
-
-	return {};
-}
 
 function svgAddClass(element, className)
 {
@@ -349,24 +240,15 @@ function finalizeActionOnPolygon(data, callbackFunction)
 			handleMoveToPolygon(jQuery('#' + data.newEnemyPosition), jQuery('#testEnemy'));
 		}
 
-		if (typeof(data.stashedItemId) != 'undefined')
+		if (typeof(data.itemForStash) != 'undefined')
 		{
 			console.log("stashedItemId looks good", data);
-			window.turmoil.stash.items.push({"ident": data.stashedItemId, rarity: data.rarity, filePath: data.filePath, fileCode: data.fileCode});
-
-			//TODO: handle windows position save, maybe as props
 
 			if (typeof(callbackFunction) === 'function')
 			{
 				console.log('calling function!');
-				callbackFunction();
+				callbackFunction(data.itemForStash);
 			}
-		}
-
-		//TODO: i think it's not used anymore, but take a look at spinner action
-		if (typeof(data.stashedItemId) != 'undefined' && typeof(data.stashedItemContent) != 'undefined')
-		{
-			putItemToStash(data);
 		}
 
 		if (typeof(data.friendlyTurn) != 'undefined' && data.friendlyTurn === true)

@@ -1,8 +1,7 @@
 import React from "react";
 import {FormattedMessage} from "react-intl";
-
-import { connect } from "react-redux";
-import {updateCharacterStats} from "../js/actions";
+import {connect} from "react-redux";
+import {updateCharacterStatsAction} from "../js/actions";
 import {updateCharacterState} from "../js/window-stats";
 
 const mapStateToProps = state => {
@@ -11,16 +10,12 @@ const mapStateToProps = state => {
 
 function mapDispatchToProps(dispatch) {
 	return {
-		updateCharacterStats: characterState => dispatch(updateCharacterStats(characterState))
+		updateCharacterStats: characterState => dispatch(updateCharacterStatsAction(characterState))
 	};
 }
 
 class ConnectedCharacterState extends React.Component
 {
-	constructor(props) {
-		super(props);
-	}
-
 	componentDidMount() {
 		updateCharacterState(this.props.updateCharacterStats);
 	}

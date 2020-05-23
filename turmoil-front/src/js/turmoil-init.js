@@ -12,21 +12,7 @@ window.turmoil.instance.enemies = [
 	//{ident: "testEnemy2", portrait: "male/male_portrait_054.png", position: "polygon-8-5"},
 ];
 
-window.turmoil.stash = {};
-window.turmoil.stash.items = [
-	// {"ident": "itemA", rarity: "white"},
-	// {"ident": "itemB", rarity: "blue"},
-	// {"ident": "itemC", rarity: "yellow"},
-	// {"ident": "itemD", rarity: "orange"},
-	// {"ident": "itemE", rarity: "green"},
-	// {"ident": "itemF", rarity: "red"},
-	// {"ident": "itemG", rarity: "purple"},
-];
-
 window.turmoil.equipment = {};
-window.turmoil.equipment.items = [];
-window.turmoil.equipment.defaultItems = [];
-
 window.turmoil.equipment.defaultItems = {
 	slot_right_hand: { slot: "slot_right_hand", top: 175, left: 90, item: {}},
 	slot_left_hand: { slot: "slot_left_hand", top: 105, left: 625, item: {}},
@@ -46,10 +32,6 @@ window.turmoil.equipment.defaultItems = {
 	slot_gloves: { slot: "slot_gloves", top: 35, left: 90, item: {}},
 	slot_bracers: { slot: "slot_bracers", top: 105, left: 500, item: {}}
 };
-
-window.turmoil.equipment.items = [];
-
-console.log("items at turmoil-init", window.turmoil.equipment.items);
 
 window.turmoil.sounds = {};
 window.turmoil.soundLoops = {};
