@@ -42,7 +42,7 @@ public class TurmoilApplication
 		serverState = new ServerState();
 		serverState.getItemTemplates().initialize();
 
-		character = new Character();
+		character = new Character("testElement");
 		character.setName("Fox Nemhauser");
 		serverState.getCharacters().put("fox", character);
 
@@ -58,10 +58,6 @@ public class TurmoilApplication
 		{
 			e.printStackTrace();
 		}
-
-		//		items.each {
-		//			updateCharacterStateWithItem(characterState, it, it.itemSlot);
-		//		}
 
 		serverState.addItem(ItemGenerator.rollItem(character));
 		serverState.addItem(ItemGenerator.rollItem(character));

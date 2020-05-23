@@ -46,6 +46,8 @@ window.turmoil.log = function(content, target)
 		target = 'all';
 	}
 
+	console.log('[' + target + ']', content);
+
 	let consoleTarget = jQuery('#console-' + target);
 	if (consoleTarget.length > 0)
 	{
@@ -99,6 +101,10 @@ window.turmoil.logCombat = function(content)
 {
 	window.turmoil.log(content, 'combat');
 };
+
+window.turmoil.activeUnit = null;
+
+// functions
 
 function getCurrentDateTime()
 {

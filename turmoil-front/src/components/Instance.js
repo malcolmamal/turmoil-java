@@ -4,7 +4,7 @@ import '../js/window-instance';
 import {actionOnUnit, handleMoveToPolygon} from "../js/window-instance";
 import Window from "./Window";
 import jQuery from "jquery";
-import {updateItemsInStashAction} from "../js/actions";
+import {updateEnemyUnitsAction, updateFriendlyUnitsAction, updateItemsInStashAction} from "../js/actions";
 import {connect} from "react-redux";
 
 export class CharacterUnit extends React.Component
@@ -12,16 +12,18 @@ export class CharacterUnit extends React.Component
 	render()
 	{
 		const ident = this.props.ident;
+		const portrait = this.props.portrait;
 		const unitStyle = {
-			width: '60px',
+			width: this.props.healthBar + 'px',
 		}
+
 		return(
 			<div className="instanceElement" id={ident}>
 				<div className="instancePortraitHealthBar">
 					<div className="instancePortraitHealthBarInner" id={ident + "Health"} style={unitStyle}/>
 				</div>
 				<img alt="character" className="instancePortrait"
-					 src="/images/portraits/male/male_portrait_052.png"/>
+					 src={"/images/portraits/" + portrait}/>
 				<div id={ident + "Effect"}/>
 			</div>
 		);
@@ -31,9 +33,12 @@ export class CharacterUnit extends React.Component
 	{
 		let that = this;
 		const ident = that.props.ident;
+		const position = that.props.position;
 		setTimeout(function() {
-			handleMoveToPolygon(jQuery('#polygon-1-4'), jQuery('#' + ident));
-			}, 175
+			window.turmoil.activeUnit = jQuery('#' + ident);
+
+			handleMoveToPolygon(jQuery('#' + position), window.turmoil.activeUnit);
+			}, 200
 		);
 	}
 }
@@ -68,7 +73,7 @@ class ConnectedEnemyUnit extends React.Component
 		const ident = this.props.ident;
 		const portrait = this.props.portrait;
 		const unitStyle = {
-			width: '60px',
+			width: this.props.healthBar + 'px',
 		}
 
 		return(
@@ -101,23 +106,33 @@ const EnemyUnit = connect(
 	mapDispatchToProps
 )(ConnectedEnemyUnit);
 
-export default class Instance extends React.Component
+
+const mapStateToPropsForInstance = state => {
+	return {
+		enemyUnits: state.enemyUnits,
+		friendlyUnits: state.friendlyUnits,
+	};
+};
+
+function mapDispatchToPropsForInstance(dispatch) {
+	return {
+		updateEnemyUnits: enemyUnits => dispatch(updateEnemyUnitsAction(enemyUnits)),
+		updateFriendlyUnits: friendlyUnits => dispatch(updateFriendlyUnitsAction(friendlyUnits)),
+	};
+}
+
+class ConnectedInstance extends React.Component
 {
-	getUnits() {
-		return window.turmoil.instance.enemies;
-	}
-
-	updateUnits(content, that)
-	{
-		window.turmoil.instance.enemies = content.enemyUnits;
-
-		that.setState({enemyUnits: that.getUnits()});
-	}
-
 	componentDidMount() {
 		window.turmoil.ajax.exec({
-			url: 'initializeUnits',
-			onSuccess: this.updateUnits,
+			url: 'instance/initializeEnemyUnits',
+			onSuccess: this.props.updateEnemyUnits,
+			onSuccessThis: this
+		});
+
+		window.turmoil.ajax.exec({
+			url: 'instance/initializeFriendlyUnits',
+			onSuccess: this.props.updateFriendlyUnits,
 			onSuccessThis: this
 		});
 	}
@@ -125,18 +140,13 @@ export default class Instance extends React.Component
 	addUnit()
 	{
 		window.turmoil.ajax.exec({
-			url: 'instanceAddEnemy',
-			onSuccess: this.updateUnits,
+			url: 'instance/instanceAddEnemy',
+			onSuccess: this.props.updateEnemyUnits,
 			onSuccessThis: this
 		});
-
 	}
 
 	render() {
-		this.state = {
-			enemyUnits: this.getUnits()
-		}
-
 		const background = {
 			backgroundImage: "url('/images/backgrounds/background_grunge_650x550.png')",
 			width: '650px',
@@ -145,10 +155,12 @@ export default class Instance extends React.Component
 
 		return (
 			<Window ident="instance" background={background}>
-				<CharacterUnit ident="testElement"/>
+				{this.props.friendlyUnits.map(unit => (
+					<CharacterUnit ident={unit.ident} portrait={unit.portrait} healthBar={unit.healthBar} position={unit.position} key={unit.ident}/>
+				))}
 
-				{this.state.enemyUnits.map(unit => (
-					<EnemyUnit ident={unit.ident} portrait={unit.portrait} position={unit.position} key={unit.ident}/>
+				{this.props.enemyUnits.map(unit => (
+					<EnemyUnit ident={unit.ident} portrait={unit.portrait} healthBar={unit.healthBar} position={unit.position} key={unit.ident}/>
 				))}
 
 				<div>
@@ -537,3 +549,10 @@ export default class Instance extends React.Component
 		);
 	}
 }
+
+const Instance = connect(
+	mapStateToPropsForInstance,
+	mapDispatchToPropsForInstance
+)(ConnectedInstance);
+
+export default Instance

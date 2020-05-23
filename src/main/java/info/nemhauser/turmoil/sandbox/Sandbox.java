@@ -37,7 +37,7 @@ public class Sandbox
 	{
 		System.out.println("Sandbox started...");
 
-		Character character = new Character();
+		Character character = new Character("testElement");
 		Item item = ItemGenerator.rollItem(character);
 
 		System.out.println(item.toStringFull());

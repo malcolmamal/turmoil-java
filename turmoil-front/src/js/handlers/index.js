@@ -1,3 +1,5 @@
+// handlers
+
 export function handleUpdateItemsInEquipment(currentState, payload)
 {
 	let newState = {};
@@ -58,6 +60,40 @@ export function handleUpdateItemsInStash(currentState, payload)
 
 	return properResponse(currentState, newState);
 }
+
+export function handleUpdateEnemyUnits(currentState, payload)
+{
+	let newState = {};
+
+	console.log("reduce enemy", payload);
+
+	if (typeof payload.enemyUnits !== 'undefined')
+	{
+		newState.enemyUnits = [...payload.enemyUnits];
+
+		return properResponse(currentState, newState);
+	}
+
+	return properResponse(currentState, newState);
+}
+
+export function handleUpdateFriendlyUnits(currentState, payload)
+{
+	let newState = {};
+
+	console.log("reduce friendly", payload);
+
+	if (typeof payload.friendlyUnits !== 'undefined')
+	{
+		newState.friendlyUnits = [...payload.friendlyUnits];
+
+		return properResponse(currentState, newState);
+	}
+
+	return properResponse(currentState, newState);
+}
+
+// helper functions
 
 function removeFromArrayByIdent(ident, itemsArray)
 {

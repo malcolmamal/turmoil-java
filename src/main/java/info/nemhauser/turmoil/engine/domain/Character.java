@@ -1,15 +1,11 @@
 package info.nemhauser.turmoil.engine.domain;
 
-import info.nemhauser.turmoil.engine.enums.AccessoryType;
-import info.nemhauser.turmoil.engine.enums.ArmorType;
 import info.nemhauser.turmoil.engine.enums.ItemSlot;
 import info.nemhauser.turmoil.engine.enums.WeaponType;
 import info.nemhauser.turmoil.engine.exceptions.CouldNotEquipException;
 import info.nemhauser.turmoil.engine.helpers.CharacterStateHelper;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 
 public class Character extends Person
@@ -41,6 +37,11 @@ public class Character extends Person
 	Accessory slotRingFour;
 
 	private CharacterState characterState;
+
+	public Character(String ident)
+	{
+		super(ident);
+	}
 
 	public String toString() {
 		return name + "[" + level + "]";

@@ -5,6 +5,7 @@ import info.nemhauser.turmoil.config.Logger;
 import info.nemhauser.turmoil.engine.combat.effects.DamageDealt;
 import info.nemhauser.turmoil.engine.domain.Character;
 import info.nemhauser.turmoil.engine.domain.Item;
+import info.nemhauser.turmoil.engine.domain.Monster;
 import info.nemhauser.turmoil.engine.helpers.CharacterStateHelper;
 import info.nemhauser.turmoil.engine.helpers.CombatHelper;
 import info.nemhauser.turmoil.engine.helpers.ExperienceHelper;
@@ -13,6 +14,7 @@ import info.nemhauser.turmoil.engine.instances.CombatState;
 import info.nemhauser.turmoil.engine.world.map.graph.Instance;
 import info.nemhauser.turmoil.engine.world.map.graph.Pathing;
 import info.nemhauser.turmoil.response.EnemyUnitResponse;
+import info.nemhauser.turmoil.response.FriendlyUnitResponse;
 import info.nemhauser.turmoil.response.ItemInStashResponse;
 import info.nemhauser.turmoil.response.MoveResponse;
 
@@ -20,36 +22,22 @@ import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.Map;
 
 
 @RestController
 class InstanceController {
 
-	private static final ArrayList<EnemyUnitResponse> enemyUnits = new ArrayList<>();
-	private static int iterator = 0;
-	private static int portrait = 10;
-
-	@RequestMapping(value = "/initializeUnits", produces = "application/json")
+	@RequestMapping(value = "/instance/initializeEnemyUnits", produces = "application/json")
 	public @ResponseBody
-	JSONObject instanceInitializeUnits()
+	JSONObject instanceInitializeEnemyUnits()
 	{
-		if (enemyUnits.size() == 0)
-		{
-			EnemyUnitResponse enemy = new EnemyUnitResponse("testEnemy", "male/male_portrait_055.png", "polygon-8-3");
-			EnemyUnitResponse enemy2 = new EnemyUnitResponse("testEnemy2", "male/male_portrait_054.png", "polygon-8-5");
-			EnemyUnitResponse enemy3 = new EnemyUnitResponse("testEnemy3", "male/male_portrait_053.png", "polygon-8-1");
-
-			enemyUnits.add(enemy);
-			enemyUnits.add(enemy2);
-			enemyUnits.add(enemy3);
-
-			iterator = 4;
-		}
-
 		JSONArray array = new JSONArray();
-		array.addAll(enemyUnits);
+
+		for (Monster monster : TurmoilApplication.getCombatState().getEnemies().values())
+		{
+			array.add(new EnemyUnitResponse(monster));
+		}
 
 		JSONObject object = new JSONObject();
 		object.put("enemyUnits", array);
@@ -57,21 +45,33 @@ class InstanceController {
 		return object;
 	}
 
-	@RequestMapping(value = "/instanceAddEnemy", produces = "application/json")
+	@RequestMapping(value = "/instance/initializeFriendlyUnits", produces = "application/json")
+	public @ResponseBody
+	JSONObject instanceInitializeFriendlyUnits()
+	{
+		//TODO: maybe join with enemy?
+
+		JSONArray array = new JSONArray();
+
+		array.add(new FriendlyUnitResponse(TurmoilApplication.getCombatState().friend));
+
+		JSONObject object = new JSONObject();
+		object.put("friendlyUnits", array);
+
+		return object;
+	}
+
+	@RequestMapping(value = "/instance/instanceAddEnemy", produces = "application/json")
 	public @ResponseBody
 	JSONObject instanceAddEnemy()
 	{
-		iterator++;
-		portrait++;
-		EnemyUnitResponse enemy = new EnemyUnitResponse(
-				"testEnemy" + iterator,
-				"male/male_portrait_0" + portrait + ".png",
-				"polygon-" + (int)(Math.floor(Math.random() * 7) + 1) + "-" + (int)(Math.floor(Math.random() * 5) + 1));
-
-		enemyUnits.add(enemy);
-
 		JSONArray array = new JSONArray();
-		array.addAll(enemyUnits);
+
+		TurmoilApplication.getCombatState().addEnemy(InstanceHelper.createMonster(TurmoilApplication.getCharacter("fox")));
+		for (Monster monster : TurmoilApplication.getCombatState().getEnemies().values())
+		{
+			array.add(new EnemyUnitResponse(monster));
+		}
 
 		JSONObject object = new JSONObject();
 		object.put("enemyUnits", array);
@@ -97,8 +97,6 @@ class InstanceController {
 		Logger.log("Attacking unit at " + position);
 		Character character = TurmoilApplication.getCharacter("fox");
 
-		double healthBarValue = 60;
-
 		if (position != null)
 		{
 			CombatState cs = TurmoilApplication.getCombatState();
@@ -113,7 +111,7 @@ class InstanceController {
 					"type", damageDealt.isCritical() ? "critical" : "",
 					"polygonId", position,
 					"damageDealt", damageDealt.getValue(),
-					"healthBar", Math.floor(cs.enemy.currentHealth * healthBarValue / cs.enemy.health)
+					"healthBar", cs.enemy.getHealthBarValue()
 			));
 
 			if (cs.enemy.currentHealth < 0)
@@ -125,9 +123,10 @@ class InstanceController {
 					object.put("itemForStash", new ItemInStashResponse(item));
 				}
 
-				cs.enemy = InstanceHelper.createMonster(character);
+				cs.addEnemy(InstanceHelper.createMonster(TurmoilApplication.getCharacter("fox")));
+
 				object.put("newEnemyPosition", cs.enemy.instancePosition);
-				object.put("healthBar", healthBarValue);
+				object.put("healthBar", cs.enemy.getHealthBarValue());
 
 				//TODO: handle it properly
 				character.experience += 10;
@@ -146,11 +145,8 @@ class InstanceController {
 
 	@RequestMapping(value = "/instanceActionEnemy/{enemy}", produces = "application/json")
 	public @ResponseBody
-	JSONObject instanceActionEnemy(@PathVariable String enemy) {
-
-		//TODO
-		double healthBarValue = 60;
-
+	JSONObject instanceActionEnemy(@PathVariable String enemy)
+	{
 		Logger.log("!!!!!! doing stuff for " + enemy);
 
 		CombatState cs = TurmoilApplication.getCombatState();
@@ -176,7 +172,7 @@ class InstanceController {
 					"polygonId", moveTo,
 					"actionType", "attack",
 					"damageDealt", 5,
-					"healthBar", Math.floor(cs.friend.currentHealth * healthBarValue / cs.friend.health),
+					"healthBar", cs.friend.getHealthBarValue(),
 					"attackingUnit", enemy
 			));
 		}
@@ -187,8 +183,7 @@ class InstanceController {
 				"success", true,
 				"polygonId", moveTo,
 				"actionType", "move",
-				"unitToMove", enemy,
-				"path", "polygon-5-2"
+				"unitToMove", enemy
 		));
 	}
 }

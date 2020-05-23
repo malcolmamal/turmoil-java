@@ -64,9 +64,6 @@ function blink(element)
 	});
 }
 
-let initialPolygonMove = true;
-let activeUnit = null;
-
 function getPolygonForUnit(unit)
 {
 	return jQuery('#' + jQuery(unit).data('previousPolygonId'));
@@ -96,11 +93,11 @@ function actionOnPolygon(polygon, unit)
 {
 	if (typeof(unit) == 'undefined')
 	{
-		if (typeof(activeUnit) == 'undefined')
+		if (typeof(window.turmoil.activeUnit) == 'undefined')
 		{
 			window.turmoil.logDebug('there is no active unit', arguments);
 		}
-		unit = activeUnit;
+		unit = window.turmoil.activeUnit;
 	}
 
 	let url = '';
@@ -207,7 +204,7 @@ function finalizeActionOnPolygon(data, callbackFunction)
 {
 	if (data != null && data.success === true && typeof(data.polygonId) != 'undefined')
 	{
-		let unit = activeUnit;
+		let unit = window.turmoil.activeUnit;
 
 		let polygon = jQuery('#' + data.polygonId);
 		if (polygon.length > 0 && typeof(data.actionType) != 'undefined')
@@ -226,6 +223,7 @@ function finalizeActionOnPolygon(data, callbackFunction)
 				{
 					unit = jQuery('#' + data.unitToMove);
 				}
+				console.log("move 1", data, unit);
 				handleMoveToPolygon(polygon, unit);
 				playAudioLoop('soundMoveLeather', unit.attr('id'));
 			}
@@ -237,6 +235,7 @@ function finalizeActionOnPolygon(data, callbackFunction)
 			{
 				jQuery('#' + polygon.data('unit') + 'Health').css('width', data.healthBar);
 			}
+			console.log("move 2", data);
 			handleMoveToPolygon(jQuery('#' + data.newEnemyPosition), jQuery('#testEnemy'));
 		}
 
@@ -253,8 +252,7 @@ function finalizeActionOnPolygon(data, callbackFunction)
 
 		if (typeof(data.friendlyTurn) != 'undefined' && data.friendlyTurn === true)
 		{
-			//TODO: what is the meaning of this?
-			setTimeout(function(){actionOnPolygon(null, jQuery('#testEnemy'));}, 350);
+			setTimeout(function(){actionOnPolygon(null, jQuery('#testEnemy1'));}, 400);
 		}
 	}
 }
@@ -363,7 +361,6 @@ function addDamageIndicator(unit, value, type)
 }
 
 jQuery(function() {
-
 	jQuery(".instancePolygon").click(function() {
 		let polygon = jQuery(this);
 		actionOnPolygon(polygon);
@@ -372,6 +369,4 @@ jQuery(function() {
 	jQuery(".flatSubMenu").mouseenter(function() {
 		resetZIndex();
 	});
-
-	activeUnit = jQuery('#testElement');
 });

@@ -9,9 +9,9 @@ import info.nemhauser.turmoil.engine.domain.Monster;
 import info.nemhauser.turmoil.engine.generators.ItemGenerator;
 import info.nemhauser.turmoil.engine.instances.CombatState;
 
-
 public class InstanceHelper
 {
+	private static int monsterPosition = 0;
 	/**
 	 * @deprecated
 	 *
@@ -28,7 +28,10 @@ public class InstanceHelper
 		combatState.friend = character;
 		combatState.friend.currentHealth = combatState.friend.health;
 		combatState.friend.instancePosition = "polygon-1-4";
-		combatState.enemy = InstanceHelper.createMonster(character);
+		combatState.addEnemy(InstanceHelper.createMonster(character));
+		combatState.addEnemy(InstanceHelper.createMonster(character));
+		combatState.addEnemy(InstanceHelper.createMonster(character));
+		combatState.addEnemy(InstanceHelper.createMonster(character));
 
 		return combatState;
 	}
@@ -45,10 +48,15 @@ public class InstanceHelper
 
 	public static Monster createMonster(Character character)
 	{
-		Monster monster = new Monster();
+		monsterPosition++;
+		if (monsterPosition > 6)
+		{
+			monsterPosition = 1;
+		}
+
+		Monster monster = new Monster(monsterPosition);
 		monster.level = character.level;
 		monster.currentHealth = 100;
-		monster.instancePosition = "polygon-8-3";
 
 		monster.slotRightHand = (Weapon)ItemGenerator.rollMonsterWeapon(monster);
 		monster.lootBag.put("loot", ItemGenerator.rollItem(character));
