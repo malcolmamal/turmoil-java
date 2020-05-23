@@ -1,7 +1,9 @@
 package info.nemhauser.turmoil.response;
 
 import info.nemhauser.turmoil.engine.domain.Item;
+import info.nemhauser.turmoil.engine.domain.Weapon;
 import info.nemhauser.turmoil.engine.enums.ItemSlot;
+import info.nemhauser.turmoil.engine.enums.ItemType;
 
 public class ItemInEquipmentResponse
 {
@@ -11,6 +13,7 @@ public class ItemInEquipmentResponse
 	private String rarity;
 	private String type;
 
+	private String damageType;
 	private String slot;
 
 	/*
@@ -25,6 +28,13 @@ public class ItemInEquipmentResponse
 		this.rarity = item.getRarityClass();
 		this.type = item.itemType.toString();
 		this.slot = slot.getClassName();
+
+		this.damageType = "";
+		if (item.getItemType() == ItemType.WEAPON)
+		{
+			Weapon weapon = (Weapon) item;
+			this.damageType = weapon.damageType.toString().toLowerCase();
+		}
 	}
 
 	public String getIdent()
@@ -55,5 +65,10 @@ public class ItemInEquipmentResponse
 	public String getSlot()
 	{
 		return slot;
+	}
+
+	public String getDamageType()
+	{
+		return damageType;
 	}
 }

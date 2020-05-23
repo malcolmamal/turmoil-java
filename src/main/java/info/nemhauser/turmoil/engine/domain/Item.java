@@ -187,4 +187,9 @@ public class Item
 	{
 		return itemType == ItemType.ACCESSORY;
 	}
+
+	public ItemType getItemType()
+	{
+		return itemType;
+	}
 }

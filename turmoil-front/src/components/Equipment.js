@@ -63,9 +63,6 @@ class ConnectedEquipment extends React.Component
 						<div className="windowContentInner"
 							 style={{backgroundImage: backgroundImage, width: '800px', height: '830px'}}
 						>
-							<span id="slot_right_hand_effect" className="item-weapon-bg-holy" style={{position: 'absolute', top: '150px', left: '66px', width: '150px', height: '210px'}}/>
-							<span id="slot_left_hand_effect" className="item-weapon-bg-holy"  style={{position: 'absolute', top: '77px', left: '601px', width: '150px', height: '210px'}}/>
-
 							{equipmentItems.map(item => (
 								<ItemSlotEquipment
 									item={item.item}
