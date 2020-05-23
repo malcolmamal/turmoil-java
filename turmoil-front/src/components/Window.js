@@ -50,7 +50,7 @@ export default class Window extends React.Component
 							 onContextMenu={() => resizeToDefault(ident)}
 						>
 							<div className="handleLeft" style={{backgroundPosition: '0 -120px'}}/>
-							<div className={'handleBox ' + ident + 'HandleBox'}>Window: {ident}</div>
+							<div className={'handleBox ' + ident + 'HandleBox'} style={{textTransform: "capitalize"}}>{ident}</div>
 							<div className="handleRight" style={{backgroundPosition: '0 -120px'}}>
 								<div id="windowButtons" style={{height: '40px', width: '75px'}}>
 									<div id={ident + 'ButtonMaximize'}
