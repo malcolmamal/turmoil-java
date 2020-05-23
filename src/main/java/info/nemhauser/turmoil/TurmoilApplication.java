@@ -3,14 +3,10 @@ package info.nemhauser.turmoil;
 import info.nemhauser.turmoil.config.Logger;
 import info.nemhauser.turmoil.engine.domain.Character;
 import info.nemhauser.turmoil.engine.domain.CharacterState;
-import info.nemhauser.turmoil.engine.domain.Item;
-import info.nemhauser.turmoil.engine.domain.Weapon;
 import info.nemhauser.turmoil.engine.enums.ItemRarity;
-import info.nemhauser.turmoil.engine.enums.ItemSlot;
 import info.nemhauser.turmoil.engine.enums.ItemType;
 import info.nemhauser.turmoil.engine.exceptions.CouldNotEquipException;
 import info.nemhauser.turmoil.engine.generators.ItemGenerator;
-import info.nemhauser.turmoil.engine.helpers.CharacterStateHelper;
 import info.nemhauser.turmoil.engine.helpers.InstanceHelper;
 import info.nemhauser.turmoil.engine.instances.CombatState;
 import info.nemhauser.turmoil.engine.instances.ServerState;
@@ -94,4 +90,5 @@ public class TurmoilApplication
  * TODO:
  *  1. at some point make sure that initial actions are loaded in one go
  *  2. seems like items can now roll with HEALING damage type :-)
+ *  3. spear in second hand, equipping and unequipping two handed mace duplicates visually the spear in stash, seems like equipping it does not unequip left hand -> fixed on backend, need to check front
  */

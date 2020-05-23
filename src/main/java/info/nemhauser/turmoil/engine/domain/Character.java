@@ -246,6 +246,7 @@ public class Character extends Person
 		else if (slotRightHand == null)
 		{
 			replacedItem = slotLeftHand;
+			slotLeftHand = null;
 			slotRightHand = weapon;
 			slotRightHand.setItemSlot(ItemSlot.RIGHT_HAND);
 		}
