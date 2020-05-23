@@ -31,10 +31,10 @@ window.turmoil.log = function(content, target)
 		target = 'all';
 	}
 
-	var consoleTarget = jQuery('#console-' + target);
+	let consoleTarget = jQuery('#console-' + target);
 	if (consoleTarget.length > 0)
 	{
-		var currentDate;
+		let currentDate;
 		if (typeof(moment) == 'function')
 		{
 			currentDate = moment().format("YYYY-MM-DD HH:mm:ss.SSS");
@@ -45,10 +45,10 @@ window.turmoil.log = function(content, target)
 		}
 		currentDate = '[' + currentDate + '] ';
 
-		var currentDateObject = new Date();
+		let currentDateObject = new Date();
 		if (window.turmoil.lastLogDate != null)
 		{
-			var difference = currentDateObject.getTime() - window.turmoil.lastLogDate.getTime();
+			let difference = currentDateObject.getTime() - window.turmoil.lastLogDate.getTime();
 			currentDate += ' (' + difference + 'ms) ';
 		}
 
@@ -69,7 +69,7 @@ window.turmoil.log = function(content, target)
 
 window.turmoil.logDebug = function(content)
 {
-	var caller = '';
+	let caller = '';
 	if (typeof(arguments) == 'object')
 	{
 		if (typeof(this.callee) == 'function' && typeof(this.callee.name) == 'string') {
@@ -98,15 +98,14 @@ window.baseUrl = 'http://localhost:8080/';
 window.turmoil.ajax = {
 
 	debugInfo: '',
-	//baseUrl: '/turmoil/',
 	exec: function()
 	{
 		if (arguments.length === 1)
 		{
-			var params = arguments[0];
+			let params = arguments[0];
 			if (typeof(params.url) !== 'undefined')
 			{
-				var dataString = null;
+				let dataString = null;
 				if (typeof(params.args) !== 'undefined')
 				{
 					jQuery.each(params.args, function(name, value) {
@@ -211,7 +210,7 @@ export function playAudio(audio)
 export function playAudioLoop(audio, suffix)
 {
 	let ident = audio + '_' + suffix;
-	let sound = new Audio(window.turmoil.sounds[audio]); //document.getElementById(audio);
+	let sound = new Audio(window.turmoil.sounds[audio]);
 	window.turmoil.soundLoops[ident] = sound;
 	window.turmoil.soundLoops[ident + '_loop'] = true;
 
@@ -246,9 +245,9 @@ function isVerticalScrollPresent()
 
 function setProperContentHeight()
 {
-	var turmoilBody = jQuery('#turmoilBody');
-	var turmoilFooter = jQuery('#turmoilFooter');
-	var newFooterPosition;
+	let turmoilBody = jQuery('#turmoilBody');
+	let turmoilFooter = jQuery('#turmoilFooter');
+	let newFooterPosition;
 	if (isVerticalScrollPresent())
 	{
 		// making sure the footer is always at the bottom
@@ -263,16 +262,16 @@ function setProperContentHeight()
 	}
 	turmoilFooter.css('top', newFooterPosition + 'px');
 
-	var headerPosition = document.getElementById("turmoilHeader").getBoundingClientRect().bottom;
-	var footerPosition = document.getElementById("turmoilFooter").getBoundingClientRect().top;
-	var contentHeight = Math.round(footerPosition - headerPosition - 2);
+	let headerPosition = document.getElementById("turmoilHeader").getBoundingClientRect().bottom;
+	let footerPosition = document.getElementById("turmoilFooter").getBoundingClientRect().top;
+	let contentHeight = Math.round(footerPosition - headerPosition - 2);
 
 	turmoilBody.css('height', contentHeight + 'px');
 
-	var tallContentContainer = jQuery('.tallContentContainer');
+	let tallContentContainer = jQuery('.tallContentContainer');
 	if (tallContentContainer.length)
 	{
-		var tallContainerHeight = turmoilBody.height() - 25;
+		let tallContainerHeight = turmoilBody.height() - 25;
 		tallContentContainer.height(tallContainerHeight);
 	}
 }
@@ -312,15 +311,15 @@ export function centerContentVertically(centeredContentWrapper)
 {
 	if (centeredContentWrapper.length)
 	{
-		var parentOffset = 0;
+		let parentOffset = 0;
 		if (centeredContentWrapper.parent().length)
 		{
 			parentOffset = centeredContentWrapper.parent().get(0).getBoundingClientRect().top;
 		}
-		var halfOfContentHeight = Math.round((centeredContentWrapper.get(0).getBoundingClientRect().bottom - centeredContentWrapper.get(0).getBoundingClientRect().top) / 2);
-		var halfOfWindowHeight = Math.round(jQuery(window).height() / 2);
+		let halfOfContentHeight = Math.round((centeredContentWrapper.get(0).getBoundingClientRect().bottom - centeredContentWrapper.get(0).getBoundingClientRect().top) / 2);
+		let halfOfWindowHeight = Math.round(jQuery(window).height() / 2);
 
-		var topPosition = halfOfWindowHeight - halfOfContentHeight - parentOffset;
+		let topPosition = halfOfWindowHeight - halfOfContentHeight - parentOffset;
 		if (topPosition < 0)
 		{
 			topPosition = 0;
@@ -334,15 +333,15 @@ export function centerContentHorizontally(centeredContentWrapper)
 {
 	if (centeredContentWrapper.length)
 	{
-		var parentOffset = 0;
+		let parentOffset = 0;
 		if (centeredContentWrapper.parent().length)
 		{
 			parentOffset = centeredContentWrapper.parent().get(0).getBoundingClientRect().left;
 		}
-		var halfOfContentWidth = Math.round((centeredContentWrapper.get(0).getBoundingClientRect().right - centeredContentWrapper.get(0).getBoundingClientRect().left) / 2);
-		var halfOfWindowWidth = Math.round(jQuery(window).width() / 2);
+		let halfOfContentWidth = Math.round((centeredContentWrapper.get(0).getBoundingClientRect().right - centeredContentWrapper.get(0).getBoundingClientRect().left) / 2);
+		let halfOfWindowWidth = Math.round(jQuery(window).width() / 2);
 
-		var leftPosition = halfOfWindowWidth - halfOfContentWidth - parentOffset;
+		let leftPosition = halfOfWindowWidth - halfOfContentWidth - parentOffset;
 		if (leftPosition < 0)
 		{
 			leftPosition = 0;
@@ -375,7 +374,7 @@ export function hideSpinnerWithDelay()
 
 function showAjaxError()
 {
-	var windowId = window.open('', 'ajaxError', 'height=900, width=1600');
+	let windowId = window.open('', 'ajaxError', 'height=900, width=1600');
 	windowId.document.write(window.turmoil.ajax.debugInfo);
 	windowId.focus();
 
@@ -391,7 +390,7 @@ jQuery(function() {
 	/**
 	 * TODO: maybe replace it with https://scotch.io/tutorials/implementing-smooth-scrolling-in-react
 	 */
-	var scrollableContainer = jQuery('.scrollableContainer');
+	let scrollableContainer = jQuery('.scrollableContainer');
 	if (scrollableContainer.length)
 	{
 		if (jQuery.isFunction(jQuery().mCustomScrollbar))

@@ -19,8 +19,6 @@ class ConnectedItemSlotEquipment extends React.Component
 		this.onContextMenuHandler = this.onContextMenuHandler.bind(this);
 
 		this.updateItems = this.updateItems.bind(this);
-
-		this.doSomething = this.doSomething.bind(this);
 	}
 
 	onContextMenuHandler(event, item)
@@ -31,15 +29,8 @@ class ConnectedItemSlotEquipment extends React.Component
 			actionRightClickOnEquipment(item, this.updateItems);
 
 			//TODO: update stats
-			updateCharacterState(this.doSomething);
+			updateCharacterState(this.props.updateCharacterStats);
 		}
-	}
-
-	doSomething(data)
-	{
-		console.log('do something', data);
-		this.props.updateCharacterStats(data);
-		console.log('do something done');
 	}
 
 	updateItems()

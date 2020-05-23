@@ -2,14 +2,14 @@ import jQuery from "jquery";
 import {hideAllTooltips} from "./turmoil-tooltip"
 import {centerContentVertically, centerContentHorizontally} from "./turmoil-general"
 
-var windowSizes = {};
+let windowSizes = {};
 
 export function initWindow(windowType, isScalable)
 {
-	var isVisible = false;
-	var scale;
-	var verticalPos;
-	var horizontalPos;
+	let isVisible = false;
+	let scale;
+	let verticalPos;
+	let horizontalPos;
 
 	if (typeof(window.turmoil.windowSettings[windowType]) == 'undefined')
 	{
@@ -22,7 +22,7 @@ export function initWindow(windowType, isScalable)
 		isVisible = window.turmoil.windowSettings[windowType].visible;
 	}
 
-	var windowResizer = jQuery("#window_" + windowType + "_resizer");
+	let windowResizer = jQuery("#window_" + windowType + "_resizer");
 	windowResizer.draggable({
 		handle: "#handle_" + windowType + "_container",
 		containment: ".turmoilBody",
@@ -50,12 +50,12 @@ export function initWindow(windowType, isScalable)
 		stop: function() {
 			hideAllTooltips();
 
-			var keyWidth = windowType + 'Width';
+			let keyWidth = windowType + 'Width';
 			if (isScalable && windowSizes[keyWidth] !== 0)
 			{
-				var scale = jQuery("#window_" + windowType + "_resizer").width() / windowSizes[keyWidth];
+				let scale = jQuery("#window_" + windowType + "_resizer").width() / windowSizes[keyWidth];
 
-				var windowWrapper = jQuery("#window_" + windowType + "_wrapper");
+				let windowWrapper = jQuery("#window_" + windowType + "_wrapper");
 				windowWrapper.css('transform', 'scale(' + scale +')');
 				windowWrapper.css('-webkit-transform', 'scale(' + scale +')');
 				windowWrapper.css('-moz-transform', 'scale(' + scale +')');
@@ -102,14 +102,14 @@ export function initWindow(windowType, isScalable)
 // fixing the horizontal alignment
 function fixHorizontalAlignment(parentId, childId)
 {
-	var parent = jQuery("#" + parentId);
-	var child = jQuery("#" + childId);
+	let parent = jQuery("#" + parentId);
+	let child = jQuery("#" + childId);
 
 	child.css('left', '0px');
 
-	var properLeftPosition = parent.get(0).getBoundingClientRect().left;
-	var wrongLeftPosition = child.get(0).getBoundingClientRect().left;
-	var newPosition = Math.round(properLeftPosition - wrongLeftPosition);
+	let properLeftPosition = parent.get(0).getBoundingClientRect().left;
+	let wrongLeftPosition = child.get(0).getBoundingClientRect().left;
+	let newPosition = Math.round(properLeftPosition - wrongLeftPosition);
 
 	child.css('left', newPosition + 'px');
 }
@@ -122,16 +122,16 @@ export function resizeToDefault(windowType, setToCenter)
 
 	jQuery("#window_" + windowType + "_minimizer").show();
 
-	var keyWidth = windowType + 'Width';
-	var keyHeight = windowType + 'Height';
-	var fullHeight = Math.round(windowSizes[keyHeight] + 40);
+	let keyWidth = windowType + 'Width';
+	let keyHeight = windowType + 'Height';
+	let fullHeight = Math.round(windowSizes[keyHeight] + 40);
 
-	var windowResizer = jQuery("#window_" + windowType + "_resizer");
+	let windowResizer = jQuery("#window_" + windowType + "_resizer");
 	windowResizer.css('width', windowSizes[keyWidth] + 'px');
 	windowResizer.css('height', fullHeight + 'px');
 
-	var scale = 1;
-	var windowWrapper = jQuery("#window_" + windowType + "_wrapper");
+	let scale = 1;
+	let windowWrapper = jQuery("#window_" + windowType + "_wrapper");
 	windowWrapper.css('transform', 'scale(' + scale +')');
 	windowWrapper.css('-webkit-transform', 'scale(' + scale +')');
 	windowWrapper.css('-moz-transform', 'scale(' + scale +')');
@@ -172,18 +172,18 @@ export function actionMaximize(windowType, setToCenter)
 
 	actionShow(windowType);
 
-	var windowContentWrapper = jQuery('#window_' + windowType + '_content_wrapper');
-	var windowContainer = jQuery('#handle_' + windowType + '_container');
+	let windowContentWrapper = jQuery('#window_' + windowType + '_content_wrapper');
+	let windowContainer = jQuery('#handle_' + windowType + '_container');
 
 	windowContentWrapper.show();
 	jQuery('#' + windowType + 'ButtonMaximize').hide();
 	jQuery('#' + windowType + 'ButtonMinimize').show();
 
-	var handleHeight = windowContainer.get(0).getBoundingClientRect().bottom - windowContainer.get(0).getBoundingClientRect().top;
-	var contentHeight = windowContentWrapper.get(0).getBoundingClientRect().bottom - windowContentWrapper.get(0).getBoundingClientRect().top;
-	var totalHeight = Math.round(handleHeight + contentHeight);
+	let handleHeight = windowContainer.get(0).getBoundingClientRect().bottom - windowContainer.get(0).getBoundingClientRect().top;
+	let contentHeight = windowContentWrapper.get(0).getBoundingClientRect().bottom - windowContentWrapper.get(0).getBoundingClientRect().top;
+	let totalHeight = Math.round(handleHeight + contentHeight);
 
-	var windowResizer = jQuery('#window_' + windowType + '_resizer');
+	let windowResizer = jQuery('#window_' + windowType + '_resizer');
 	windowResizer.height(totalHeight);
 
 	if (typeof(setToCenter) != 'undefined' && setToCenter === true)
@@ -204,8 +204,8 @@ export function actionMinimize(windowType)
 	jQuery('#' + windowType + 'ButtonMaximize').show();
 	jQuery('#' + windowType + 'ButtonMinimize').hide();
 
-	var handleContainer = jQuery('#handle_' + windowType + '_container');
-	var handleHeight = handleContainer.get(0).getBoundingClientRect().bottom - handleContainer.get(0).getBoundingClientRect().top;
+	let handleContainer = jQuery('#handle_' + windowType + '_container');
+	let handleHeight = handleContainer.get(0).getBoundingClientRect().bottom - handleContainer.get(0).getBoundingClientRect().top;
 	jQuery('#window_' + windowType + '_resizer').height(Math.round(handleHeight));
 }
 
@@ -246,7 +246,7 @@ export function bringToTheTop(windowType)
 {
 	hideAllTooltips();
 
-	var highestZIndexValue = 0;
+	let highestZIndexValue = 0;
 	jQuery('.windowResizer').each(function(index) {
 		if (jQuery(this).css('z-index') > highestZIndexValue)
 		{

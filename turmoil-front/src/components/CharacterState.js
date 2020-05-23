@@ -19,19 +19,10 @@ class ConnectedCharacterState extends React.Component
 {
 	constructor(props) {
 		super(props);
-
-		this.doSomething = this.doSomething.bind(this);
 	}
 
 	componentDidMount() {
-		updateCharacterState(this.doSomething);
-	}
-
-	doSomething(data)
-	{
-		console.log('do something', data);
-		this.props.updateCharacterStats(data);
-		console.log('do something done');
+		updateCharacterState(this.props.updateCharacterStats);
 	}
 
 	render() {

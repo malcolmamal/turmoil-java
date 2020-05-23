@@ -2,9 +2,9 @@ import jQuery from "jquery";
 import "jquery-ui/ui/widgets/draggable";
 import "jquery-ui/ui/widgets/resizable";
 
-import {resetZIndex} from '../js/turmoil-windows';
-import {stopAudioLoop, playAudio, playAudioLoop, randomInt} from '../js/turmoil-general';
-import {putItemToStash} from '../js/turmoil-start';
+import {resetZIndex} from './turmoil-windows';
+import {stopAudioLoop, playAudio, playAudioLoop, randomInt} from './turmoil-general';
+import {putItemToStash} from './turmoil-start';
 
 window.turmoil.instance = {};
 window.turmoil.instance.enemies = [
@@ -132,8 +132,8 @@ export function removeItemFromStash(ident)
 
 function svgAddClass(element, className)
 {
-	var newClasses = '';
-	var hasClass = false;
+	let newClasses = '';
+	let hasClass = false;
 	jQuery.each(element.attr('class').replace(/[\s]+/g, ' ').trim().split(' '), function( index, value ) {
 		newClasses += ' ' + value;
 		if (className === value)
@@ -152,7 +152,7 @@ function svgAddClass(element, className)
 
 function svgRemoveClass(element, className)
 {
-	var newClasses = '';
+	let newClasses = '';
 	jQuery.each(element.attr('class').replace(/[\s]+/g, ' ').trim().split(' '), function( index, value ) {
 		if (className !== value)
 		{
@@ -164,7 +164,7 @@ function svgRemoveClass(element, className)
 
 function svgHasClass(element, className)
 {
-	var hasClass = false;
+	let hasClass = false;
 	jQuery.each(element.attr('class').replace(/[\s]+/g, ' ').trim().split(' '), function( index, value ) {
 		if (className === value)
 		{
@@ -189,8 +189,8 @@ function blink(element)
 	});
 }
 
-var initialPolygonMove = true;
-var activeUnit = null;
+let initialPolygonMove = true;
+let activeUnit = null;
 
 function getPolygonForUnit(unit)
 {
@@ -203,8 +203,8 @@ export function actionOnUnit(unitId, updateStash)
 
 	if (jQuery(unit).hasClass('enemyUnit'))
 	{
-		var polygon = jQuery(getPolygonForUnit(unit));
-		var url = 'instanceAttack/' + polygon.attr('id');
+		let polygon = jQuery(getPolygonForUnit(unit));
+		let url = 'instanceAttack/' + polygon.attr('id');
 
 		if (svgHasClass(polygon, 'instancePolygonEnemy'))
 		{
@@ -228,7 +228,7 @@ function actionOnPolygon(polygon, unit)
 		unit = activeUnit;
 	}
 
-	var url = '';
+	let url = '';
 	if (unit.hasClass('enemyUnit'))
 	{
 		url += 'instanceActionEnemy/' + unit.attr('id');
@@ -264,7 +264,7 @@ export function handleMoveToPolygon(polygon, unit)
 
 	if (unit.data('previousPolygonId') != null)
 	{
-		var previousPolygon = jQuery('#' + unit.data('previousPolygonId'));
+		let previousPolygon = jQuery('#' + unit.data('previousPolygonId'));
 
 		svgAddClass(previousPolygon, 'instancePolygon');
 		if (unit.hasClass('enemyUnit'))
@@ -278,7 +278,7 @@ export function handleMoveToPolygon(polygon, unit)
 		previousPolygon.data('unit', '');
 	}
 
-	var offsetContainer = jQuery('#instanceContainer').offset();
+	let offsetContainer = jQuery('#instanceContainer').offset();
 	if (typeof offsetContainer == 'undefined')
 	{
 		console.log('offsetContainer undefined');
@@ -291,18 +291,18 @@ export function handleMoveToPolygon(polygon, unit)
 		return;
 	}
 
-	var offset = polygon.offset();
+	let offset = polygon.offset();
 	if (typeof offset == 'undefined')
 	{
 		console.log('offset undefined');
 		return;
 	}
 
-	var width = polygon.width();
-	var height = polygon.height();
+	let width = polygon.width();
+	let height = polygon.height();
 
-	var centerX = offset.left + width / 2 - offsetContainer.left + 17;
-	var centerY = offset.top + height / 2 - offsetContainer.top + 17;
+	let centerX = offset.left + width / 2 - offsetContainer.left + 17;
+	let centerY = offset.top + height / 2 - offsetContainer.top + 17;
 
 	unit.stop().animate({
 			left: centerX,
@@ -334,9 +334,9 @@ function finalizeActionOnPolygon(data, callbackFunction)
 {
 	if (data != null && data.success === true && typeof(data.polygonId) != 'undefined')
 	{
-		var unit = activeUnit;
+		let unit = activeUnit;
 
-		var polygon = jQuery('#' + data.polygonId);
+		let polygon = jQuery('#' + data.polygonId);
 		if (polygon.length > 0 && typeof(data.actionType) != 'undefined')
 		{
 			if (data.actionType === 'attack')
@@ -399,12 +399,12 @@ function handleAttackPolygon(polygon, unit, data)
 {
 	//TODO: make sure that it is not possible to do actions when enemy is doing stuff
 
-	var targetUnit = jQuery('#' + polygon.data('unit'));
+	let targetUnit = jQuery('#' + polygon.data('unit'));
 
-	var damageDealt = 0;
+	let damageDealt = 0;
 	if (typeof(data.damageDealt) != 'undefined')
 	{
-		var hitType = null;
+		let hitType = null;
 		if (typeof(data.type) != 'undefined')
 		{
 			hitType = data.type;
@@ -420,7 +420,7 @@ function handleAttackPolygon(polygon, unit, data)
 		jQuery('#' + polygon.data('unit') + 'Health').css('width', data.healthBar);
 	}
 
-	var effect = jQuery('#' + targetUnit.attr('id') + 'Effect');
+	let effect = jQuery('#' + targetUnit.attr('id') + 'Effect');
 	effect.addClass('attackSwing');
 	playAudio('soundAttackMelee' + randomInt(3));
 
@@ -429,10 +429,10 @@ function handleAttackPolygon(polygon, unit, data)
 
 function animateToTop(id)
 {
-	var element = jQuery('#' + id);
+	let element = jQuery('#' + id);
 	if (element.length > 0)
 	{
-		var direction = 1;
+		let direction = 1;
 		if (element.data('direction') === 2)
 		{
 			direction = -1;
@@ -456,7 +456,7 @@ function animateToTop(id)
 
 function animateIndicator(id)
 {
-	var element = jQuery('#' + id);
+	let element = jQuery('#' + id);
 	element.data('variable', 0);
 	element.data('direction', randomInt(2));
 	animateToTop(id);
@@ -467,8 +467,8 @@ function animateIndicator(id)
 
 function addDamageIndicator(unit, value, type)
 {
-	var ident = 'indicator_' + new Date().getTime();
-	var styleClass = 'damageIndicator';
+	let ident = 'indicator_' + new Date().getTime();
+	let styleClass = 'damageIndicator';
 
 	if (typeof(type) != 'undefined')
 	{
@@ -493,7 +493,7 @@ function addDamageIndicator(unit, value, type)
 		}
 	}
 
-	var damageIndicator = '<div id="' + ident + '" class="' + styleClass + '">' + value + '</div>';
+	let damageIndicator = '<div id="' + ident + '" class="' + styleClass + '">' + value + '</div>';
 	unit.prepend(damageIndicator);
 	animateIndicator(ident);
 }
@@ -501,7 +501,7 @@ function addDamageIndicator(unit, value, type)
 jQuery(function() {
 
 	jQuery(".instancePolygon").click(function() {
-		var polygon = jQuery(this);
+		let polygon = jQuery(this);
 		actionOnPolygon(polygon);
 	});
 

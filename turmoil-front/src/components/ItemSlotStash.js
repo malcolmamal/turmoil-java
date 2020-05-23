@@ -16,8 +16,6 @@ class ConnectedItemSlotStash extends React.Component
 		super(props);
 
 		this.updateItems = this.updateItems.bind(this);
-
-		this.doSomething = this.doSomething.bind(this);
 	}
 
 	onContextMenuHandler(event, itemId)
@@ -26,14 +24,7 @@ class ConnectedItemSlotStash extends React.Component
 
 		actionRightClickOnStashedItem(itemId, this.updateItems);
 
-		updateCharacterState(this.doSomething);
-	}
-
-	doSomething(data)
-	{
-		console.log('do something', data);
-		this.props.updateCharacterStats(data);
-		console.log('do something done');
+		updateCharacterState(this.props.updateCharacterStats);
 	}
 
 	updateItems()

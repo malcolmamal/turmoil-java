@@ -3,17 +3,18 @@ import "jquery-ui/ui/widgets/sortable";
 
 export function initializeStash()
 {
-	jQuery("#stashItemListContainer").sortable({
+	let stash = jQuery("#stashItemListContainer");
+	stash.sortable({
 		//forceHelperSize: true,
 		containment: "#stashItemContainer",
 		//grid: [ 6, 3 ],
 		distance: 45,
 		items: "> li",
 		update: function(event, ui) {
-			var resultOrder = jQuery(this).sortable('toArray').toString();
+			let resultOrder = jQuery(this).sortable('toArray').toString();
 			console.log(resultOrder);
 		}
 	});
 
-	jQuery("#stashItemListContainer").disableSelection();
+	stash.disableSelection();
 }

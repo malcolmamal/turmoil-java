@@ -4,7 +4,7 @@ export function initializeErrorModal() {
 	window.modal = document.getElementById("myModal");
 
 	// Get the <span> element that closes the modal
-	var span = document.getElementById("modalClose");
+	let span = document.getElementById("modalClose");
 
 	// When the user clicks on <span> (x), close the modal
 	span.onclick = function() {
