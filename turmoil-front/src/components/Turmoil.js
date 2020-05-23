@@ -26,11 +26,6 @@ export default class Turmoil extends React.Component
 		console.log("newly arrived items", content.items);
 
 		this.setState({stashItems: this.getStashItems()});
-
-		//let itemToAdd = {item: this.state.stashItems[0], slot: "slot_right_hand"};
-		// console.log("item to add", itemToAdd);
-		// updateItemInSlot(itemToAdd.slot, itemToAdd);
-		// this.updateEquipmentItems();
 	}
 
 	getStashItems() {

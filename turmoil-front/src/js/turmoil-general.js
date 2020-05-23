@@ -118,6 +118,7 @@ window.turmoil.ajax = {
 					type: "GET",
 					crossDomain: true,
 					dataType: 'json',
+					timeout: 3000,
 					url: window.baseUrl + params.url,
 					data: dataString,
 					//dataType:"script",
@@ -145,7 +146,7 @@ window.turmoil.ajax = {
 						hideSpinner();
 					},
 					error: function(XMLHttpRequest, textStatus, errorThrown) {
-						handleAjaxError(XMLHttpRequest.responseText, errorThrown);
+						handleAjaxError(XMLHttpRequest.responseText, errorThrown, textStatus);
 					},
 					complete: function(xhr, textStatus) {
 						//console.log('complete', xhr.status);
@@ -171,8 +172,13 @@ window.turmoil.ajax = {
 	}
 };
 
-function handleAjaxError(responseText, errorThrown)
+function handleAjaxError(responseText, errorThrown, status)
 {
+	if (typeof responseText === 'undefined')
+	{
+		responseText = status;
+	}
+
 	jQuery('#error').html(responseText);
 	if (window.debug)
 	{
