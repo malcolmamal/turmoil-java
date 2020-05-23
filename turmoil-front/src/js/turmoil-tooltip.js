@@ -123,7 +123,7 @@ jQuery(function() {
 
 	if (window.debug)
 	{
-		console.log('tooltip initialized...');
+		console.log('Tooltip initialized...');
 	}
 
 });

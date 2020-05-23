@@ -65,8 +65,6 @@ export function handleUpdateEnemyUnits(currentState, payload)
 {
 	let newState = {};
 
-	console.log("reduce enemy", payload);
-
 	if (typeof payload.enemyUnits !== 'undefined')
 	{
 		newState.enemyUnits = [...payload.enemyUnits];
@@ -80,8 +78,6 @@ export function handleUpdateEnemyUnits(currentState, payload)
 export function handleUpdateFriendlyUnits(currentState, payload)
 {
 	let newState = {};
-
-	console.log("reduce friendly", payload);
 
 	if (typeof payload.friendlyUnits !== 'undefined')
 	{

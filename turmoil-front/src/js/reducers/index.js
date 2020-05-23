@@ -16,9 +16,7 @@ const initialState = {
 	equipmentItems: [],
 	stashItems: [],
 	enemyUnits: [],
-	friendlyUnits: [
-		//{ident: "testElement", portrait: "male/male_portrait_052.png", position: "polygon-1-4"}
-	]
+	friendlyUnits: []
 };
 
 function rootReducer(state = initialState, action) {

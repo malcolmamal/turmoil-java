@@ -189,6 +189,8 @@ export function handleMoveToPolygon(polygon, unit)
 			else
 			{
 				svgAddClass(polygon, 'instancePolygonActive');
+
+				//TODO: blink the active unit!
 				blink('#testElement');
 			}
 			svgRemoveClass(polygon, 'instancePolygon');
@@ -223,7 +225,6 @@ function finalizeActionOnPolygon(data, callbackFunction)
 				{
 					unit = jQuery('#' + data.unitToMove);
 				}
-				console.log("move 1", data, unit);
 				handleMoveToPolygon(polygon, unit);
 				playAudioLoop('soundMoveLeather', unit.attr('id'));
 			}
@@ -235,23 +236,21 @@ function finalizeActionOnPolygon(data, callbackFunction)
 			{
 				jQuery('#' + polygon.data('unit') + 'Health').css('width', data.healthBar);
 			}
-			console.log("move 2", data);
-			handleMoveToPolygon(jQuery('#' + data.newEnemyPosition), jQuery('#testEnemy'));
+			//TODO: dont hardcode enemy
+			handleMoveToPolygon(jQuery('#' + data.newEnemyPosition), jQuery('#testEnemy1'));
 		}
 
 		if (typeof(data.itemForStash) != 'undefined')
 		{
-			console.log("stashedItemId looks good", data);
-
 			if (typeof(callbackFunction) === 'function')
 			{
-				console.log('calling function!');
 				callbackFunction(data.itemForStash);
 			}
 		}
 
 		if (typeof(data.friendlyTurn) != 'undefined' && data.friendlyTurn === true)
 		{
+			// TODO: dont hardcode enemy ids
 			setTimeout(function(){actionOnPolygon(null, jQuery('#testEnemy1'));}, 400);
 		}
 	}

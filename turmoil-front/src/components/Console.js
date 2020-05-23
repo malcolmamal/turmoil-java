@@ -54,6 +54,6 @@ export default class Console extends React.Component
 	}
 
 	componentDidMount() {
-		console.log('console loaded');
+		console.log('Console initialized...');
 	}
 }
