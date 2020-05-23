@@ -108,39 +108,3 @@ function getCurrentDateTime()
 	let currentDate = new Date();
 	return currentDate.toJSON().slice(0,10) + ' ' + currentDate.getHours() + ':' + currentDate.getMinutes() + ':' + currentDate.getSeconds() + '.' + currentDate.getMilliseconds();
 }
-
-jQuery(function () {
-
-	jQuery.each(jQuery.find('.windowIcon'), function (index, value) {
-		jQuery(value).draggable({
-			revert: true
-		});
-	});
-
-	/**
-	 * TODO: fix
-	 *
-	 * seems to react to any key...
-	 */
-
-	/*
-		jQuery(document).bind('keydown', 'i', function () {
-			switchWindow('equipment')
-		});
-		jQuery(document).bind('keydown', 'c', function () {
-			switchWindow('stats')
-		});
-		jQuery(document).bind('keydown', 's', function () {
-			switchWindow('stash')
-		});
-
-		jQuery(document).bind('keydown', 'n', function () {
-			switchWindow('instance')
-		});
-
-		jQuery(document).bind('keydown', 'o', function () {
-			switchWindow('console')
-		});
-	*/
-
-});

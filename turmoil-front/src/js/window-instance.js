@@ -3,65 +3,8 @@ import "jquery-ui/ui/widgets/draggable";
 import "jquery-ui/ui/widgets/resizable";
 
 import {stopAudioLoop, playAudio, playAudioLoop, randomInt} from './turmoil-general';
-
-function svgAddClass(element, className)
-{
-	let newClasses = '';
-	let hasClass = false;
-	jQuery.each(element.attr('class').replace(/[\s]+/g, ' ').trim().split(' '), function( index, value ) {
-		newClasses += ' ' + value;
-		if (className === value)
-		{
-			hasClass = true;
-		}
-	});
-
-	if (!hasClass)
-	{
-		newClasses += ' ' + className;
-	}
-
-	element.attr('class', jQuery.trim(newClasses));
-}
-
-function svgRemoveClass(element, className)
-{
-	let newClasses = '';
-	jQuery.each(element.attr('class').replace(/[\s]+/g, ' ').trim().split(' '), function( index, value ) {
-		if (className !== value)
-		{
-			newClasses += ' ' + value;
-		}
-	});
-	element.attr('class', jQuery.trim(newClasses));
-}
-
-function svgHasClass(element, className)
-{
-	let hasClass = false;
-	jQuery.each(element.attr('class').replace(/[\s]+/g, ' ').trim().split(' '), function( index, value ) {
-		if (className === value)
-		{
-			hasClass = true;
-			return false;
-		}
-	});
-	return hasClass;
-}
-
-function svgPrintClasses(element)
-{
-	console.log(element.attr('class'));
-}
-
-function blink(element)
-{
-	jQuery(element).fadeTo(1000, 0.4, function() {
-		jQuery(this).fadeTo(750, 0.9, function() {
-			blink(this);
-		});
-	});
-}
+import {svgAddClass, svgHasClass, svgRemoveClass} from "./turmoil-svg";
+import {animateIndicator, blink} from "./turmoil-animations";
 
 function getPolygonForUnit(unit)
 {
@@ -286,44 +229,6 @@ function handleAttackPolygon(polygon, unit, data)
 	setTimeout(function(){effect.removeClass('attackSwing');}, 500);
 }
 
-function animateToTop(id)
-{
-	let element = jQuery('#' + id);
-	if (element.length > 0)
-	{
-		let direction = 1;
-		if (element.data('direction') === 2)
-		{
-			direction = -1;
-		}
-		element.css('top', '-=2px');
-		if (direction !== 0)
-		{
-			element.css('left', '-=' + element.data('variable') + 'px');
-			if (element.data('variable') > 5)
-			{
-				element.data('variable', element.data('variable') + 0.05 * direction);
-			}
-			else
-			{
-				element.data('variable', element.data('variable') + 0.1 * direction);
-			}
-		}
-		setTimeout(function(){animateToTop(id);}, 25);
-	}
-}
-
-function animateIndicator(id)
-{
-	let element = jQuery('#' + id);
-	element.data('variable', 0);
-	element.data('direction', randomInt(2));
-	animateToTop(id);
-	element.fadeTo(2000, 0.0, function () {
-		element.remove();
-	});
-}
-
 function addDamageIndicator(unit, value, type)
 {
 	let ident = 'indicator_' + new Date().getTime();
@@ -362,6 +267,8 @@ jQuery(function() {
 		let polygon = jQuery(this);
 		actionOnPolygon(polygon);
 	});
+
+	jQuery('#window_instance').disableSelection();
 
 	if (window.debug) {
 		console.log('Instance initialized...');
