@@ -22,9 +22,9 @@ import './stylesheets/turmoil-general.css';
 import './stylesheets/turmoil-windows.css';
 
 // javascript
+
 import './js/turmoil-general';
 import './js/turmoil-tooltip';
-import './js/turmoil-start';
 import './js/turmoil-windows';
 
 const data = {

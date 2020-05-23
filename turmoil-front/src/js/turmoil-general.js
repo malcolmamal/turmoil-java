@@ -6,6 +6,7 @@ import soundMoveLeather from "../media/audio/move_leather.wav";
 import soundAttackMelee1 from "../media/audio/attack_melee_001.wav";
 import soundAttackMelee2 from "../media/audio/attack_melee_002.wav";
 import soundAttackMelee3 from "../media/audio/attack_melee_003.wav";
+import {initWindow, resetZIndex} from "./turmoil-windows";
 
 window.turmoil.sounds = {
 	'soundMoveLeather': soundMoveLeather,
@@ -333,7 +334,17 @@ jQuery(function() {
 		}
 	}
 
+	jQuery(".flatSubMenu").mouseenter(function() {
+		resetZIndex();
+	});
+
 	jQuery.each(jQuery('.flatMenu').find('li'), function(index, value) {jQuery(value).click(function(){showSpinner();});})
+
+	initWindow('console', true);
+	initWindow('instance', true);
+	initWindow('equipment', true);
+	initWindow('stash', true);
+	initWindow('stats', true);
 
 	// TODO: handle browser window resize
 });

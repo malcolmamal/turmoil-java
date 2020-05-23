@@ -4,5 +4,7 @@ import "jquery-ui/ui/widgets/tabs";
 jQuery(function() {
 	jQuery("#consoleTabs").tabs();
 
-	console.log('Tabs initialized...');
+	if (window.debug) {
+		console.log('Tabs initialized...');
+	}
 });

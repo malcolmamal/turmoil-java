@@ -4,6 +4,21 @@ import {centerContentVertically, centerContentHorizontally} from "./turmoil-gene
 
 let windowSizes = {};
 
+windowSizes.consoleWidth = 600;
+windowSizes.consoleHeight = 160;
+
+windowSizes.instanceWidth = 650;
+windowSizes.instanceHeight = 610;
+
+windowSizes.equipmentWidth = 800;
+windowSizes.equipmentHeight = 830;
+
+windowSizes.stashWidth = 500;
+windowSizes.stashHeight = 700;
+
+windowSizes.statsWidth = 300;
+windowSizes.statsHeight = 700;
+
 export function initWindow(windowType, isScalable)
 {
 	let isVisible = false;
@@ -278,4 +293,19 @@ function saveWindowsPositions(forceSave)
 	// });
 
 	// + '&save=' + forceSave
+}
+
+function switchWindow(windowType)
+{
+	hideAllTooltips();
+
+	if (jQuery('#window_' + windowType + '_resizer').is(':hidden'))
+	{
+		jQuery('#window_' + windowType + '_resizer').show();
+		bringToTheTop(windowType);
+	}
+	else
+	{
+		jQuery('#window_' + windowType + '_resizer').hide();
+	}
 }

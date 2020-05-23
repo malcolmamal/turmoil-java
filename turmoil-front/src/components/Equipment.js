@@ -3,6 +3,7 @@ import Window from "./Window";
 import ItemSlotEquipment from "./ItemSlotEquipment";
 import {updateItemsInEquipmentAction} from "../js/actions";
 import {connect} from "react-redux";
+import '../js/window-equipment';
 
 const mapStateToProps = state => {
 	return { equipmentItems: state.equipmentItems };

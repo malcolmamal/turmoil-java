@@ -2,7 +2,6 @@ import jQuery from "jquery";
 import "jquery-ui/ui/widgets/draggable";
 import "jquery-ui/ui/widgets/resizable";
 
-import {resetZIndex} from './turmoil-windows';
 import {stopAudioLoop, playAudio, playAudioLoop, randomInt} from './turmoil-general';
 
 function svgAddClass(element, className)
@@ -364,7 +363,7 @@ jQuery(function() {
 		actionOnPolygon(polygon);
 	});
 
-	jQuery(".flatSubMenu").mouseenter(function() {
-		resetZIndex();
-	});
+	if (window.debug) {
+		console.log('Instance initialized...');
+	}
 });

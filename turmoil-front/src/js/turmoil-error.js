@@ -18,5 +18,7 @@ export function initializeErrorModal() {
 		}
 	}
 
-	console.log('Error modal initialized...');
+	if (window.debug) {
+		console.log('Error modal initialized...');
+	}
 }

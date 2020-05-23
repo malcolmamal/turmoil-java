@@ -1,5 +1,5 @@
 import React from "react";
-import {actionRightClickOnStashedItem} from "../js/turmoil-start";
+import {actionRightClickOnStashedItem} from "../js/turmoil-items";
 import {updateCharacterStatsAction, updateItemsInEquipmentAction, updateItemsInStashAction} from "../js/actions";
 import {connect} from "react-redux";
 import {updateCharacterState} from "../js/window-stats";

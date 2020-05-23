@@ -17,4 +17,8 @@ export function initializeStash()
 	});
 
 	stash.disableSelection();
+
+	if (window.debug) {
+		console.log('Stash initialized...');
+	}
 }

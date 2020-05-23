@@ -90,7 +90,6 @@ function handleItemTooltipContent(element)
 }
 
 jQuery(function() {
-
 	jQuery(document).tooltip({
 		items:'.tooltip',
 		hide: false,
@@ -98,8 +97,7 @@ jQuery(function() {
 		tooltipClass:'fancyTooltip',
 		position: { my: "left+15 top", at: "right center" },
 		content: function () {
-
-			var content;
+			let content;
 			if (jQuery(this).hasClass('itemTooltip'))
 			{
 				content = handleItemTooltipContent(jQuery(this));
@@ -121,9 +119,7 @@ jQuery(function() {
 
 	});
 
-	if (window.debug)
-	{
+	if (window.debug) {
 		console.log('Tooltip initialized...');
 	}
-
 });
