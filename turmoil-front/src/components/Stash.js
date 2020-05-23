@@ -3,8 +3,20 @@ import '../stylesheets/window-stash.css';
 import {initializeStash} from "../js/window-stash";
 import Window from "./Window";
 import ItemSlotStash from "./ItemSlotStash";
+import {updateItemsInStashAction} from "../js/actions";
+import {connect} from "react-redux";
 
-export default class Stash extends React.Component
+const mapStateToProps = state => {
+	return { stashItems: state.stashItems };
+};
+
+function mapDispatchToProps(dispatch) {
+	return {
+		updateItems: stashItems => dispatch(updateItemsInStashAction(stashItems))
+	};
+}
+
+class ConnectedStash extends React.Component
 {
 	constructor(props) {
 		super(props);
@@ -13,6 +25,8 @@ export default class Stash extends React.Component
 		this.updateItemsInStash = this.updateItemsInStash.bind(this);
 		this.updateEquipmentItems = this.updateEquipmentItems.bind(this);
 		this.updateItemsInEquipment = this.updateItemsInEquipment.bind(this);
+
+		this.stashedItems = this.stashedItems.bind(this);
 	}
 
 	componentDidMount() {
@@ -20,8 +34,13 @@ export default class Stash extends React.Component
 
 		window.turmoil.ajax.exec({
 			url: 'initializeStash',
-			onSuccess: this.updateItemsInStash
+			onSuccess: this.stashedItems
 		});
+	}
+
+	stashedItems(content)
+	{
+		this.props.updateItems({stashItems: content});
 	}
 
 	updateStashItems() {
@@ -40,6 +59,12 @@ export default class Stash extends React.Component
 		this.props.updateItemsInEquipment(content);
 	}
 
+	prepareStashItems(stashItems)
+	{
+		console.log("preparing staaaaash items", stashItems);
+		return stashItems;
+	}
+
 	render() {
 		const background = {
 			backgroundImage: "url('/images/windows/stash.png')",
@@ -47,13 +72,15 @@ export default class Stash extends React.Component
 			height: '700px',
 		};
 
+		const stashItems = this.prepareStashItems(this.props.stashItems);
+
 		return (
 			<Window ident="stash" background={background}>
 				<div id="stashItemContainerWrapper">
 					<div id="stashItemContainer" className="stashItemContainer">
 						<ul id="stashItemListContainer">
 
-							{this.props.items.map(item => (
+							{stashItems.map(item => (
 								<ItemSlotStash item={item.ident}
 											   rarity={item.rarity}
 											   key={item.ident}
@@ -71,3 +98,10 @@ export default class Stash extends React.Component
 		);
 	}
 }
+
+const Stash = connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(ConnectedStash);
+
+export default Stash;

@@ -1,5 +1,4 @@
 import jQuery from "jquery";
-import moment from "moment";
 import "jquery-mousewheel";
 import "malihu-custom-scrollbar-plugin";
 import "malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css";
@@ -8,81 +7,11 @@ import soundAttackMelee1 from "../media/audio/attack_melee_001.wav";
 import soundAttackMelee2 from "../media/audio/attack_melee_002.wav";
 import soundAttackMelee3 from "../media/audio/attack_melee_003.wav";
 
-window.debug = true;
-window.debugPopup = true;
-
-window.turmoil = {};
-
 window.turmoil.sounds = {
 	'soundMoveLeather': soundMoveLeather,
 	'soundAttackMelee1': soundAttackMelee1,
 	'soundAttackMelee2': soundAttackMelee2,
 	'soundAttackMelee3': soundAttackMelee3,
-};
-
-window.turmoil.soundLoops = {};
-window.turmoil.windowSettings = localStorage.getItem('windowSettings') === null ? {} : JSON.parse(localStorage.getItem('windowSettings'));
-
-window.turmoil.lastLogDate = null;
-window.turmoil.log = function(content, target)
-{
-	if (typeof(target) == 'undefined')
-	{
-		target = 'all';
-	}
-
-	let consoleTarget = jQuery('#console-' + target);
-	if (consoleTarget.length > 0)
-	{
-		let currentDate;
-		if (typeof(moment) == 'function')
-		{
-			currentDate = moment().format("YYYY-MM-DD HH:mm:ss.SSS");
-		}
-		else
-		{
-			currentDate = getCurrentDateTime();
-		}
-		currentDate = '[' + currentDate + '] ';
-
-		let currentDateObject = new Date();
-		if (window.turmoil.lastLogDate != null)
-		{
-			let difference = currentDateObject.getTime() - window.turmoil.lastLogDate.getTime();
-			currentDate += ' (' + difference + 'ms) ';
-		}
-
-		consoleTarget.find('.mCSB_container').prepend(currentDate + content + '<br>');
-
-		if (target !== 'all')
-		{
-			jQuery('#console-all').find('.mCSB_container').prepend(currentDate + content + '<br>');
-		}
-
-		window.turmoil.lastLogDate = currentDateObject;
-	}
-	else
-	{
-		console.log('[' + target + ']', content);
-	}
-};
-
-window.turmoil.logDebug = function(content)
-{
-	let caller = '';
-	if (typeof(arguments) == 'object')
-	{
-		if (typeof(this.callee) == 'function' && typeof(this.callee.name) == 'string') {
-			caller = this.callee.name + '() - ';
-		}
-	}
-	window.turmoil.log(caller + content, 'all');
-	console.log('[debug]', caller + content);
-};
-
-window.turmoil.logCombat = function(content)
-{
-	window.turmoil.log(content, 'combat');
 };
 
 /**
@@ -198,12 +127,6 @@ function handleAjaxError(responseText, errorThrown, status)
 export function randomInt(max)
 {
 	return Math.floor((Math.random() * max) + 1);
-}
-
-function getCurrentDateTime()
-{
-	let currentDate = new Date();
-	return currentDate.toJSON().slice(0,10) + ' ' + currentDate.getHours() + ':' + currentDate.getMinutes() + ':' + currentDate.getSeconds() + '.' + currentDate.getMilliseconds();
 }
 
 export function playAudio(audio)

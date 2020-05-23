@@ -57,7 +57,6 @@ export class EnemyUnit extends React.Component
 			width: '60px',
 		}
 
-		console.log("we will render unit: " + ident);
 		return(
 			<div className="instanceElement enemyUnit" id={ident} onClick={() => this.actionOnUnitHandler(ident)} >
 				<div className="instancePortraitHealthBar">
@@ -77,7 +76,6 @@ export class EnemyUnit extends React.Component
 		const position = that.props.position;
 
 		setTimeout(function() {
-				console.log("we will move unit: " + ident);
 				handleMoveToPolygon(jQuery('#' + position), jQuery('#' + ident));
 			}, 125
 		);
@@ -99,8 +97,6 @@ export default class Instance extends React.Component
 	updateUnits(content, that)
 	{
 		window.turmoil.instance.enemies = content.enemyUnits;
-
-		console.log("newly arrived units", content.enemyUnits);
 
 		that.setState({enemyUnits: that.getUnits()});
 	}

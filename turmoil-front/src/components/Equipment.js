@@ -1,8 +1,21 @@
 import React from "react";
 import Window from "./Window";
 import ItemSlotEquipment from "./ItemSlotEquipment";
+import {updateItemsInEquipmentAction} from "../js/actions";
+import {connect} from "react-redux";
 
-export default class Equipment extends React.Component
+
+const mapStateToProps = state => {
+	return { equipmentItems: state.equipmentItems };
+};
+
+function mapDispatchToProps(dispatch) {
+	return {
+		updateItems: equipmentItems => dispatch(updateItemsInEquipmentAction(equipmentItems))
+	};
+}
+
+class ConnectedEquipment extends React.Component
 {
 	//<g:if test="${character.slotRightHand != null}">class="item-weapon-bg-${character.slotRightHand.damageType.toString().toLowerCase()}"</g:if>
 	//<g:if test="${character.slotLeftHand != null}">class="item-weapon-bg-${character.slotLeftHand.damageType.toString().toLowerCase()}"</g:if>
@@ -15,37 +28,24 @@ export default class Equipment extends React.Component
 		this.updateEquipmentItems = this.updateEquipmentItems.bind(this);
 		this.updateItemsInEquipment = this.updateItemsInEquipment.bind(this);
 
-		window.turmoil.equipment.items = [
-			{ slot: "slot_right_hand", top: 175, left: 90, item: {}},
-			{ slot: "slot_left_hand", top: 105, left: 625, item: {}},
-
-			{ slot: "slot_amulet", top: 165, left: 355, item: {}, iconItemSize: "square"},
-			{ slot: "slot_ring_one", top: 100, left: 10, item: {}, iconItemSize: "square"},
-			{ slot: "slot_ring_two", top: 100, left: 705, item: {}, iconItemSize: "square"},
-			{ slot: "slot_ring_three", top: 175, left: 10, item: {}, iconItemSize: "square"},
-			{ slot: "slot_ring_four", top: 175, left: 705, item: {}, iconItemSize: "square"},
-
-			{ slot: "slot_helm", top: 20, left: 355, item: {}},
-			{ slot: "slot_chest", top: 245, left: 355, item: {}},
-			{ slot: "slot_belt", top: 395, left: 347, item: {}, iconItemSize: "long"},
-			{ slot: "slot_pants", top: 480, left: 355, item: {}},
-			{ slot: "slot_boots", top: 635, left: 355, item: {}},
-			{ slot: "slot_pauldrons", top: 105, left: 220, item: {}},
-			{ slot: "slot_gloves", top: 35, left: 90, item: {}},
-			{ slot: "slot_bracers", top: 105, left: 500, item: {}},
-		];
-
-		console.log("items at construct", window.turmoil.equipment.items);
+		this.wornItems = this.wornItems.bind(this);
 	}
 
 	componentDidMount() {
+
+		console.log("equipment props items at mount", this.props.equipmentItems);
 
 		console.log("items at mount", window.turmoil.equipment.items);
 
 		window.turmoil.ajax.exec({
 			url: 'initializeEquipment',
-			onSuccess: this.updateItemsInEquipment
+			onSuccess: this.wornItems
 		});
+	}
+
+	wornItems(content)
+	{
+		this.props.updateItems({wornItems: content});
 	}
 
 	updateItemsInStash(content) {
@@ -64,8 +64,22 @@ export default class Equipment extends React.Component
 		this.props.updateEquipmentItems(window.turmoil.equipment);
 	}
 
+	prepareEquipmentItems(equipmentItems)
+	{
+		let preparedItems = Object.assign({}, window.turmoil.equipment.defaultItems);
+		equipmentItems.map((item) => {
+			preparedItems[item.slot].item = item;
+		});
+
+		return Object.values(preparedItems);
+	}
+
 	render() {
+		console.log("equipment props items at render", this.props.equipmentItems);
+
 		const backgroundImage = "url('../images/character_male.png')";
+
+		const equipmentItems = this.prepareEquipmentItems(this.props.equipmentItems);
 
 		return (
 			<Window ident="equipment">
@@ -78,11 +92,10 @@ export default class Equipment extends React.Component
 						<div className="windowContentInner"
 							 style={{backgroundImage: backgroundImage, width: '800px', height: '830px'}}
 						>
-
 							<span id="slot_right_hand_effect"  style={{position: 'absolute', top: '143px', left: '61px', width: '150px', height: '210px'}}/>
 							<span id="slot_left_hand_effect"   style={{position: 'absolute', top: '143px', left: '632px', width: '150px', height: '210px'}}/>
 
-							{this.props.items.map(item => (
+							{equipmentItems.map(item => (
 								<ItemSlotEquipment
 									item={item.item}
 									slot={item.slot}
@@ -102,3 +115,10 @@ export default class Equipment extends React.Component
 		);
 	}
 }
+
+const Equipment = connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(ConnectedEquipment);
+
+export default Equipment;

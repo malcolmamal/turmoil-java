@@ -1,12 +1,14 @@
 import React from "react";
 import {actionRightClickOnStashedItem} from "../js/turmoil-start";
-import {updateCharacterStats} from "../js/actions";
+import {updateCharacterStats, updateItemsInEquipmentAction, updateItemsInStashAction} from "../js/actions";
 import {connect} from "react-redux";
 import {updateCharacterState} from "../js/window-stats";
 
 function mapDispatchToProps(dispatch) {
 	return {
-		updateCharacterStats: characterState => dispatch(updateCharacterStats(characterState))
+		updateCharacterStats: characterState => dispatch(updateCharacterStats(characterState)),
+		updateEquipmentItems: equipmentItems => dispatch(updateItemsInEquipmentAction(equipmentItems)),
+		updateStashItems: stashItems => dispatch(updateItemsInStashAction(stashItems))
 	};
 }
 
@@ -27,10 +29,10 @@ class ConnectedItemSlotStash extends React.Component
 		updateCharacterState(this.props.updateCharacterStats);
 	}
 
-	updateItems()
+	updateItems(itemForStash, itemForEquipment)
 	{
-		this.props.updateStash();
-		this.props.updateEquipment();
+		this.props.updateStashItems({itemToAdd: itemForStash, itemToRemove: itemForEquipment});
+		this.props.updateEquipmentItems({itemToAdd: itemForEquipment});
 	}
 
 	render() {

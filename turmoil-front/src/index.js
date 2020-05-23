@@ -1,3 +1,6 @@
+// turmoil-init
+import './js/turmoil-init';
+
 // react
 import React from 'react';
 import ReactDOM from 'react-dom';

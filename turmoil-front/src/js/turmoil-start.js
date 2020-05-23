@@ -45,16 +45,17 @@ export function actionRightClickOnEquipment(item, updateItems)
 function finalizeRightClickOnEquipment(data, callbackFunction)
 {
 	console.log("finalize right click on equipment", data);
+	console.log("finalize right click callback", callbackFunction);
 
 	if (data != null && data.success === true)
 	{
 		if (typeof(data.itemForStash) !== 'undefined')
 		{
 			console.log("removing from equipment");
-			removeItem(data.itemForStash.slot, data.itemForStash.ident);
+			//removeItem(data.itemForStash.slot, data.itemForStash.ident);
 
 			console.log("adding to stash");
-			window.turmoil.stash.items.push({"ident": data.itemForStash.ident, rarity: data.itemForStash.rarity, filePath: data.itemForStash.filePath, fileCode: data.itemForStash.fileCode});
+			//window.turmoil.stash.items.push({"ident": data.itemForStash.ident, rarity: data.itemForStash.rarity, filePath: data.itemForStash.filePath, fileCode: data.itemForStash.fileCode});
 
 			console.log("want to play a sound for", data.itemForStash.type);
 			switch (data.itemForStash.type)
@@ -76,12 +77,12 @@ function finalizeRightClickOnEquipment(data, callbackFunction)
 					// }
 					break;
 			}
-		}
 
-		if (typeof(callbackFunction) === 'function')
-		{
-			console.log('calling function from equipment!');
-			callbackFunction();
+			if (typeof(callbackFunction) === 'function')
+			{
+				console.log('calling function from equipment!');
+				callbackFunction(data.itemForStash);
+			}
 		}
 	}
 }
@@ -106,16 +107,16 @@ function finalizeRightClickOnStashedItem(data, callbackFunction)
 		if (typeof(data.itemForStash) !== 'undefined')
 		{
 			console.log("adding to stash");
-			removeItem(data.itemForStash.slot, data.itemForStash.ident);
+			//removeItem(data.itemForStash.slot, data.itemForStash.ident);
 			window.turmoil.stash.items.push({"ident": data.itemForStash.ident, rarity: data.itemForStash.rarity, filePath: data.itemForStash.filePath, fileCode: data.itemForStash.fileCode});
 		}
 
 		if (typeof(data.itemForEquipment) !== 'undefined')
 		{
 			console.log("removing from stash");
-			removeItemFromStash(data.itemForEquipment.ident);
+			//removeItemFromStash(data.itemForEquipment.ident);
 			console.log("adding to equipment");
-			updateItemInSlot(data.itemForEquipment.slot, data.itemForEquipment);
+			//updateItemInSlot(data.itemForEquipment.slot, data.itemForEquipment);
 
 			switch (data.itemForEquipment.type)
 			{
@@ -146,7 +147,7 @@ function finalizeRightClickOnStashedItem(data, callbackFunction)
 		if (typeof(callbackFunction) === 'function')
 		{
 			console.log('calling function from stash!');
-			callbackFunction();
+			callbackFunction(data.itemForStash, data.itemForEquipment);
 		}
 	}
 }

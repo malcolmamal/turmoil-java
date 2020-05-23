@@ -6,31 +6,14 @@ import {resetZIndex} from './turmoil-windows';
 import {stopAudioLoop, playAudio, playAudioLoop, randomInt} from './turmoil-general';
 import {putItemToStash} from './turmoil-start';
 
-window.turmoil.instance = {};
-window.turmoil.instance.enemies = [
-	//{"ident": "testEnemy", portrait: "male/male_portrait_055.png", position: "polygon-8-3"},
-	//{ident: "testEnemy2", portrait: "male/male_portrait_054.png", position: "polygon-8-5"},
-];
-
-window.turmoil.equipment = {};
-window.turmoil.equipment.items = [];
-
-console.log("items at instance", window.turmoil.equipment.items);
-
-window.turmoil.stash = {};
-window.turmoil.stash.items = [
-	// {"ident": "itemA", rarity: "white"},
-	// {"ident": "itemB", rarity: "blue"},
-	// {"ident": "itemC", rarity: "yellow"},
-	// {"ident": "itemD", rarity: "orange"},
-	// {"ident": "itemE", rarity: "green"},
-	// {"ident": "itemF", rarity: "red"},
-	// {"ident": "itemG", rarity: "purple"},
-];
-
 export function updateItemInSlot(slot, item)
 {
-	console.log("items before update", window.turmoil.equipment.items);
+	if (window.turmoil.equipment.items.length === 0)
+	{
+		window.turmoil.equipment.items = window.turmoil.equipment.defaultItems;
+	}
+
+	console.log("??????????????????????????? items before update", window.turmoil.equipment.items);
 
 	console.log("updating item", item);
 
@@ -52,6 +35,7 @@ export function updateItemInSlot(slot, item)
 		return;
 	}
 
+	console.log("!!!!!!!!!!!!!!!!!!!!!!!!! pushing", window.turmoil.equipment.items.length, itemToPush, window.turmoil.equipment.items);
 	window.turmoil.equipment.items.push(itemToPush);
 }
 
@@ -323,8 +307,6 @@ export function handleMoveToPolygon(polygon, unit)
 			stopAudioLoop('soundMoveLeather', unit.attr('id'));
 		}
 	);
-
-	console.log('moving to: ', polygon.attr('id') );
 
 	unit.data('previousPolygonId', polygon.attr('id'));
 	polygon.data('unit', unit.attr('id'));
