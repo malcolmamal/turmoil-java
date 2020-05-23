@@ -148,27 +148,27 @@
 .item-weapon-bg-physical { }
 .item-weapon-bg-arcane {
 	background: url("../images/item/weapon-bgs/arcane.png") no-repeat;
-	background-size: 166px 216px;
+	background-size: 134px 175px;
 }
 .item-weapon-bg-cold {
 	background: url("../images/item/weapon-bgs/cold.png") no-repeat;
-	background-size: 166px 216px;
+	background-size: 134px 175px;
 }
 .item-weapon-bg-fire {
 	background: url("../images/item/weapon-bgs/fire.png") no-repeat;
-	background-size: 166px 216px;
+	background-size: 134px 175px;
 }
 .item-weapon-bg-holy {
 	background: url("../images/item/weapon-bgs/holy.png") no-repeat;
-	background-size: 166px 216px;
+	background-size: 134px 175px;
 }
 .item-weapon-bg-lightning {
 	background: url("../images/item/weapon-bgs/lightning.png") no-repeat;
-	background-size: 166px 216px;
+	background-size: 134px 175px;
 }
 .item-weapon-bg-poison {
 	background: url("../images/item/weapon-bgs/poison.png") no-repeat;
-	background-size: 166px 216px;
+	background-size: 134px 175px;
 }
 
 /* item tooltips */

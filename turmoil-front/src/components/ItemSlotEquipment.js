@@ -40,7 +40,6 @@ class ConnectedItemSlotEquipment extends React.Component
 	}
 
 	render() {
-		const opacity = 1; // TODO: check actual value
 		const item = this.props.item ? this.props.item : {};
 
 		const rarity = item.rarity ? item.rarity : "gray";
@@ -52,6 +51,7 @@ class ConnectedItemSlotEquipment extends React.Component
 		const iconItemSize = this.props.iconItemSize ? this.props.iconItemSize : "default";
 		const itemBackgroundImage = item.filePath ? "url(" + item.filePath + ")" : "";
 		const positionStyle = {position: 'absolute', top: this.props.top + "px",  left: this.props.left + "px"};
+		const opacity = item.ident ? 1 : 0.85;
 
 		return (
 			<div className="slot-link" id={this.props.slot} style={positionStyle} >

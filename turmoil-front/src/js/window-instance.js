@@ -74,6 +74,8 @@ function actionOnPolygon(polygon, unit)
 
 export function handleMoveToPolygon(polygon, unit)
 {
+	//TODO: check if he has to move
+
 	window.turmoil.log('Unit ' + unit.attr('id') + ' moves to ' + polygon.attr('id'));
 
 	if (unit.data('previousPolygonId') != null)
