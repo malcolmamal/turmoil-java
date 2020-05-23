@@ -1,5 +1,4 @@
 import React from "react";
-
 import "../js/turmoi-error";
 import "../stylesheets/turmoil-error.css";
 import {initializeErrorModal} from "../js/turmoi-error";

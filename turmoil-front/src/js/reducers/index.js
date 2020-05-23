@@ -1,17 +1,25 @@
-import { UPDATE_CHARACTER_STATS } from "../constants/action-types";
+import { UPDATE_CHARACTER_STATE, UPDATE_ITEMS_IN_EQUIPMENT, UPDATE_ITEMS_IN_STASH } from "../constants/action-types";
+import {handleUpdateItemsInEquipment, handleUpdateItemsInStash} from "../handlers";
 
 const initialState = {
-	characterState: {}
+	characterState: {},
+	equipmentItems: [],
+	stashItems: []
 };
 
 function rootReducer(state = initialState, action) {
-	console.log("hello reducer", action.payload)
-	if (action.type === UPDATE_CHARACTER_STATS) {
-		// TODO: update stats
-		console.log("from root reducer, payload", action.payload)
-		return Object.assign({}, state, {
-			characterState: action.payload
-		});
+	switch (action.type) {
+		case UPDATE_CHARACTER_STATE: {
+			return Object.assign({}, state, {
+				characterState: action.payload
+			});
+		}
+		case UPDATE_ITEMS_IN_EQUIPMENT: {
+			return handleUpdateItemsInEquipment(state, action.payload);
+		}
+		case UPDATE_ITEMS_IN_STASH: {
+			return handleUpdateItemsInStash(state, action.payload);
+		}
 	}
 
 	return state;

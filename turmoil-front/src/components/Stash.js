@@ -3,16 +3,25 @@ import '../stylesheets/window-stash.css';
 import {initializeStash} from "../js/window-stash";
 import Window from "./Window";
 import ItemSlotStash from "./ItemSlotStash";
+import {updateItemsInStashAction} from "../js/actions";
+import {connect} from "react-redux";
 
-export default class Stash extends React.Component
+const mapStateToProps = state => {
+	return { stashItems: state.stashItems };
+};
+
+function mapDispatchToProps(dispatch) {
+	return {
+		updateItems: stashItems => dispatch(updateItemsInStashAction(stashItems))
+	};
+}
+
+class ConnectedStash extends React.Component
 {
 	constructor(props) {
 		super(props);
 
-		this.updateStashItems = this.updateStashItems.bind(this);
-		this.updateItemsInStash = this.updateItemsInStash.bind(this);
-		this.updateEquipmentItems = this.updateEquipmentItems.bind(this);
-		this.updateItemsInEquipment = this.updateItemsInEquipment.bind(this);
+		this.stashedItems = this.stashedItems.bind(this);
 	}
 
 	componentDidMount() {
@@ -20,24 +29,13 @@ export default class Stash extends React.Component
 
 		window.turmoil.ajax.exec({
 			url: 'initializeStash',
-			onSuccess: this.updateItemsInStash
+			onSuccess: this.stashedItems
 		});
 	}
 
-	updateStashItems() {
-		this.props.updateStashItems(window.turmoil.stash);
-	}
-
-	updateEquipmentItems() {
-		this.props.updateEquipmentItems(window.turmoil.equipment);
-	}
-
-	updateItemsInStash(content) {
-		this.props.updateItemsInStash(content);
-	}
-
-	updateItemsInEquipment(content) {
-		this.props.updateItemsInEquipment(content);
+	stashedItems(content)
+	{
+		this.props.updateItems({stashItems: content});
 	}
 
 	render() {
@@ -53,14 +51,12 @@ export default class Stash extends React.Component
 					<div id="stashItemContainer" className="stashItemContainer">
 						<ul id="stashItemListContainer">
 
-							{this.props.items.map(item => (
+							{this.props.stashItems.map(item => (
 								<ItemSlotStash item={item.ident}
 											   rarity={item.rarity}
 											   key={item.ident}
 											   filePath={item.filePath}
 											   fileCode={item.fileCode}
-											   updateStash={this.updateStashItems}
-											   updateEquipment={this.updateEquipmentItems}
 								/>
 							))}
 
@@ -71,3 +67,10 @@ export default class Stash extends React.Component
 		);
 	}
 }
+
+const Stash = connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(ConnectedStash);
+
+export default Stash;

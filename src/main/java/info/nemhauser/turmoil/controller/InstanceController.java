@@ -13,6 +13,7 @@ import info.nemhauser.turmoil.engine.instances.CombatState;
 import info.nemhauser.turmoil.engine.world.map.graph.Instance;
 import info.nemhauser.turmoil.engine.world.map.graph.Pathing;
 import info.nemhauser.turmoil.response.EnemyUnitResponse;
+import info.nemhauser.turmoil.response.ItemInStashResponse;
 import info.nemhauser.turmoil.response.MoveResponse;
 
 import net.minidev.json.JSONArray;
@@ -121,11 +122,7 @@ class InstanceController {
 				if (item != null)
 				{
 					TurmoilApplication.getServerState().addItem(item);
-
-					object.put("stashedItemId", item.getIdent());
-					object.put("filePath", item.getFullImagePath());
-					object.put("fileCode", item.getFileCode());
-					object.put("rarity", item.getRarityClass());
+					object.put("itemForStash", new ItemInStashResponse(item));
 				}
 
 				cs.enemy = InstanceHelper.createMonster(character);

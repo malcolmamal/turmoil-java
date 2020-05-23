@@ -4,6 +4,8 @@ import '../js/window-instance';
 import {actionOnUnit, handleMoveToPolygon} from "../js/window-instance";
 import Window from "./Window";
 import jQuery from "jquery";
+import {updateItemsInStashAction} from "../js/actions";
+import {connect} from "react-redux";
 
 export class CharacterUnit extends React.Component
 {
@@ -36,17 +38,29 @@ export class CharacterUnit extends React.Component
 	}
 }
 
-export class EnemyUnit extends React.Component
+function mapDispatchToProps(dispatch) {
+	return {
+		updateItems: stashItems => dispatch(updateItemsInStashAction(stashItems))
+	};
+}
+
+class ConnectedEnemyUnit extends React.Component
 {
 	constructor(props) {
 		super(props);
 
 		this.actionOnUnitHandler = this.actionOnUnitHandler.bind(this);
+		this.updateItems = this.updateItems.bind(this);
 	}
 
 	actionOnUnitHandler(ident)
 	{
-		actionOnUnit(ident, this.props.updateStash);
+		actionOnUnit(ident, this.updateItems);
+	}
+
+	updateItems(item)
+	{
+		this.props.updateItems({itemToAdd: item});
 	}
 
 	render()
@@ -57,7 +71,6 @@ export class EnemyUnit extends React.Component
 			width: '60px',
 		}
 
-		console.log("we will render unit: " + ident);
 		return(
 			<div className="instanceElement enemyUnit" id={ident} onClick={() => this.actionOnUnitHandler(ident)} >
 				<div className="instancePortraitHealthBar">
@@ -77,21 +90,19 @@ export class EnemyUnit extends React.Component
 		const position = that.props.position;
 
 		setTimeout(function() {
-				console.log("we will move unit: " + ident);
 				handleMoveToPolygon(jQuery('#' + position), jQuery('#' + ident));
 			}, 125
 		);
 	}
 }
 
+const EnemyUnit = connect(
+	null,
+	mapDispatchToProps
+)(ConnectedEnemyUnit);
+
 export default class Instance extends React.Component
 {
-	constructor(props) {
-		super(props);
-
-		this.updateStashItems = this.updateStashItems.bind(this);
-	}
-
 	getUnits() {
 		return window.turmoil.instance.enemies;
 	}
@@ -100,13 +111,7 @@ export default class Instance extends React.Component
 	{
 		window.turmoil.instance.enemies = content.enemyUnits;
 
-		console.log("newly arrived units", content.enemyUnits);
-
 		that.setState({enemyUnits: that.getUnits()});
-	}
-
-	updateStashItems() {
-		this.props.updateStashItems(window.turmoil.stash);
 	}
 
 	componentDidMount() {
@@ -138,19 +143,16 @@ export default class Instance extends React.Component
 			height: '580px',
 		};
 
-		//	<EnemyUnit ident="testEnemy" portrait="male/male_portrait_055.png" position="polygon-8-3"/>
-
 		return (
 			<Window ident="instance" background={background}>
 				<CharacterUnit ident="testElement"/>
 
 				{this.state.enemyUnits.map(unit => (
-					<EnemyUnit ident={unit.ident} portrait={unit.portrait} position={unit.position} key={unit.ident} updateStash={this.updateStashItems}/>
+					<EnemyUnit ident={unit.ident} portrait={unit.portrait} position={unit.position} key={unit.ident}/>
 				))}
 
 				<div>
 					<button onClick={() => { this.addUnit() }}>add</button>
-					<button onClick={() => { this.updateStashItems() }}>stash</button>
 				</div>
 
 				<div className="instanceSvg">
