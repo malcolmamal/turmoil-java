@@ -5,7 +5,7 @@ import {centerContentVertically, centerContentHorizontally} from "./turmoil-gene
 let windowSizes = {};
 
 windowSizes.consoleWidth = 600;
-windowSizes.consoleHeight = 160;
+windowSizes.consoleHeight = 260;
 
 windowSizes.instanceWidth = 650;
 windowSizes.instanceHeight = 610;
