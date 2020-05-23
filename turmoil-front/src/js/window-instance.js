@@ -250,8 +250,7 @@ function finalizeActionOnPolygon(data, callbackFunction)
 
 		if (typeof(data.friendlyTurn) != 'undefined' && data.friendlyTurn === true)
 		{
-			// TODO: dont hardcode enemy ids
-			setTimeout(function(){actionOnPolygon(null, jQuery('#testEnemy1'));}, 400);
+			setTimeout(function(){actionOnPolygon(null, jQuery('#' + data.enemyId));}, 400);
 		}
 	}
 }

@@ -6,13 +6,15 @@ public class MoveResponse
 	private Boolean friendlyTurn;
 	private Boolean success;
 	private String polygonId;
+	private String enemyId;
 
-	public MoveResponse(String actionType, Boolean friendlyTurn, Boolean success, String polygonId)
+	public MoveResponse(String actionType, Boolean friendlyTurn, Boolean success, String polygonId, String enemyId)
 	{
 		this.actionType = actionType;
 		this.friendlyTurn = friendlyTurn;
 		this.success = success;
 		this.polygonId = polygonId;
+		this.enemyId = enemyId;
 	}
 
 	public String getActionType()
@@ -33,5 +35,10 @@ public class MoveResponse
 	public String getPolygonId()
 	{
 		return polygonId;
+	}
+
+	public String getEnemyId()
+	{
+		return enemyId;
 	}
 }

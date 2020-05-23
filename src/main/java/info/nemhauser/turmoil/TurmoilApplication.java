@@ -67,9 +67,6 @@ public class TurmoilApplication
 		serverState.addItem(ItemGenerator.rollItem(character));
 
 		combatState = InstanceHelper.getCombatState(character);
-
-		combatState.friend.instancePosition = "polygon-1-4";
-		combatState.enemy.instancePosition = "polygon-8-3";
 	}
 
 	public static CombatState getCombatState()
@@ -96,5 +93,4 @@ public class TurmoilApplication
 /*
  * TODO:
  *  1. at some point make sure that initial actions are loaded in one go
- *  2. tooltips on equipment after reload don't show
  */

@@ -87,7 +87,7 @@ class InstanceController {
 		CombatState cs = TurmoilApplication.getCombatState();
 		cs.friend.instancePosition = position;
 
-		return new MoveResponse("move", true, true, position);
+		return new MoveResponse("move", true, true, position, cs.enemy.getIdent());
 	}
 
 	@RequestMapping(value = "/instanceAttack/{position}", produces = "application/json")
@@ -111,7 +111,8 @@ class InstanceController {
 					"type", damageDealt.isCritical() ? "critical" : "",
 					"polygonId", position,
 					"damageDealt", damageDealt.getValue(),
-					"healthBar", cs.enemy.getHealthBarValue()
+					"healthBar", cs.enemy.getHealthBarValue(),
+					"enemyId", cs.enemy.getIdent()
 			));
 
 			if (cs.enemy.currentHealth < 0)
