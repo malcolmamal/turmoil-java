@@ -17,22 +17,22 @@ export default class Equipment extends React.Component
 
 		window.turmoil.equipment.items = [
 			{ slot: "slot_right_hand", top: 175, left: 90, item: {}},
-			{ slot: "slot_left_hand", top: 175, left: 660, item: {}},
+			{ slot: "slot_left_hand", top: 105, left: 625, item: {}},
 
-			{ slot: "slot_amulet", top: 170, left: 450, item: {}, iconItemSize: "square"},
+			{ slot: "slot_amulet", top: 165, left: 355, item: {}, iconItemSize: "square"},
 			{ slot: "slot_ring_one", top: 100, left: 10, item: {}, iconItemSize: "square"},
-			{ slot: "slot_ring_two", top: 90, left: 705, item: {}, iconItemSize: "square"},
+			{ slot: "slot_ring_two", top: 100, left: 705, item: {}, iconItemSize: "square"},
 			{ slot: "slot_ring_three", top: 175, left: 10, item: {}, iconItemSize: "square"},
-			{ slot: "slot_ring_four", top: 90, left: 630, item: {}, iconItemSize: "square"},
+			{ slot: "slot_ring_four", top: 175, left: 705, item: {}, iconItemSize: "square"},
 
-			{ slot: "slot_helm", top: 35, left: 355, item: {}},
-			{ slot: "slot_chest", top: 210, left: 355, item: {}},
-			{ slot: "slot_belt", top: 365, left: 345, item: {}, iconItemSize: "long"},
-			{ slot: "slot_pants", top: 460, left: 355, item: {}},
+			{ slot: "slot_helm", top: 20, left: 355, item: {}},
+			{ slot: "slot_chest", top: 245, left: 355, item: {}},
+			{ slot: "slot_belt", top: 395, left: 347, item: {}, iconItemSize: "long"},
+			{ slot: "slot_pants", top: 480, left: 355, item: {}},
 			{ slot: "slot_boots", top: 635, left: 355, item: {}},
-			{ slot: "slot_pauldrons", top: 90, left: 220, item: {}},
-			{ slot: "slot_gloves", top: 0, left: 90, item: {}},
-			{ slot: "slot_bracers", top: 90, left: 530, item: {}},
+			{ slot: "slot_pauldrons", top: 105, left: 220, item: {}},
+			{ slot: "slot_gloves", top: 35, left: 90, item: {}},
+			{ slot: "slot_bracers", top: 105, left: 500, item: {}},
 		];
 
 		console.log("items at construct", window.turmoil.equipment.items);

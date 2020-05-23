@@ -1,8 +1,30 @@
 import React from "react";
 import {FormattedMessage} from "react-intl";
 
-export default class CharacterState extends React.Component
+import { connect } from "react-redux";
+import {updateCharacterStats} from "../js/actions";
+import {updateCharacterState} from "../js/window-stats";
+
+const mapStateToProps = state => {
+	return { characterState: state.characterState };
+};
+
+function mapDispatchToProps(dispatch) {
+	return {
+		updateCharacterStats: characterState => dispatch(updateCharacterStats(characterState))
+	};
+}
+
+class ConnectedCharacterState extends React.Component
 {
+	constructor(props) {
+		super(props);
+	}
+
+	componentDidMount() {
+		updateCharacterState(this.props.updateCharacterStats);
+	}
+
 	render() {
 		const characterState = this.props.characterState;
 
@@ -146,3 +168,10 @@ export default class CharacterState extends React.Component
 		);
 	}
 }
+
+const CharacterState = connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(ConnectedCharacterState);
+
+export default CharacterState;

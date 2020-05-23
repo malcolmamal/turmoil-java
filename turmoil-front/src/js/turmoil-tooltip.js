@@ -2,8 +2,8 @@ import jQuery from "jquery";
 import "jquery-ui/ui/widgets/tooltip";
 import '../stylesheets/turmoil-tooltip.css';
 
-var emptyContent = "<div id='something-_ID_'>_CONTENT_</div>";
-var tooltipContents = {};
+let emptyContent = "<div id='something-_ID_'>_CONTENT_</div>";
+let tooltipContents = {};
 
 export function hideAllTooltips()
 {
@@ -24,10 +24,10 @@ function isElementVisibleOrAlreadyGone(element)
 		return true;
 	}
 
-	var topView = jQuery(window).scrollTop();
-	var bottomView = topView + jQuery(window).height();
-	var topElement = jQuery(element).offset().top;
-	var bottomElement = topElement + jQuery(element).height();
+	let topView = jQuery(window).scrollTop();
+	let bottomView = topView + jQuery(window).height();
+	let topElement = jQuery(element).offset().top;
+	let bottomElement = topElement + jQuery(element).height();
 
 	return ((bottomElement <= bottomView) && (topElement >= topView));
 }
@@ -41,16 +41,11 @@ function reopenTooltipIfNotVisible(element, tooltipId)
 	}
 }
 
-function doNothing()
-{
-
-}
-
 function handleItemTooltipContent(element)
 {
-	var item = element.attr('item');
+	let item = element.attr('item');
 
-	var content = emptyContent.replace('_CONTENT_', '').replace('_ID_', item);
+	let content = emptyContent.replace('_CONTENT_', '').replace('_ID_', item);
 	if (tooltipContents[item])
 	{
 		content = tooltipContents[item]

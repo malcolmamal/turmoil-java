@@ -1,7 +1,7 @@
 import jQuery from "jquery";
-import {playAudio, hideSpinnerWithDelay} from '../js/turmoil-general';
-import {hideAllTooltips} from '../js/turmoil-tooltip';
-import {bringToTheTop, initWindow} from '../js/turmoil-windows';
+import {playAudio, hideSpinnerWithDelay} from './turmoil-general';
+import {hideAllTooltips} from './turmoil-tooltip';
+import {bringToTheTop, initWindow} from './turmoil-windows';
 import "jquery-ui/themes/base/all.css";
 import {removeItem, removeItemFromStash, updateItemInSlot} from "./window-instance";
 
@@ -26,19 +26,6 @@ function switchWindow(windowType)
 	{
 		jQuery('#window_' + windowType + '_resizer').hide();
 	}
-}
-
-function updateStatisticsWindow()
-{
-	window.turmoil.ajax.exec({
-		url: 'account/updateStatisticsWindow/',
-		onSuccess: finalizeUpdateStatisticsWindow
-	});
-}
-
-function finalizeUpdateStatisticsWindow(content)
-{
-	jQuery('#statsContent').html(content);
 }
 
 export function actionRightClickOnEquipment(item, updateItems)
@@ -96,14 +83,6 @@ function finalizeRightClickOnEquipment(data, callbackFunction)
 			console.log('calling function from equipment!');
 			callbackFunction();
 		}
-
-		// jQuery('#stashItemListContainer').append(data.stashedItemContent);
-		// if (typeof(data.unequippedItemSlot !== 'undefined') && typeof(data.unequippedItemContent) != 'undefined')
-		// {
-		// 	jQuery('#' + data.unequippedItemSlot).html(data.unequippedItemContent);
-		// }
-		//TODO: handle stats window (was done in more places)
-		//updateStatisticsWindow();
 	}
 }
 
@@ -124,58 +103,51 @@ function finalizeRightClickOnStashedItem(data, callbackFunction)
 
 	if (data != null && data.success === true)
 	{
-			if (typeof(data.itemForStash) !== 'undefined')
+		if (typeof(data.itemForStash) !== 'undefined')
+		{
+			console.log("adding to stash");
+			removeItem(data.itemForStash.slot, data.itemForStash.ident);
+			window.turmoil.stash.items.push({"ident": data.itemForStash.ident, rarity: data.itemForStash.rarity, filePath: data.itemForStash.filePath, fileCode: data.itemForStash.fileCode});
+		}
+
+		if (typeof(data.itemForEquipment) !== 'undefined')
+		{
+			console.log("removing from stash");
+			removeItemFromStash(data.itemForEquipment.ident);
+			console.log("adding to equipment");
+			updateItemInSlot(data.itemForEquipment.slot, data.itemForEquipment);
+
+			switch (data.itemForEquipment.type)
 			{
-				console.log("adding to stash");
-				removeItem(data.itemForStash.slot, data.itemForStash.ident);
-				window.turmoil.stash.items.push({"ident": data.itemForStash.ident, rarity: data.itemForStash.rarity, filePath: data.itemForStash.filePath, fileCode: data.itemForStash.fileCode});
+				case 'ACCESSORY':
+					playAudio('soundAccessoryJewellery');
+					break;
+				case 'ARMOR':
+					playAudio('soundMediumArmor');
+					break;
+				case 'WEAPON':
+					playAudio('soundWeapon');
+
+					//TODO: also handle effect for weapons
+
+					// if (data.equippedItemSlot === 'slot_right_hand' || data.equippedItemSlot === 'slot_left_hand')
+					// {
+					// 	jQuery('#' + data.equippedItemSlot + '_effect').removeClass();
+					//
+					// 	if (typeof(data.equippedWeaponDamageType) != 'undefined') {
+					// 		jQuery('#' + data.equippedItemSlot + '_effect').addClass('item-weapon-bg-' + data.equippedWeaponDamageType);
+					// 	}
+					// }
+
+					break;
 			}
+		}
 
-			if (typeof(data.itemForEquipment) !== 'undefined')
-			{
-				console.log("removing from stash");
-				removeItemFromStash(data.itemForEquipment.ident);
-				console.log("adding to equipment");
-				updateItemInSlot(data.itemForEquipment.slot, data.itemForEquipment);
-
-				switch (data.itemForEquipment.type)
-				{
-					case 'ACCESSORY':
-						playAudio('soundAccessoryJewellery');
-						break;
-					case 'ARMOR':
-						playAudio('soundMediumArmor');
-						break;
-					case 'WEAPON':
-						playAudio('soundWeapon');
-
-						//TODO: also handle effect for weapons
-
-						// if (data.equippedItemSlot === 'slot_right_hand' || data.equippedItemSlot === 'slot_left_hand')
-						// {
-						// 	jQuery('#' + data.equippedItemSlot + '_effect').removeClass();
-						//
-						// 	if (typeof(data.equippedWeaponDamageType) != 'undefined') {
-						// 		jQuery('#' + data.equippedItemSlot + '_effect').addClass('item-weapon-bg-' + data.equippedWeaponDamageType);
-						// 	}
-						// }
-
-						break;
-				}
-			}
-
-			if (typeof(callbackFunction) === 'function')
-			{
-				console.log('calling function from stash!');
-				callbackFunction();
-			}
-
-			//TODO: handle updating of statistic window
-			//updateStatisticsWindow();
-
-		//TODO: cleanup
-
-		//putItemToStash(data);
+		if (typeof(callbackFunction) === 'function')
+		{
+			console.log('calling function from stash!');
+			callbackFunction();
+		}
 	}
 }
 
@@ -275,11 +247,5 @@ jQuery(function () {
 		switchWindow('console')
 	});
 	 */
-
-	/*
-	  init for instance window
-	*/
-
-	//switchWindow('instance');
 
 });

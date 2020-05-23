@@ -1,7 +1,17 @@
 import React from "react";
 import {actionRightClickOnEquipment} from "../js/turmoil-start";
 
-export default class ItemSlotEquipment extends React.Component
+import { connect } from "react-redux";
+import { updateCharacterStats } from "../js/actions/index";
+import {updateCharacterState} from "../js/window-stats";
+
+function mapDispatchToProps(dispatch) {
+	return {
+		updateCharacterStats: characterState => dispatch(updateCharacterStats(characterState))
+	};
+}
+
+class ConnectedItemSlotEquipment extends React.Component
 {
 	constructor(props) {
 		super(props);
@@ -13,11 +23,13 @@ export default class ItemSlotEquipment extends React.Component
 
 	onContextMenuHandler(event, item)
 	{
-		//TODO: handle putting item from equipment into stash
 		event.preventDefault();
 		if (item.ident)
 		{
 			actionRightClickOnEquipment(item, this.updateItems);
+
+			//TODO: update stats
+			updateCharacterState(this.props.updateCharacterStats);
 		}
 	}
 
@@ -60,3 +72,10 @@ export default class ItemSlotEquipment extends React.Component
 		);
 	}
 }
+
+const ItemSlotEquipment = connect(
+	null,
+	mapDispatchToProps
+)(ConnectedItemSlotEquipment);
+
+export default ItemSlotEquipment;
