@@ -86,7 +86,7 @@ class ConnectedLocation extends React.Component
 				))}
 
 				<div className="instanceSvg">
-					<svg  style={{width: "850px", height: "780px", left: "0", top: "0", position: "relative"}} id="svgElement">
+					<svg viewBox="78 1 1 160" style={{width: "850px", height: "780px", left: "0", top: "0", position: "relative"}} id="svgElement">
 						<g>
 							{fields.map(field => (
 								<Field column={field.column} row={field.row} key={"polygon-" + field.column + "-" + field.row}/>
