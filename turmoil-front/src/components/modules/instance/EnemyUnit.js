@@ -1,6 +1,7 @@
 import React from "react";
 import {connect} from "react-redux";
 import jQuery from "jquery";
+import Unit from "./Unit";
 import {actionOnUnit, handleMoveToPolygon} from "../../../js/window-instance";
 import {updateItemsInStashAction} from "../../../js/actions";
 
@@ -31,21 +32,8 @@ class ConnectedEnemyUnit extends React.Component
 
 	render()
 	{
-		const ident = this.props.ident;
-		const portrait = this.props.portrait;
-		const unitStyle = {
-			width: this.props.healthBar + 'px',
-		}
-
 		return(
-			<div className="instanceElement enemyUnit" id={ident} onClick={() => this.actionOnUnitHandler(ident)} >
-				<div className="instancePortraitHealthBar">
-					<div className="instancePortraitHealthBarInner" id={ident + "Health"} style={unitStyle}/>
-				</div>
-				<img alt="enemy" className="instancePortrait instancePortraitFlipped instanceEnemy"
-					 src={"/images/portraits/" + portrait}/>
-				<div id={ident + "Effect"}/>
-			</div>
+			<Unit ident={this.props.ident} portrait={this.props.portrait} healthBar={this.props.healthBar} enemy={true} onClick={this.actionOnUnitHandler}/>
 		);
 	}
 

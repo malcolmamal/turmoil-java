@@ -1,26 +1,19 @@
 import React from "react";
 import jQuery from "jquery";
+import Unit from "./Unit";
 import {handleMoveToPolygon} from "../../../js/window-instance";
 
 export default class FriendlyUnit extends React.Component
 {
+	actionOnUnitHandler(ident)
+	{
+		// do nothing at the moment
+	}
+
 	render()
 	{
-		const ident = this.props.ident;
-		const portrait = this.props.portrait;
-		const unitStyle = {
-			width: this.props.healthBar + 'px',
-		}
-
 		return(
-			<div className="instanceElement" id={ident}>
-				<div className="instancePortraitHealthBar">
-					<div className="instancePortraitHealthBarInner" id={ident + "Health"} style={unitStyle}/>
-				</div>
-				<img alt="character" className="instancePortrait"
-					 src={"/images/portraits/" + portrait}/>
-				<div id={ident + "Effect"}/>
-			</div>
+			<Unit ident={this.props.ident} portrait={this.props.portrait} healthBar={this.props.healthBar} onClick={this.actionOnUnitHandler}/>
 		);
 	}
 
