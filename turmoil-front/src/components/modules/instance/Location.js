@@ -56,6 +56,13 @@ class ConnectedLocation extends React.Component
 			}
 		}
 
+		/*
+		 *  changing svgElement's width by 100 requires also changing first viewBox value but divided by 10 (roughly)
+		 *  however height is more problematic as it changes the scale
+		 *
+		 *  this is related to the 3rd and 4th viewBox attribute, if it's 1 then there is no scaling
+		 */
+
 		return (
 			<Window ident="location" background={background}>
 				{this.props.friendlyUnits.map(unit => (
