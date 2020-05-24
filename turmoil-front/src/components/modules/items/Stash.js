@@ -1,10 +1,10 @@
 import React from "react";
-import '../stylesheets/window-stash.css';
-import {initializeStash} from "../js/window-stash";
-import Window from "./Window";
-import ItemSlotStash from "./ItemSlotStash";
-import {updateItemsInStashAction} from "../js/actions";
 import {connect} from "react-redux";
+import Window from "../../Window";
+import ItemSlotStash from "./ItemSlotStash";
+import '../../../stylesheets/window-stash.css';
+import {initializeStash} from "../../../js/window-stash";
+import {updateItemsInStashAction} from "../../../js/actions";
 
 const mapStateToProps = state => {
 	return { stashItems: state.stashItems };

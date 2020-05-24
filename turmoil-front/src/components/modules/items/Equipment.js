@@ -1,9 +1,9 @@
 import React from "react";
-import Window from "./Window";
-import ItemSlotEquipment from "./ItemSlotEquipment";
-import {updateItemsInEquipmentAction} from "../js/actions";
 import {connect} from "react-redux";
-import '../js/window-equipment';
+import Window from "../../Window";
+import ItemSlotEquipment from "./ItemSlotEquipment";
+import {updateItemsInEquipmentAction} from "../../../js/actions";
+import '../../../js/window-equipment';
 
 const mapStateToProps = state => {
 	return { equipmentItems: state.equipmentItems };
@@ -17,9 +17,6 @@ function mapDispatchToProps(dispatch) {
 
 class ConnectedEquipment extends React.Component
 {
-	//<g:if test="${character.slotRightHand != null}">class="item-weapon-bg-${character.slotRightHand.damageType.toString().toLowerCase()}"</g:if>
-	//<g:if test="${character.slotLeftHand != null}">class="item-weapon-bg-${character.slotLeftHand.damageType.toString().toLowerCase()}"</g:if>
-
 	constructor(props) {
 		super(props);
 
@@ -73,7 +70,6 @@ class ConnectedEquipment extends React.Component
 									iconItemSize={item.iconItemSize ? item.iconItemSize : ""}
 								/>
 							))}
-
 						</div>
 					</div>
 				</div>

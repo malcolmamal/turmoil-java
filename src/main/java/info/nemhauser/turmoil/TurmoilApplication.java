@@ -91,4 +91,6 @@ public class TurmoilApplication
  *  1. at some point make sure that initial actions are loaded in one go
  *  2. seems like items can now roll with HEALING damage type :-)
  *  3. spear in second hand, equipping and unequipping two handed mace duplicates visually the spear in stash, seems like equipping it does not unequip left hand -> fixed on backend, need to check front
+ *  4. when we have a Staff equipped, we can equip a one hand weapons (wand)
+ *  5. todo: inventory, open stashes
  */

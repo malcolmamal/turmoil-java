@@ -1,7 +1,7 @@
 import React from "react";
-import '../stylesheets/window-stats.css';
-import Window from "./Window";
+import Window from "../../Window";
 import CharacterState from "./CharacterState";
+import '../../../stylesheets/window-stats.css';
 
 export default class Stats extends React.Component
 {

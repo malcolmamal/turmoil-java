@@ -1,8 +1,8 @@
 import React from "react";
-import {FormattedMessage} from "react-intl";
 import {connect} from "react-redux";
-import {updateCharacterStatsAction} from "../js/actions";
-import {updateCharacterState} from "../js/window-stats";
+import {FormattedMessage} from "react-intl";
+import {updateCharacterStatsAction} from "../../../js/actions";
+import {updateCharacterState} from "../../../js/window-stats";
 
 const mapStateToProps = state => {
 	return { characterState: state.characterState };

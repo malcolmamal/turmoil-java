@@ -1,12 +1,12 @@
 import React from "react";
-import Header from "./Header";
-import Footer from "./Footer";
-import Instance from "./Instance";
+import Header from "./layout/Header";
+import Footer from "./layout/Footer";
+import Instance from "./modules/instance/Instance";
 import Console from "./Console";
-import Error from "./Error";
-import Equipment from "./Equipment";
-import Stash from "./Stash";
-import Stats from "./Stats";
+import Error from "./layout/Error";
+import Equipment from "./modules/items/Equipment";
+import Stash from "./modules/items/Stash";
+import Stats from "./modules/stats/Stats";
 
 export default class Turmoil extends React.Component
 {
