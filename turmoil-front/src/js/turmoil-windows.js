@@ -19,6 +19,9 @@ windowSizes.stashHeight = 700;
 windowSizes.statsWidth = 300;
 windowSizes.statsHeight = 700;
 
+windowSizes.locationWidth = 850;
+windowSizes.locationHeight = 810;
+
 export function initWindow(windowType, isScalable)
 {
 	let isVisible = false;

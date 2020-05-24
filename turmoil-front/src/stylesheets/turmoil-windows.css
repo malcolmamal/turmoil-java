@@ -49,6 +49,10 @@
 	background: url('../images/ui/icons/icon_console.png') no-repeat;
 }
 
+.locationWindowIcon {
+	background: url('../images/ui/icons/icon_instance.png') no-repeat;
+}
+
 .ui-resizable-helper {
 	border: 1px dotted #A0A0A0;
 }
@@ -231,3 +235,40 @@
 	width: 600px;
 	height: 260px;
 }
+
+
+.locationHandleContainer {
+	width: 850px;
+}
+
+.locationHandleBox {
+	width: 700px;
+}
+
+.locationWindowResizer {
+	width: 850px;
+	height: 820px;
+}
+
+.locationWindowContent {
+	width: 850px;
+	height: 780px;
+}
+
+/*.locationHandleContainer {*/
+/*	width: 650px;*/
+/*}*/
+
+/*.locationHandleBox {*/
+/*	width: 500px;*/
+/*}*/
+
+/*.locationWindowResizer {*/
+/*	width: 650px;*/
+/*	height: 620px;*/
+/*}*/
+
+/*.locationWindowContent {*/
+/*	width: 650px;*/
+/*	height: 580px;*/
+/*}*/

@@ -391,57 +391,6 @@ class ConnectedInstance extends React.Component
 							<text className="instanceText" x="552" y="453">8:5</text>
 							<text className="instanceText" x="552" y="536">8:6</text>
 						</g>
-
-						<g>
-							<circle className="instanceCircle" cx="48" cy="42" r="1.66"/>
-							<circle className="instanceCircle" cx="48" cy="125" r="1.66"/>
-							<circle className="instanceCircle" cx="48" cy="208" r="1.66"/>
-							<circle className="instanceCircle" cx="48" cy="291" r="1.66"/>
-							<circle className="instanceCircle" cx="48" cy="374" r="1.66"/>
-							<circle className="instanceCircle" cx="48" cy="457" r="1.66"/>
-							<circle className="instanceCircle" cx="120" cy="83" r="1.66"/>
-							<circle className="instanceCircle" cx="120" cy="166" r="1.66"/>
-							<circle className="instanceCircle" cx="120" cy="249" r="1.66"/>
-							<circle className="instanceCircle" cx="120" cy="333" r="1.66"/>
-							<circle className="instanceCircle" cx="120" cy="416" r="1.66"/>
-							<circle className="instanceCircle" cx="120" cy="499" r="1.66"/>
-							<circle className="instanceCircle" cx="192" cy="42" r="1.66"/>
-							<circle className="instanceCircle" cx="192" cy="125" r="1.66"/>
-							<circle className="instanceCircle" cx="192" cy="208" r="1.66"/>
-							<circle className="instanceCircle" cx="192" cy="291" r="1.66"/>
-							<circle className="instanceCircle" cx="192" cy="374" r="1.66"/>
-							<circle className="instanceCircle" cx="192" cy="457" r="1.66"/>
-							<circle className="instanceCircle" cx="264" cy="83" r="1.66"/>
-							<circle className="instanceCircle" cx="264" cy="166" r="1.66"/>
-							<circle className="instanceCircle" cx="264" cy="249" r="1.66"/>
-							<circle className="instanceCircle" cx="264" cy="333" r="1.66"/>
-							<circle className="instanceCircle" cx="264" cy="416" r="1.66"/>
-							<circle className="instanceCircle" cx="264" cy="499" r="1.66"/>
-							<circle className="instanceCircle" cx="336" cy="42" r="1.66"/>
-							<circle className="instanceCircle" cx="336" cy="125" r="1.66"/>
-							<circle className="instanceCircle" cx="336" cy="208" r="1.66"/>
-							<circle className="instanceCircle" cx="336" cy="291" r="1.66"/>
-							<circle className="instanceCircle" cx="336" cy="374" r="1.66"/>
-							<circle className="instanceCircle" cx="336" cy="457" r="1.66"/>
-							<circle className="instanceCircle" cx="408" cy="83" r="1.66"/>
-							<circle className="instanceCircle" cx="408" cy="166" r="1.66"/>
-							<circle className="instanceCircle" cx="408" cy="249" r="1.66"/>
-							<circle className="instanceCircle" cx="408" cy="333" r="1.66"/>
-							<circle className="instanceCircle" cx="408" cy="416" r="1.66"/>
-							<circle className="instanceCircle" cx="408" cy="499" r="1.66"/>
-							<circle className="instanceCircle" cx="480" cy="42" r="1.66"/>
-							<circle className="instanceCircle" cx="480" cy="125" r="1.66"/>
-							<circle className="instanceCircle" cx="480" cy="208" r="1.66"/>
-							<circle className="instanceCircle" cx="480" cy="291" r="1.66"/>
-							<circle className="instanceCircle" cx="480" cy="374" r="1.66"/>
-							<circle className="instanceCircle" cx="480" cy="457" r="1.66"/>
-							<circle className="instanceCircle" cx="552" cy="83" r="1.66"/>
-							<circle className="instanceCircle" cx="552" cy="166" r="1.66"/>
-							<circle className="instanceCircle" cx="552" cy="249" r="1.66"/>
-							<circle className="instanceCircle" cx="552" cy="333" r="1.66"/>
-							<circle className="instanceCircle" cx="552" cy="416" r="1.66"/>
-							<circle className="instanceCircle" cx="552" cy="499" r="1.66"/>
-						</g>
 					</svg>
 				</div>
 			</Window>

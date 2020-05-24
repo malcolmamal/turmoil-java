@@ -14,8 +14,8 @@ public class Instance
 	{
 		DefaultUndirectedGraph<String, DefaultEdge> graph = new DefaultUndirectedGraph<>(DefaultEdge.class);
 
-		int maxWidth = 8;
-		int maxHeight = 6;
+		int maxWidth = 10;
+		int maxHeight = 8;
 
 		for (int i = 1; i <= maxWidth; i++)
 		{

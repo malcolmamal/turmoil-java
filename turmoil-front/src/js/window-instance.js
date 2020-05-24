@@ -94,7 +94,7 @@ export function handleMoveToPolygon(polygon, unit)
 		previousPolygon.data('unit', '');
 	}
 
-	let offsetContainer = jQuery('#instanceContainer').offset();
+	let offsetContainer = jQuery('#locationContainer').offset();
 	if (typeof offsetContainer == 'undefined')
 	{
 		console.log('offsetContainer undefined');
@@ -110,7 +110,7 @@ export function handleMoveToPolygon(polygon, unit)
 	let offset = polygon.offset();
 	if (typeof offset == 'undefined')
 	{
-		console.log('offset undefined');
+		console.log('offset undefined', polygon);
 		return;
 	}
 

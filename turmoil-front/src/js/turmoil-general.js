@@ -346,6 +346,8 @@ jQuery(function() {
 	initWindow('stash', true);
 	initWindow('stats', true);
 
+	initWindow('location', true);
+
 	// TODO: handle browser window resize
 });
 
