@@ -271,6 +271,7 @@ jQuery(function() {
 	});
 
 	jQuery('#window_instance').disableSelection();
+	jQuery('#window_location').disableSelection();
 
 	if (window.debug) {
 		console.log('Instance initialized...');

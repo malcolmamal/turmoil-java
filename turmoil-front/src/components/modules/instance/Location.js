@@ -2,7 +2,6 @@ import React from "react";
 import {connect} from "react-redux";
 import Window from "../../Window";
 import Field from "./Field";
-import Text from "./Text";
 import FriendlyUnit from "./FriendlyUnit";
 import EnemyUnit from "./EnemyUnit";
 import '../../../stylesheets/window-instance.css';
@@ -90,12 +89,6 @@ class ConnectedLocation extends React.Component
 						<g>
 							{fields.map(field => (
 								<Field column={field.column} row={field.row} key={"polygon-" + field.column + "-" + field.row}/>
-							))}
-						</g>
-
-						<g>
-							{fields.map(field => (
-								<Text x={field.column} y={field.row} key={"text-" + field.column + ":" + field.row}/>
 							))}
 						</g>
 					</svg>
