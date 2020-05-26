@@ -55,25 +55,6 @@ class ConnectedLocation extends React.Component
 			}
 		}
 
-		/*
-		 *  changing svgElement's width by 100 requires also changing first viewBox value but divided by 10 (roughly)
-		 *  however height is more problematic as it changes the scale
-		 *
-		 *  this is related to the 3rd and 4th viewBox attribute, if it's 1 then there is no scaling
-		 */
-
-		/*
-		 * alternative solution that might actually be easier:
-		 *
-		 * remove viewBox, change scale to around 4, change left/top  and on the polygons apply offset to transform
-		 * width: 849px;
-		 * height: 781px;
-		 * left: 1308px;
-		 * top: 1198px;
-		 * position: relative;
-		 * transform: scale(4);
-		 */
-
 		return (
 			<Window ident="location" background={background}>
 				{this.props.friendlyUnits.map(unit => (
@@ -85,7 +66,7 @@ class ConnectedLocation extends React.Component
 				))}
 
 				<div className="instanceSvg">
-					<svg viewBox="78 1 1 160" style={{width: "850px", height: "780px", left: "0", top: "0", position: "relative"}} id="svgElement">
+					<svg style={{width: "160px", height: "160px", left: "320", top: "320", position: "relative", transform: "scale(5)"}} id="svgElement">
 						<g>
 							{fields.map(field => (
 								<Field column={field.column} row={field.row} key={"polygon-" + field.column + "-" + field.row}/>

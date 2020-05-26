@@ -6,20 +6,21 @@ export default class Field extends React.Component
 		const ident = "polygon-" + this.props.column + "-" + this.props.row;
 		const text = this.props.column + ":" + this.props.row;
 
-		const initialColumnPosition = 5;
-		const initialRowPosition = 5;
+		const baseHeight = 15;
+		const baseWidth = 9;
 
-		const initialX = 5;
-		const initialY = 13;
+		const textHeightOffset = 8; // move text top <-> right
+		const verticalOffset = 12; // move whole grid left <-> right
+		const horizontalOffset = 2; // move whole grid top <-> bottom
 
 		const rowFixed = this.props.row * 2 - 1;
 		const offset = (this.props.column + rowFixed + 1) % 2;
 
-		const columnPosition = initialColumnPosition + ((this.props.column - 1) * 15);
-		const rowPosition = initialRowPosition + ((rowFixed  + offset) * 9);
+		const columnPosition = ((this.props.column - 1) * baseHeight) + verticalOffset;
+		const rowPosition = ((rowFixed  + offset) * baseWidth) + horizontalOffset;
 
-		const valueX = initialX + ((this.props.column - 1) * 15);
-		const valueY = initialY + ((rowFixed  + offset) * 9);
+		const valueX = ((this.props.column - 1) * baseHeight) + verticalOffset;
+		const valueY = ((rowFixed  + offset) * baseWidth) + textHeightOffset + horizontalOffset;
 
 		return(
 			<>
