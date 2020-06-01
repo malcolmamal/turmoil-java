@@ -93,6 +93,6 @@ public class TurmoilApplication
  *  3. spear in second hand, equipping and unequipping two handed mace duplicates visually the spear in stash, seems like equipping it does not unequip left hand -> fixed on backend, need to check front
  *  4. when we have a Staff equipped, we can equip a one hand weapons (wand)
  *  5. inventory, open stashes
- *  6. graph is working wonky, enemy move 2 fields sometimes, looks like some mismatch on backend (wrong element from pair taken?)
+ *  6. some of the items (uniques or epics?) should also have negative stats (like in diablo1) but the positive stats should be much higher that in other legendaries
  *
  */

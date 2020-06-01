@@ -26,25 +26,34 @@ public class Instance
 
 				if (j > 1)
 				{
-					String vertexAbove = i + "-" + (j-1);
-					graph.addEdge(vertexAbove, vertex);
-
-					if (i > 1 && i % 2 != 0)
-					{
-						String vertexDiagonalRight = (i-1) + "-" + (j-1);
-						graph.addEdge(vertexDiagonalRight, vertex);
-					}
+					// connection from down to up
+					graph.addEdge(i + "-" + (j-1), vertex);
 				}
 
+				// connection from right vertex to left
 				if (i > 1)
 				{
-					String vertexBeside = (i-1) + "-" + j;
-					graph.addEdge(vertexBeside, vertex);
-
-					if (i % 2 == 0 && j < maxHeight)
+					if (i % 2 == 0)
 					{
-						String vertexDiagonalLeft = (i-1) + "-" + (j+1);
-						graph.addEdge(vertexDiagonalLeft, vertex);
+						// connection going down
+						if (j > 1)
+						{
+							graph.addEdge((i-1) + "-" + (j-1), vertex);
+						}
+
+						// connection going up
+						graph.addEdge((i-1) + "-" + j, vertex);
+					}
+					else
+					{
+						// connection going down
+						graph.addEdge((i-1) + "-" + j, vertex);
+
+						// connection going up
+						if (j < maxHeight)
+						{
+							graph.addEdge((i-1) + "-" + (j+1), vertex);
+						}
 					}
 				}
 			}
