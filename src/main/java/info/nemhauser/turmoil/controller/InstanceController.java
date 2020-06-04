@@ -81,18 +81,57 @@ class InstanceController {
 
 	@RequestMapping(value = "/instanceMove/{position}", produces = "application/json")
 	public @ResponseBody
-	MoveResponse instanceMove(@PathVariable String position) {
-		Logger.log("Moving character to " + position);
-
-		CombatState cs = TurmoilApplication.getCombatState();
-		cs.friend.instancePosition = position;
-
-		return new MoveResponse("move", true, true, position, cs.enemy.getIdent());
+	MoveResponse instanceMove(@PathVariable String position)
+	{
+		return moveToPosition(position);
 	}
 
 	@RequestMapping(value = "/instanceAttack/{position}", produces = "application/json")
 	public @ResponseBody
 	JSONObject instanceAttack(@PathVariable String position)
+	{
+		return attackEnemyOnPosition(position);
+	}
+
+	@RequestMapping(value = "/instanceActionEnemy/{enemy}", produces = "application/json")
+	public @ResponseBody
+	JSONObject instanceActionEnemy(@PathVariable String enemy)
+	{
+		return actionEnemy(enemy);
+	}
+
+	@RequestMapping(value = "/instance/instanceActionOnPosition/{position}", produces = "application/json")
+	public @ResponseBody
+	JSONObject instanceActionOnPosition(@PathVariable String position)
+	{
+		CombatState cs = TurmoilApplication.getCombatState();
+
+		JSONArray array = new JSONArray();
+
+		// our action
+
+		if (cs.getEnemiesOnPositions().containsKey(position))
+		{
+			// attack
+			array.add(attackEnemyOnPosition(position));
+		}
+		else
+		{
+			// move
+			array.add(moveToPosition(position).toJSONObject());
+		}
+
+		// enemy action
+
+		array.add(actionEnemy(cs.enemy.getIdent()));
+
+		JSONObject object = new JSONObject();
+		object.put("actions", array);
+
+		return object;
+	}
+
+	private JSONObject attackEnemyOnPosition(String position)
 	{
 		Logger.log("Attacking unit at " + position);
 		Character character = TurmoilApplication.getCharacter("fox");
@@ -117,6 +156,8 @@ class InstanceController {
 
 			if (cs.enemy.currentHealth < 0)
 			{
+				object.put("unitToRemove", new EnemyUnitResponse(cs.enemy));
+
 				Item item = cs.enemy.lootBag.get("loot");
 				if (item != null)
 				{
@@ -126,16 +167,16 @@ class InstanceController {
 
 				cs.addEnemy(InstanceHelper.createMonster(TurmoilApplication.getCharacter("fox")));
 
-				object.put("newEnemyPosition", cs.enemy.instancePosition);
+				object.put("unitToAdd", new EnemyUnitResponse(cs.enemy));
 				object.put("healthBar", cs.enemy.getHealthBarValue());
 
 				//TODO: handle it properly
 				character.experience += 10;
-//				if (character.experience >= ExperienceHelper.getRequiredExperience(character.level+1))
-//				{
-//					character.level++;
-//					character.experience = ExperienceHelper.getRequiredExperience(character.level) - character.experience;
-//				}
+				//				if (character.experience >= ExperienceHelper.getRequiredExperience(character.level+1))
+				//				{
+				//					character.level++;
+				//					character.experience = ExperienceHelper.getRequiredExperience(character.level) - character.experience;
+				//				}
 				CharacterStateHelper.computeValuesForCharacterState(character);
 			}
 
@@ -144,9 +185,17 @@ class InstanceController {
 		return new JSONObject();
 	}
 
-	@RequestMapping(value = "/instanceActionEnemy/{enemy}", produces = "application/json")
-	public @ResponseBody
-	JSONObject instanceActionEnemy(@PathVariable String enemy)
+	private MoveResponse moveToPosition(String position)
+	{
+		Logger.log("Moving character to " + position);
+
+		CombatState cs = TurmoilApplication.getCombatState();
+		cs.friend.instancePosition = position;
+
+		return new MoveResponse("move", true, true, position, cs.enemy.getIdent());
+	}
+
+	private JSONObject actionEnemy(String enemy)
 	{
 		Logger.log("!!!!!! doing stuff for " + enemy);
 
@@ -155,7 +204,7 @@ class InstanceController {
 		String enemyPosition = cs.enemy.instancePosition.substring(8);
 		String characterPosition = cs.friend.instancePosition.substring(8);
 
-		Pathing pathing = new Pathing(Instance.getInstanceGraph(), enemyPosition, characterPosition);
+		Pathing pathing = new Pathing(cs.getInstanceGraph(), enemyPosition, characterPosition);
 
 		String moveTo = "polygon-" + pathing.getNextPosition();
 

@@ -160,6 +160,7 @@ export function stopAudioLoop(audio, suffix)
 	let ident = audio + '_' + suffix;
 	if (typeof(window.turmoil.soundLoops[ident]) != 'undefined')
 	{
+		console.log('stopping sound for', window.turmoil.soundLoops[ident])
 		let sound = window.turmoil.soundLoops[ident];
 		//TODO: handle promises: https://developers.google.com/web/updates/2017/06/play-request-was-interrupted
 		sound.pause();

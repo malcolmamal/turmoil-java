@@ -2,11 +2,17 @@ package info.nemhauser.turmoil.engine.instances;
 
 import info.nemhauser.turmoil.engine.domain.Monster;
 import info.nemhauser.turmoil.engine.domain.Person;
+import info.nemhauser.turmoil.engine.world.map.graph.Instance;
+import org.jgrapht.graph.DefaultEdge;
+import org.jgrapht.graph.DefaultUndirectedGraph;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 public class CombatState
 {
+	private DefaultUndirectedGraph<String, DefaultEdge> instanceGraph;
+
 	public Person friend;
 	public Monster enemy;
 
@@ -16,6 +22,10 @@ public class CombatState
 
 	//CombatRoundState ?
 
+	public CombatState()
+	{
+		instanceGraph = Instance.getInstanceGraph();
+	}
 
 	public LinkedHashMap<String, Monster> getEnemies()
 	{
@@ -32,5 +42,21 @@ public class CombatState
 		enemies.put(monster.getIdent(), monster);
 
 		enemy = monster;
+	}
+
+	public DefaultUndirectedGraph<String, DefaultEdge> getInstanceGraph()
+	{
+		return instanceGraph;
+	}
+
+	public HashMap<String, Monster> getEnemiesOnPositions()
+	{
+		HashMap<String, Monster> enemiesOnPositions = new HashMap<>();
+		for (Monster monster : enemies.values())
+		{
+			enemiesOnPositions.put(monster.getInstancePosition(), monster);
+		}
+
+		return enemiesOnPositions;
 	}
 }

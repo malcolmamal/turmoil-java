@@ -11,69 +11,83 @@ function getPolygonForUnit(unit)
 	return jQuery('#' + jQuery(unit).data('previousPolygonId'));
 }
 
-export function actionOnUnit(unitId, updateStash)
+export function actionOnUnit(unitId, callbacks)
 {
 	let unit = jQuery('#' + unitId);
+	let polygon = jQuery(getPolygonForUnit(unit));
 
-	if (jQuery(unit).hasClass('enemyUnit'))
-	{
-		let polygon = jQuery(getPolygonForUnit(unit));
-		let url = 'instanceAttack/' + polygon.attr('id');
+	return actionOnPolygon(polygon, unit, callbacks);
 
-		if (svgHasClass(polygon, 'instancePolygonEnemy'))
-		{
-			window.turmoil.ajax.exec({
-				url: url,
-				onSuccess: finalizeActionOnPolygon,
-				onSuccessThis: updateStash
-			});
-		}
-	}
+	// if (jQuery(unit).hasClass('enemyUnit'))
+	// {
+	// 	let polygon = jQuery(getPolygonForUnit(unit));
+	// 	let url = 'instanceAttack/' + polygon.attr('id');
+	//
+	// 	if (svgHasClass(polygon, 'instancePolygonEnemy'))
+	// 	{
+	// 		window.turmoil.ajax.exec({
+	// 			url: url,
+	// 			onSuccess: finalizeActionOnPolygon,
+	// 			onSuccessThis: updateStash
+	// 		});
+	// 	}
+	// }
 }
 
-function actionOnPolygon(polygon, unit)
+function actionOnPolygon(polygon, unit, callbacks)
 {
-	if (typeof(unit) == 'undefined')
+	if (typeof(polygon) == 'undefined' || polygon == null)
 	{
-		if (typeof(window.turmoil.activeUnit) == 'undefined')
-		{
-			window.turmoil.logDebug('there is no active unit', arguments);
-		}
-		unit = window.turmoil.activeUnit;
+		window.turmoil.logDebug('wrong polygon parameter', arguments);
+
+		return;
 	}
 
-	let url = '';
-	if (unit.hasClass('enemyUnit'))
-	{
-		url += 'instanceActionEnemy/' + unit.attr('id');
-	}
-	else
-	{
-		if (typeof(polygon) == 'undefined' || polygon == null)
-		{
-			window.turmoil.logDebug('wrong polygon parameter', arguments);
-			return;
-		}
-
-		if (svgHasClass(polygon, 'instancePolygon'))
-		{
-			url += 'instanceMove/' + polygon.attr('id');
-		}
-		else
-		{
-			window.turmoil.logDebug('not possible to move to polygon ' + polygon.attr('id'), arguments);
-			return;
-		}
-	}
+	// if (typeof(unit) == 'undefined')
+	// {
+	// 	if (typeof(window.turmoil.activeUnit) == 'undefined')
+	// 	{
+	// 		window.turmoil.logDebug('there is no active unit', arguments);
+	// 	}
+	// 	unit = window.turmoil.activeUnit;
+	// }
+	//
+	// let url = '';
+	// if (unit.hasClass('enemyUnit'))
+	// {
+	// 	url += 'instanceActionEnemy/' + unit.attr('id');
+	// }
+	// else
+	// {
+	// 	if (typeof(polygon) == 'undefined' || polygon == null)
+	// 	{
+	// 		window.turmoil.logDebug('wrong polygon parameter', arguments);
+	// 		return;
+	// 	}
+	//
+	// 	if (svgHasClass(polygon, 'instancePolygon'))
+	// 	{
+	// 		url += 'instanceMove/' + polygon.attr('id');
+	// 	}
+	// 	else
+	// 	{
+	// 		window.turmoil.logDebug('not possible to move to polygon ' + polygon.attr('id'), arguments);
+	// 		return;
+	// 	}
+	// }
 
 	window.turmoil.ajax.exec({
-		url: url,
-		onSuccess: finalizeActionOnPolygon
+		url: 'instance/instanceActionOnPosition/' + polygon.attr('id'),
+		onSuccess: finalizeActionsOnPolygon,
+		onSuccessThis: callbacks
 	});
 }
 
 export function handleMoveToPolygon(polygon, unit)
 {
+	console.log("playing move for",  unit.attr('id'))
+	playAudioLoop('soundMoveLeather', unit.attr('id'));
+
 	//TODO: check if he has to move
 
 	window.turmoil.log('Unit ' + unit.attr('id') + ' moves to ' + polygon.attr('id'));
@@ -138,6 +152,7 @@ export function handleMoveToPolygon(polygon, unit)
 				blink('#testElement');
 			}
 			svgRemoveClass(polygon, 'instancePolygon');
+			console.log("stop audio loop for", unit.attr('id'))
 			stopAudioLoop('soundMoveLeather', unit.attr('id'));
 		}
 	);
@@ -146,7 +161,18 @@ export function handleMoveToPolygon(polygon, unit)
 	polygon.data('unit', unit.attr('id'));
 }
 
-function finalizeActionOnPolygon(data, callbackFunction)
+function finalizeActionsOnPolygon(data, callbackFunctions)
+{
+	data.actions.forEach(function (action, index) {
+		console.log('finalize for', action, index)
+		setTimeout(function() {
+			finalizeActionOnPolygon(action, callbackFunctions);
+			}, 400 * index
+		);
+	});
+}
+
+function finalizeActionOnPolygon(data, callbackFunctions)
 {
 	if (data != null && data.success === true && typeof(data.polygonId) != 'undefined')
 	{
@@ -170,31 +196,34 @@ function finalizeActionOnPolygon(data, callbackFunction)
 					unit = jQuery('#' + data.unitToMove);
 				}
 				handleMoveToPolygon(polygon, unit);
-				playAudioLoop('soundMoveLeather', unit.attr('id'));
 			}
 		}
 
-		if (typeof(data.newEnemyPosition) != 'undefined')
+		if (typeof(data.unitToAdd) != 'undefined')
 		{
-			if (typeof(data.healthBar) != 'undefined')
+			if (typeof(callbackFunctions) !== 'undefined' && typeof(callbackFunctions.removeEnemyUnit) === 'function')
 			{
-				jQuery('#' + polygon.data('unit') + 'Health').css('width', data.healthBar);
+				//TODO: remove also old css on polygon (maybe react wise?)
+				console.log("remove old unit", data.unitToRemove);
+				callbackFunctions.removeEnemyUnit(data.unitToRemove);
 			}
-			//TODO: dont hardcode enemy
-			handleMoveToPolygon(jQuery('#' + data.newEnemyPosition), jQuery('#testEnemy1'));
+
+			if (typeof(callbackFunctions) !== 'undefined' && typeof(callbackFunctions.addEnemyUnit) === 'function')
+			{
+				callbackFunctions.addEnemyUnit(data.unitToAdd);
+
+				handleMoveToPolygon(jQuery('#' + data.unitToAdd.position), jQuery('#' + data.unitToAdd.ident));
+			}
 		}
 
 		if (typeof(data.itemForStash) != 'undefined')
 		{
-			if (typeof(callbackFunction) === 'function')
-			{
-				callbackFunction(data.itemForStash);
-			}
-		}
+			console.log('item for stash', data.itemForStash);
 
-		if (typeof(data.friendlyTurn) != 'undefined' && data.friendlyTurn === true)
-		{
-			setTimeout(function(){actionOnPolygon(null, jQuery('#' + data.enemyId));}, 400);
+			if (typeof(callbackFunctions) !== 'undefined' && typeof(callbackFunctions.updateItems) === 'function')
+			{
+				callbackFunctions.updateItems(data.itemForStash);
+			}
 		}
 	}
 }

@@ -72,6 +72,20 @@ export function handleUpdateEnemyUnits(currentState, payload)
 		return properResponse(currentState, newState);
 	}
 
+	newState.enemyUnits = [...currentState.enemyUnits];
+
+	if (typeof payload.unitToAdd !== 'undefined')
+	{
+		newState.enemyUnits.push(payload.unitToAdd);
+	}
+
+	if (typeof payload.unitToRemove !== 'undefined')
+	{
+		let ident = payload.unitToRemove.ident;
+
+		removeFromArrayByIdent(ident, newState.enemyUnits);
+	}
+
 	return properResponse(currentState, newState);
 }
 
