@@ -1,5 +1,7 @@
 import jQuery from "jquery";
 import {Utils} from "./turmoil-utils";
+import {Sound} from "./turmoil-sound";
+import {Svg} from "./turmoil-svg";
 
 export let Animations = {
 	animateToTop: function (id) {
@@ -67,5 +69,41 @@ export let Animations = {
 		let damageIndicator = '<div id="' + ident + '" class="' + styleClass + '">' + value + '</div>';
 		unit.prepend(damageIndicator);
 		Animations.animateIndicator(ident);
+	},
+	attackSwing: function (unitId) {
+		let effect = jQuery('#' + unitId + 'Effect');
+		effect.addClass('attackSwing');
+		Sound.playAudio('soundAttackMelee' + Utils.randomInt(3));
+
+		setTimeout(function() {
+				effect.removeClass('attackSwing');
+			},
+			500
+		);
+	},
+	moveUnit: function (unit, polygon, positionX, positionY) {
+		Sound.playAudioLoop('soundMoveLeather', unit.attr('id'));
+
+		unit.stop().animate({
+				left: positionX,
+				top: positionY
+			},
+			250,
+			function() {
+				if (unit.hasClass('enemyUnit')) {
+					Svg.addClass(polygon, 'instancePolygonEnemy');
+				}
+				else {
+					Svg.addClass(polygon, 'instancePolygonActive');
+				}
+				Svg.removeClass(polygon, 'instancePolygon');
+				Sound.stopAudioLoop('soundMoveLeather', unit.attr('id'));
+
+				if (window.turmoil.activeUnit.attr('id') === unit.attr('id'))
+				{
+					Animations.blink('#' + unit.attr('id'));
+				}
+			}
+		);
 	}
 }

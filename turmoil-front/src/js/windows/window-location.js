@@ -1,11 +1,9 @@
 import jQuery from "jquery";
 import "jquery-ui/ui/widgets/draggable";
 import "jquery-ui/ui/widgets/resizable";
-import {Sound} from '../core/turmoil-sound';
 import {Svg} from "../core/turmoil-svg";
 import {Animations} from "../core/turmoil-animations";
 import {Ajax} from "../core/turmoil-ajax";
-import {Utils} from "../core/turmoil-utils";
 
 export let WindowLocation = {
 	getPolygonForUnit: function (unit) {
@@ -13,7 +11,7 @@ export let WindowLocation = {
 	},
 	actionOnPolygon: function (polygon, unit, callbacks) {
 		if (typeof(polygon) == 'undefined' || polygon == null) {
-			window.turmoil.logDebug('wrong polygon parameter', arguments);
+			window.turmoil.logDebug('Wrong polygon parameter', arguments);
 
 			return;
 		}
@@ -30,70 +28,6 @@ export let WindowLocation = {
 		let polygon = jQuery(WindowLocation.getPolygonForUnit(unit));
 
 		return WindowLocation.actionOnPolygon(polygon, unit, callbacks);
-	},
-	handleMoveToPolygon: function (polygon, unit) {
-		Sound.playAudioLoop('soundMoveLeather', unit.attr('id'));
-
-		if (unit.data('previousPolygonId') != null) {
-			let previousPolygon = jQuery('#' + unit.data('previousPolygonId'));
-
-			Svg.addClass(previousPolygon, 'instancePolygon');
-			if (unit.hasClass('enemyUnit')) {
-				Svg.removeClass(previousPolygon, 'instancePolygonEnemy');
-			}
-			else {
-				Svg.removeClass(previousPolygon, 'instancePolygonActive');
-			}
-			previousPolygon.data('unit', '');
-		}
-
-		let offsetContainer = jQuery('#locationContainer').offset();
-		if (typeof offsetContainer == 'undefined') {
-			console.log('offsetContainer undefined');
-			return;
-		}
-
-		if (typeof polygon == 'undefined') {
-			console.log('polygon undefined');
-			return;
-		}
-
-		let offset = polygon.offset();
-		if (typeof offset == 'undefined') {
-			console.log('offset undefined', polygon);
-			return;
-		}
-
-		let width = polygon.width();
-		let height = polygon.height();
-
-		let centerX = offset.left + width / 2 - offsetContainer.left + 17;
-		let centerY = offset.top + height / 2 - offsetContainer.top + 17;
-
-		unit.stop().animate({
-				left: centerX,
-				top: centerY
-			},
-			250,
-			function() {
-				if (unit.hasClass('enemyUnit')) {
-					Svg.addClass(polygon, 'instancePolygonEnemy');
-				}
-				else {
-					Svg.addClass(polygon, 'instancePolygonActive');
-				}
-				Svg.removeClass(polygon, 'instancePolygon');
-				Sound.stopAudioLoop('soundMoveLeather', unit.attr('id'));
-
-				if (window.turmoil.activeUnit.attr('id') === unit.attr('id'))
-				{
-					Animations.blink('#' + unit.attr('id'));
-				}
-			}
-		);
-
-		unit.data('previousPolygonId', polygon.attr('id'));
-		polygon.data('unit', unit.attr('id'));
 	},
 	finalizeActionsOnPolygon: function (data, callbackFunctions) {
 		data.actions.forEach(function (action, index) {
@@ -144,6 +78,49 @@ export let WindowLocation = {
 			}
 		}
 	},
+	handleMoveToPolygon: function (polygon, unit) {
+		if (unit.data('previousPolygonId') != null) {
+			let previousPolygon = jQuery('#' + unit.data('previousPolygonId'));
+
+			Svg.addClass(previousPolygon, 'instancePolygon');
+			if (unit.hasClass('enemyUnit')) {
+				Svg.removeClass(previousPolygon, 'instancePolygonEnemy');
+			}
+			else {
+				Svg.removeClass(previousPolygon, 'instancePolygonActive');
+			}
+			previousPolygon.data('unit', '');
+		}
+
+		let offsetContainer = jQuery('#locationContainer').offset();
+		if (typeof offsetContainer == 'undefined') {
+			console.log('OffsetContainer undefined');
+			return;
+		}
+
+		if (typeof polygon == 'undefined') {
+			console.log('Polygon undefined');
+			return;
+		}
+
+		let offset = polygon.offset();
+		if (typeof offset == 'undefined') {
+			console.log('Offset undefined', polygon);
+			return;
+		}
+
+		let width = polygon.width();
+		let height = polygon.height();
+
+		// TODO: here probably some math should be applied regarding the scale
+		let centerX = offset.left + width / 2 - offsetContainer.left + 17;
+		let centerY = offset.top + height / 2 - offsetContainer.top + 17;
+
+		Animations.moveUnit(unit, polygon, centerX, centerY);
+
+		unit.data('previousPolygonId', polygon.attr('id'));
+		polygon.data('unit', unit.attr('id'));
+	},
 	handleAttackPolygon: function (polygon, unit, data) {
 		//TODO: make sure that it is not possible to do actions when enemy is doing stuff
 
@@ -165,14 +142,6 @@ export let WindowLocation = {
 			jQuery('#' + polygon.data('unit') + 'Health').css('width', data.healthBar);
 		}
 
-		let effect = jQuery('#' + targetUnit.attr('id') + 'Effect');
-		effect.addClass('attackSwing');
-		Sound.playAudio('soundAttackMelee' + Utils.randomInt(3));
-
-		setTimeout(function() {
-				effect.removeClass('attackSwing');
-			},
-			500
-		);
+		Animations.attackSwing(targetUnit.attr('id'));
 	}
 }
