@@ -1,11 +1,11 @@
 import jQuery from "jquery";
 import "jquery-ui/ui/widgets/draggable";
 import "jquery-ui/ui/widgets/resizable";
-import {Sound} from './turmoil-sound';
-import {Svg} from "./turmoil-svg";
-import {Animations} from "./turmoil-animations";
-import {Ajax} from "./turmoil-ajax";
-import {Utils} from "./turmoil-utils";
+import {Sound} from '../core/turmoil-sound';
+import {Svg} from "../core/turmoil-svg";
+import {Animations} from "../core/turmoil-animations";
+import {Ajax} from "../core/turmoil-ajax";
+import {Utils} from "../core/turmoil-utils";
 
 export let Location = {
 	getPolygonForUnit: function (unit) {

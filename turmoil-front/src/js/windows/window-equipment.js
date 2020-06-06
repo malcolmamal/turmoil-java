@@ -1,5 +1,5 @@
 import jQuery from "jquery";
-import {Tooltip} from "./turmoil-tooltip";
+import {Tooltip} from "../core/turmoil-tooltip";
 
 jQuery(function () {
 	let slots = [

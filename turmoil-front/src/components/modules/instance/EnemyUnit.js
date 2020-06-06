@@ -2,7 +2,7 @@ import React from "react";
 import {connect} from "react-redux";
 import jQuery from "jquery";
 import Unit from "./Unit";
-import {actionOnUnit, handleMoveToPolygon} from "../../../js/window-instance";
+import {actionOnUnit, handleMoveToPolygon} from "../../../js/windows/window-instance";
 import {updateEnemyUnitsAction, updateItemsInStashAction} from "../../../js/actions";
 
 function mapDispatchToProps(dispatch) {

@@ -1,5 +1,5 @@
 import React from "react";
-import {Windows} from '../js/turmoil-windows'
+import {Windows} from '../js/core/turmoil-windows'
 
 
 class WindowIcon extends React.Component {

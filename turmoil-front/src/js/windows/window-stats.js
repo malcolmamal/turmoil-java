@@ -1,4 +1,4 @@
-import {Ajax} from "./turmoil-ajax";
+import {Ajax} from "../core/turmoil-ajax";
 
 export function updateCharacterState(callBackFunction)
 {

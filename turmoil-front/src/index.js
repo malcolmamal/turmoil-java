@@ -22,8 +22,8 @@ import './stylesheets/turmoil-general.css';
 import './stylesheets/turmoil-windows.css';
 
 // javascript
-import './js/turmoil-tooltip';
-import './js/turmoil-windows';
+import './js/core/turmoil-tooltip';
+import './js/core/turmoil-windows';
 
 const data = {
 	'en': locale_en,

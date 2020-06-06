@@ -2,7 +2,7 @@ import React from "react";
 import {connect} from "react-redux";
 import {actionRightClickOnStashedItem} from "../../../js/turmoil-items";
 import {updateCharacterStatsAction, updateItemsInEquipmentAction, updateItemsInStashAction} from "../../../js/actions";
-import {updateCharacterState} from "../../../js/window-stats";
+import {updateCharacterState} from "../../../js/windows/window-stats";
 
 function mapDispatchToProps(dispatch) {
 	return {

@@ -1,6 +1,6 @@
 import React from "react";
 import "../../stylesheets/turmoil-error.css";
-import {initializeErrorModal} from "../../js/turmoil-error";
+import {initializeErrorModal} from "../../js/core/turmoil-error";
 
 export default class Error extends React.Component
 {

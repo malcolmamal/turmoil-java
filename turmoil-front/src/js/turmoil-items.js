@@ -1,6 +1,6 @@
-import {Tooltip} from "./turmoil-tooltip";
-import {Sound} from './turmoil-sound';
-import {Ajax} from "./turmoil-ajax";
+import {Tooltip} from "./core/turmoil-tooltip";
+import {Sound} from './core/turmoil-sound';
+import {Ajax} from "./core/turmoil-ajax";
 
 export function actionRightClickOnEquipment(item, updateItems)
 {
@@ -63,15 +63,12 @@ function finalizeRightClickOnStashedItem(data, callbackFunction)
 		if (typeof(data.itemForEquipment) !== 'undefined') {
 			switch (data.itemForEquipment.type) {
 				case 'ACCESSORY':
-					console.log('want to play soundAccessoryJewellery');
 					Sound.playAudio('soundAccessoryJewellery');
 					break;
 				case 'ARMOR':
-					console.log('want to play soundMediumArmor');
 					Sound.playAudio('soundMediumArmor');
 					break;
 				case 'WEAPON':
-					console.log('want to play soundWeapon');
 					Sound.playAudio('soundWeapon');
 					break;
 			}

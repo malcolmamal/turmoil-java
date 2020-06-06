@@ -1,6 +1,6 @@
 import jQuery from "jquery";
 import "jquery-ui/ui/widgets/tooltip";
-import '../stylesheets/turmoil-tooltip.css';
+import '../../stylesheets/turmoil-tooltip.css';
 import {Ajax} from "./turmoil-ajax";
 
 export let Tooltip = {

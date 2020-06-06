@@ -3,8 +3,8 @@ import {connect} from "react-redux";
 import Window from "../../Window";
 import ItemSlotEquipment from "./ItemSlotEquipment";
 import {updateItemsInEquipmentAction} from "../../../js/actions";
-import '../../../js/window-equipment';
-import {Ajax} from "../../../js/turmoil-ajax";
+import '../../../js/windows/window-equipment';
+import {Ajax} from "../../../js/core/turmoil-ajax";
 
 const mapStateToProps = state => {
 	return { equipmentItems: state.equipmentItems };

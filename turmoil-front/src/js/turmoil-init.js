@@ -1,9 +1,9 @@
 import jQuery from "jquery";
 import moment from "moment";
 import "jquery-ui/themes/base/all.css";
-import {Utils} from "./turmoil-utils";
-import {Layout} from "./turmoil-layout";
-import {Windows} from "./turmoil-windows";
+import {Utils} from "./core/turmoil-utils";
+import {Layout} from "./core/turmoil-layout";
+import {Windows} from "./core/turmoil-windows";
 
 // sounds
 import soundMoveLeather from "../media/audio/move_leather.wav";
@@ -18,8 +18,6 @@ window.debug = true;
 window.debugPopup = true;
 
 window.turmoil = {};
-
-window.turmoil.instance = {};
 
 window.turmoil.equipment = {};
 window.turmoil.equipment.defaultItems = {
@@ -150,11 +148,11 @@ jQuery(function() {
 });
 
 if (typeof jQuery !== 'undefined') {
-	(function($) {
-		$('#spinner').ajaxStart(function() {
-			$(this).fadeIn();
+	(function(jQuery) {
+		jQuery('#spinner').ajaxStart(function() {
+			jQuery(this).fadeIn();
 		}).ajaxStop(function() {
-			$(this).fadeOut();
+			jQuery(this).fadeOut();
 		});
-	})(jQuery);
+	}) (jQuery);
 }

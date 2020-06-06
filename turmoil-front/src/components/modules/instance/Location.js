@@ -7,7 +7,7 @@ import EnemyUnit from "./EnemyUnit";
 import '../../../stylesheets/window-instance.css';
 import '../../../stylesheets/window-location.css';
 import {updateEnemyUnitsAction, updateFriendlyUnitsAction} from "../../../js/actions";
-import {Ajax} from "../../../js/turmoil-ajax";
+import {Ajax} from "../../../js/core/turmoil-ajax";
 
 const mapStateToProps = state => {
 	return {

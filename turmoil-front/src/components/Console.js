@@ -1,6 +1,6 @@
 import React from "react";
 import '../stylesheets/window-console.css';
-import '../js/window-console';
+import '../js/windows/window-console';
 import Window from "./Window";
 
 export default class Console extends React.Component

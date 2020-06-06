@@ -1,7 +1,7 @@
 import React from "react";
 import jQuery from "jquery";
 import Unit from "./Unit";
-import {handleMoveToPolygon} from "../../../js/window-instance";
+import {handleMoveToPolygon} from "../../../js/windows/window-instance";
 
 export default class FriendlyUnit extends React.Component
 {
