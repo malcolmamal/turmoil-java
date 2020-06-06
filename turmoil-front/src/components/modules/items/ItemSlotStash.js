@@ -1,8 +1,10 @@
 import React from "react";
 import {connect} from "react-redux";
-import {actionRightClickOnStashedItem} from "../../../js/turmoil-items";
 import {ReduxActions} from "../../../js/redux/actions";
 import {WindowStats} from "../../../js/windows/window-stats";
+import {Tooltip} from "../../../js/core/turmoil-tooltip";
+import {Ajax} from "../../../js/core/turmoil-ajax";
+import {Sound} from "../../../js/core/turmoil-sound";
 
 function mapDispatchToProps(dispatch) {
 	return {
@@ -23,7 +25,7 @@ class ConnectedItemSlotStash extends React.Component
 	onContextMenuHandler(event, itemId) {
 		event.preventDefault();
 
-		actionRightClickOnStashedItem(itemId, this.updateItems);
+		this.actionRightClickOnStashedItem(itemId, this.updateItems);
 
 		WindowStats.updateStats(this.props.updateCharacterStats);
 	}
@@ -31,6 +33,39 @@ class ConnectedItemSlotStash extends React.Component
 	updateItems(itemForStash, itemForEquipment) {
 		this.props.updateStashItems({itemToAdd: itemForStash, itemToRemove: itemForEquipment});
 		this.props.updateEquipmentItems({itemToAdd: itemForEquipment});
+	}
+
+	actionRightClickOnStashedItem(itemId, updateItems) {
+		Tooltip.hideAllTooltips();
+
+		Ajax.exec({
+			url: 'character/equip/' + itemId,
+			onSuccess: this.finalizeRightClickOnStashedItem,
+			onSuccessThis: updateItems
+		});
+	}
+
+	finalizeRightClickOnStashedItem(data, callbackFunction) {
+		if (data != null && data.success === true) {
+			if (typeof(data.itemForEquipment) !== 'undefined') {
+				switch (data.itemForEquipment.type) {
+					case 'ACCESSORY':
+						Sound.playAudio('soundAccessoryJewellery');
+						break;
+					case 'ARMOR':
+						Sound.playAudio('soundMediumArmor');
+						break;
+					case 'WEAPON':
+						Sound.playAudio('soundWeapon');
+						break;
+				}
+			}
+
+			if (typeof(callbackFunction) === 'function')
+			{
+				callbackFunction(data.itemForStash, data.itemForEquipment);
+			}
+		}
 	}
 
 	render() {
