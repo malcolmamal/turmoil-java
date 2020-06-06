@@ -7,6 +7,7 @@ import EnemyUnit from "./EnemyUnit";
 import '../../../stylesheets/window-instance.css';
 import '../../../stylesheets/window-location.css';
 import {updateEnemyUnitsAction, updateFriendlyUnitsAction} from "../../../js/actions";
+import {Ajax} from "../../../js/turmoil-ajax";
 
 const mapStateToProps = state => {
 	return {
@@ -25,13 +26,13 @@ function mapDispatchToProps(dispatch) {
 class ConnectedLocation extends React.Component
 {
 	componentDidMount() {
-		window.turmoil.ajax.exec({
+		Ajax.exec({
 			url: 'instance/initializeEnemyUnits',
 			onSuccess: this.props.updateEnemyUnits,
 			onSuccessThis: this
 		});
 
-		window.turmoil.ajax.exec({
+		Ajax.exec({
 			url: 'instance/initializeFriendlyUnits',
 			onSuccess: this.props.updateFriendlyUnits,
 			onSuccessThis: this

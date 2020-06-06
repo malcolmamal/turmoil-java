@@ -1,0 +1,104 @@
+import jQuery from "jquery";
+import {Layout} from "./turmoil-layout";
+
+/**
+ * window.turmoil.ajax.exec({
+ *		url: 'controller/action/id',
+ *		onSuccess: someFunction
+ * });
+ *
+ * @type {{debugInfo: string, baseUrl: string, exec: Ajax.exec}}
+ */
+export let Ajax = {
+	debugInfo: '',
+	baseUrl:  'http://localhost:8080/',
+	exec: function() {
+		if (arguments.length === 1) {
+			let params = arguments[0];
+			if (typeof(params.url) !== 'undefined') {
+				let dataString = null;
+				if (typeof(params.args) !== 'undefined') {
+					jQuery.each(params.args, function(name, value) {
+						dataString += "&arg[" + name + "]=" + value;
+					});
+				}
+
+				Layout.showSpinner();
+
+				jQuery.ajax({
+					type: "GET",
+					crossDomain: true,
+					dataType: 'json',
+					timeout: 3000,
+					url: Ajax.baseUrl + params.url,
+					data: dataString,
+					//dataType:"script",
+					success: function(data, textStatus, xhr) {
+						if (textStatus === 'success') {
+							if (typeof(params.eval) !== 'undefined' && params.eval === true) {
+								eval(data);
+							}
+
+							if (typeof(params.onSuccess) !== 'undefined') {
+
+								if (typeof(params.onSuccessThis) !== 'undefined') {
+									params.onSuccess(data, params.onSuccessThis);
+								}
+								else {
+									params.onSuccess(data);
+								}
+							}
+						}
+						else if (window.debug) {
+							console.log('Ajax error', textStatus, params.url, data);
+						}
+
+						Layout.hideSpinner();
+					},
+					error: function(XMLHttpRequest, textStatus, errorThrown) {
+						Ajax.handleAjaxError(XMLHttpRequest.responseText, errorThrown, textStatus);
+					},
+					complete: function(xhr, textStatus) {
+						//console.log('complete', xhr.status);
+						//console.log('complete url', window.baseUrl + params.url);
+					}
+				});
+			}
+			else {
+				if (window.debug) {
+					console.log('Missing url param for ajax call');
+				}
+			}
+		}
+		else {
+			if (window.debug) {
+				console.log('Missing arguments for ajax call');
+			}
+		}
+	},
+	handleAjaxError: function (responseText, errorThrown, status) {
+		if (typeof responseText === 'undefined') {
+			responseText = status;
+		}
+
+		jQuery('#error').html(responseText);
+		if (window.debug) {
+			console.log('Error in ajax call', errorThrown);
+			Ajax.debugInfo = responseText;
+
+			if (window.debugPopup) {
+				jQuery('#modalContent').html(responseText);
+				window.modal.style.display = "block";
+			}
+		}
+
+		Layout.hideSpinner();
+	},
+	showAjaxError: function () {
+		let windowId = window.open('', 'ajaxError', 'height=900, width=1600');
+		windowId.document.write(Ajax.debugInfo);
+		windowId.focus();
+
+		Layout.hideSpinnerWithDelay();
+	}
+};

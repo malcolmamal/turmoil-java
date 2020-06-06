@@ -1,6 +1,15 @@
 import jQuery from "jquery";
 import moment from "moment";
 import "jquery-ui/themes/base/all.css";
+import {Utils} from "./turmoil-utils";
+
+import soundMoveLeather from "../media/audio/move_leather.wav";
+import soundAttackMelee1 from "../media/audio/attack_melee_001.wav";
+import soundAttackMelee2 from "../media/audio/attack_melee_002.wav";
+import soundAttackMelee3 from "../media/audio/attack_melee_003.wav";
+import soundAccessoryJewellery from "../media/audio/change_bling_004.wav";
+import soundMediumArmor from "../media/audio/change_medium_002.wav";
+import soundWeapon from "../media/audio/change_weapon_004.wav";
 
 window.debug = true;
 window.debugPopup = true;
@@ -30,63 +39,62 @@ window.turmoil.equipment.defaultItems = {
 	slot_bracers: { slot: "slot_bracers", top: 105, left: 500, item: {}}
 };
 
-window.turmoil.sounds = {};
+window.turmoil.sounds = {
+	'soundMoveLeather': soundMoveLeather,
+	'soundAttackMelee1': soundAttackMelee1,
+	'soundAttackMelee2': soundAttackMelee2,
+	'soundAttackMelee3': soundAttackMelee3,
+	'soundAccessoryJewellery': soundAccessoryJewellery,
+	'soundMediumArmor': soundMediumArmor,
+	'soundWeapon': soundWeapon
+};
+
 window.turmoil.soundLoops = {};
 window.turmoil.soundLoopsPromises = {}; // promises: https://developers.google.com/web/updates/2017/06/play-request-was-interrupted
 
 window.turmoil.windowSettings = localStorage.getItem('windowSettings') === null ? {} : JSON.parse(localStorage.getItem('windowSettings'));
 
 window.turmoil.lastLogDate = null;
-window.turmoil.log = function(content, target)
-{
-	if (typeof(target) == 'undefined')
-	{
+window.turmoil.log = function(content, target) {
+	if (typeof(target) == 'undefined') {
 		target = 'all';
 	}
 
 	console.log('[' + target + ']', content);
 
 	let consoleTarget = jQuery('#console-' + target);
-	if (consoleTarget.length > 0)
-	{
+	if (consoleTarget.length > 0) {
 		let currentDate;
-		if (typeof(moment) == 'function')
-		{
+		if (typeof(moment) == 'function') {
 			currentDate = moment().format("YYYY-MM-DD HH:mm:ss.SSS");
 		}
-		else
-		{
-			currentDate = getCurrentDateTime();
+		else {
+			currentDate = Utils.getCurrentDateTime();
 		}
 		currentDate = '[' + currentDate + '] ';
 
 		let currentDateObject = new Date();
-		if (window.turmoil.lastLogDate != null)
-		{
+		if (window.turmoil.lastLogDate != null) {
 			let difference = currentDateObject.getTime() - window.turmoil.lastLogDate.getTime();
 			currentDate += ' (' + difference + 'ms) ';
 		}
 
 		consoleTarget.find('.mCSB_container').prepend(currentDate + content + '<br>');
 
-		if (target !== 'all')
-		{
+		if (target !== 'all') {
 			jQuery('#console-all').find('.mCSB_container').prepend(currentDate + content + '<br>');
 		}
 
 		window.turmoil.lastLogDate = currentDateObject;
 	}
-	else
-	{
+	else {
 		console.log('[' + target + ']', content);
 	}
 };
 
-window.turmoil.logDebug = function(content)
-{
+window.turmoil.logDebug = function(content) {
 	let caller = '';
-	if (typeof(arguments) == 'object')
-	{
+	if (typeof(arguments) == 'object') {
 		if (typeof(this.callee) == 'function' && typeof(this.callee.name) == 'string') {
 			caller = this.callee.name + '() - ';
 		}
@@ -95,17 +103,8 @@ window.turmoil.logDebug = function(content)
 	console.log('[debug]', caller + content);
 };
 
-window.turmoil.logCombat = function(content)
-{
+window.turmoil.logCombat = function(content) {
 	window.turmoil.log(content, 'combat');
 };
 
 window.turmoil.activeUnit = null;
-
-// functions
-
-function getCurrentDateTime()
-{
-	let currentDate = new Date();
-	return currentDate.toJSON().slice(0,10) + ' ' + currentDate.getHours() + ':' + currentDate.getMinutes() + ':' + currentDate.getSeconds() + '.' + currentDate.getMilliseconds();
-}

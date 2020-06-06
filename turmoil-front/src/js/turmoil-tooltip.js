@@ -1,92 +1,80 @@
 import jQuery from "jquery";
 import "jquery-ui/ui/widgets/tooltip";
 import '../stylesheets/turmoil-tooltip.css';
+import {Ajax} from "./turmoil-ajax";
 
-let emptyContent = "<div id='something-_ID_'>_CONTENT_</div>";
-let tooltipContents = {};
+export let Tooltip = {
+	emptyContent: "<div id='something-_ID_'>_CONTENT_</div>",
+	tooltipContents: {},
 
-export function hideAllTooltips()
-{
-	jQuery('.ui-tooltip').hide();
-}
+	hideAllTooltips: function () {
+		jQuery('.ui-tooltip').hide();
+	},
+	prepareTooltip: function prepareTooltip(id, data) {
+		Tooltip.tooltipContents[id] = Tooltip.emptyContent.replace('_CONTENT_', data).replace('_ID_', id);
+		jQuery('#something-' + id).html(data);
+	},
+	isElementVisibleOrAlreadyGone: function isElementVisibleOrAlreadyGone(element) {
+		if (jQuery(element).length === 0) {
+			// element is already gone so no need to do anything
+			return true;
+		}
 
-function prepareTooltip(id, data)
-{
-	tooltipContents[id] = emptyContent.replace('_CONTENT_', data).replace('_ID_', id);
-	jQuery('#something-' + id).html(data);
-}
+		let topView = jQuery(window).scrollTop();
+		let bottomView = topView + jQuery(window).height();
+		let topElement = jQuery(element).offset().top;
+		let bottomElement = topElement + jQuery(element).height();
 
-function isElementVisibleOrAlreadyGone(element)
-{
-	if (jQuery(element).length === 0)
-	{
-		// element is already gone so no need to do anything
-		return true;
-	}
+		return ((bottomElement <= bottomView) && (topElement >= topView));
+	},
+	reopenTooltipIfNotVisible: function reopenTooltipIfNotVisible(element, tooltipId) {
+		if (!Tooltip.isElementVisibleOrAlreadyGone(tooltipId)) {
+			element.tooltip().mouseout();
+			setTimeout(function(){ element.tooltip().mouseover(); }, 10);
+		}
+	},
+	handleItemTooltipContent: function handleItemTooltipContent(element) {
+		let item = element.attr('item');
 
-	let topView = jQuery(window).scrollTop();
-	let bottomView = topView + jQuery(window).height();
-	let topElement = jQuery(element).offset().top;
-	let bottomElement = topElement + jQuery(element).height();
+		let content = Tooltip.emptyContent.replace('_CONTENT_', '').replace('_ID_', item);
+		if (Tooltip.tooltipContents[item]) {
+			content = Tooltip.tooltipContents[item]
+		}
+		else {
+			// hide all the other existing tooltips
+			Tooltip.hideAllTooltips();
 
-	return ((bottomElement <= bottomView) && (topElement >= topView));
-}
+			jQuery.ajax({
+				type:'POST',
+				crossDomain: true,
+				url: Ajax.baseUrl + 'tooltip/' + item,
+				success: function(data, textStatus) {
+					if (textStatus === 'success') {
+						Tooltip.prepareTooltip(item, data);
 
-function reopenTooltipIfNotVisible(element, tooltipId)
-{
-	if (!isElementVisibleOrAlreadyGone(tooltipId))
-	{
-		element.tooltip().mouseout();
-		setTimeout(function(){ element.tooltip().mouseover(); }, 10);
-	}
-}
+						// in case the tooltip will be partially outside the viewport, it has to be closed and opened again for jqueryui to reposition the tooltip
+						setTimeout(function () {
+							Tooltip.reopenTooltipIfNotVisible(element, '#something-' + item);
+						}, 10);
+					}
+					else if (window.debug) {
+						console.log('Tooltip Ajax error', textStatus, item, data);
+					}
+				},
+				error: function(XMLHttpRequest, textStatus, errorThrown) {
+					jQuery('#error').html(XMLHttpRequest.responseText);
 
-function handleItemTooltipContent(element)
-{
-	let item = element.attr('item');
-
-	let content = emptyContent.replace('_CONTENT_', '').replace('_ID_', item);
-	if (tooltipContents[item])
-	{
-		content = tooltipContents[item]
-	}
-	else
-	{
-		// hide all the other existing tooltips
-		hideAllTooltips();
-
-		jQuery.ajax({
-			type:'POST',
-			crossDomain: true,
-			url: window.baseUrl + 'tooltip/' + item,
-			success: function(data, textStatus) {
-				if (textStatus === 'success')
-				{
-					prepareTooltip(item, data);
-
-					// in case the tooltip will be partially outside the viewport, it has to be closed and opened again for jqueryui to reposition the tooltip
-					setTimeout(function () {
-						reopenTooltipIfNotVisible(element, '#something-' + item);
-					}, 10);
+					if (window.debug) {
+						console.log('Error in ajax call', errorThrown);
+					}
 				}
-				else if (window.debug)
-				{
-					console.log('Tooltip Ajax error', textStatus, item, data);
-				}
-			},
-			error: function(XMLHttpRequest, textStatus, errorThrown) {
-				jQuery('#error').html(XMLHttpRequest.responseText);
+			});
 
-				if (window.debug)
-				{
-					console.log('Error in ajax call', errorThrown);
-				}
-			}
-		});
+			//content = tooltipContents[id];
+		}
 
-		//content = tooltipContents[id];
+		return content;
 	}
-	return content;
 }
 
 jQuery(function() {
@@ -98,25 +86,21 @@ jQuery(function() {
 		position: { my: "left+15 top", at: "right center" },
 		content: function () {
 			let content;
-			if (jQuery(this).hasClass('itemTooltip'))
-			{
-				content = handleItemTooltipContent(jQuery(this));
+			if (jQuery(this).hasClass('itemTooltip')) {
+				content = Tooltip.handleItemTooltipContent(jQuery(this));
 			}
-			else
-			{
+			else {
 				content = jQuery(this).prop('title');
 			}
 
 			return content;
 		},
 		open: function(event, ui) {
-
 			// closing current tooltip after 20 seconds
 			setTimeout(function () {
 				jQuery(ui.tooltip).hide();
 			}, 20000 * 100);
 		}
-
 	});
 
 	if (window.debug) {

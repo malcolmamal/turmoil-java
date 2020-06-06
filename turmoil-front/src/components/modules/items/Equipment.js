@@ -4,6 +4,7 @@ import Window from "../../Window";
 import ItemSlotEquipment from "./ItemSlotEquipment";
 import {updateItemsInEquipmentAction} from "../../../js/actions";
 import '../../../js/window-equipment';
+import {Ajax} from "../../../js/turmoil-ajax";
 
 const mapStateToProps = state => {
 	return { equipmentItems: state.equipmentItems };
@@ -24,7 +25,7 @@ class ConnectedEquipment extends React.Component
 	}
 
 	componentDidMount() {
-		window.turmoil.ajax.exec({
+		Ajax.exec({
 			url: 'initializeEquipment',
 			onSuccess: this.wornItems
 		});

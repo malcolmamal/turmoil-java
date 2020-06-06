@@ -1,80 +1,74 @@
 import jQuery from "jquery";
 import "jquery-ui/ui/widgets/draggable";
 import "jquery-ui/ui/widgets/resizable";
+import {Sound} from './turmoil-sound';
+import {Svg} from "./turmoil-svg";
+import {Animations} from "./turmoil-animations";
+import {Ajax} from "./turmoil-ajax";
+import {Utils} from "./turmoil-utils";
 
-import {stopAudioLoop, playAudio, playAudioLoop, randomInt} from './turmoil-general';
-import {svgAddClass, svgHasClass, svgRemoveClass} from "./turmoil-svg";
-import {animateIndicator, blink} from "./turmoil-animations";
+export let Location = {
+	getPolygonForUnit: function (unit) {
+		return jQuery('#' + jQuery(unit).data('previousPolygonId'));
+	},
+	actionOnPolygon: function (polygon, unit, callbacks)
+	{
+		if (typeof(polygon) == 'undefined' || polygon == null) {
+			window.turmoil.logDebug('wrong polygon parameter', arguments);
 
-function getPolygonForUnit(unit)
-{
-	return jQuery('#' + jQuery(unit).data('previousPolygonId'));
+			return;
+		}
+
+		Ajax.exec({
+			url: 'instance/instanceActionOnPosition/' + polygon.attr('id'),
+			onSuccess: finalizeActionsOnPolygon,
+			onSuccessThis: callbacks
+		});
+	}
 }
 
 export function actionOnUnit(unitId, callbacks)
 {
 	let unit = jQuery('#' + unitId);
-	let polygon = jQuery(getPolygonForUnit(unit));
+	let polygon = jQuery(Location.getPolygonForUnit(unit));
 
-	return actionOnPolygon(polygon, unit, callbacks);
-}
-
-function actionOnPolygon(polygon, unit, callbacks)
-{
-	if (typeof(polygon) == 'undefined' || polygon == null)
-	{
-		window.turmoil.logDebug('wrong polygon parameter', arguments);
-
-		return;
-	}
-
-	window.turmoil.ajax.exec({
-		url: 'instance/instanceActionOnPosition/' + polygon.attr('id'),
-		onSuccess: finalizeActionsOnPolygon,
-		onSuccessThis: callbacks
-	});
+	return Location.actionOnPolygon(polygon, unit, callbacks);
 }
 
 export function handleMoveToPolygon(polygon, unit)
 {
-	playAudioLoop('soundMoveLeather', unit.attr('id'));
+	Sound.playAudioLoop('soundMoveLeather', unit.attr('id'));
 
 	//TODO: check if he has to move
 
 	window.turmoil.log('Unit ' + unit.attr('id') + ' moves to ' + polygon.attr('id'));
 
-	if (unit.data('previousPolygonId') != null)
-	{
+	if (unit.data('previousPolygonId') != null) {
 		let previousPolygon = jQuery('#' + unit.data('previousPolygonId'));
 
-		svgAddClass(previousPolygon, 'instancePolygon');
-		if (unit.hasClass('enemyUnit'))
-		{
-			svgRemoveClass(previousPolygon, 'instancePolygonEnemy');
+		Svg.addClass(previousPolygon, 'instancePolygon');
+		if (unit.hasClass('enemyUnit')) {
+			Svg.removeClass(previousPolygon, 'instancePolygonEnemy');
 		}
-		else
-		{
-			svgRemoveClass(previousPolygon, 'instancePolygonActive');
+		else {
+			Svg.removeClass(previousPolygon, 'instancePolygonActive');
 		}
 		previousPolygon.data('unit', '');
 	}
 
 	let offsetContainer = jQuery('#locationContainer').offset();
-	if (typeof offsetContainer == 'undefined')
-	{
+	if (typeof offsetContainer == 'undefined') {
 		console.log('offsetContainer undefined');
 		return;
 	}
 
-	if (typeof polygon == 'undefined')
-	{
+	if (typeof polygon == 'undefined') {
 		console.log('polygon undefined');
 		return;
 	}
 
 	let offset = polygon.offset();
-	if (typeof offset == 'undefined')
-	{
+	if (typeof offset == 'undefined') {
 		console.log('offset undefined', polygon);
 		return;
 	}
@@ -91,19 +85,17 @@ export function handleMoveToPolygon(polygon, unit)
 		},
 		250,
 		function() {
-			if (unit.hasClass('enemyUnit'))
-			{
-				svgAddClass(polygon, 'instancePolygonEnemy');
+			if (unit.hasClass('enemyUnit')) {
+				Svg.addClass(polygon, 'instancePolygonEnemy');
 			}
-			else
-			{
-				svgAddClass(polygon, 'instancePolygonActive');
+			else {
+				Svg.addClass(polygon, 'instancePolygonActive');
 
 				//TODO: blink the active unit!
-				blink('#testElement');
+				Animations.blink('#testElement');
 			}
-			svgRemoveClass(polygon, 'instancePolygon');
-			stopAudioLoop('soundMoveLeather', unit.attr('id'));
+			Svg.removeClass(polygon, 'instancePolygon');
+			Sound.stopAudioLoop('soundMoveLeather', unit.attr('id'));
 		}
 	);
 
@@ -123,52 +115,41 @@ function finalizeActionsOnPolygon(data, callbackFunctions)
 
 function finalizeActionOnPolygon(data, callbackFunctions)
 {
-	if (data != null && data.success === true && typeof(data.polygonId) != 'undefined')
-	{
+	if (data != null && data.success === true && typeof(data.polygonId) != 'undefined') {
 		let unit = window.turmoil.activeUnit;
 
 		let polygon = jQuery('#' + data.polygonId);
-		if (polygon.length > 0 && typeof(data.actionType) != 'undefined')
-		{
-			if (data.actionType === 'attack')
-			{
-				if (typeof(data.attackingUnit) != 'undefined')
-				{
+		if (polygon.length > 0 && typeof(data.actionType) != 'undefined') {
+			if (data.actionType === 'attack') {
+				if (typeof(data.attackingUnit) != 'undefined') {
 					unit = jQuery('#' + data.attackingUnit);
 				}
 				handleAttackPolygon(polygon, unit, data);
 			}
-			else if (data.actionType === 'move')
-			{
-				if (typeof(data.unitToMove) != 'undefined')
-				{
+			else if (data.actionType === 'move') {
+				if (typeof(data.unitToMove) != 'undefined') {
 					unit = jQuery('#' + data.unitToMove);
 				}
 				handleMoveToPolygon(polygon, unit);
 			}
 		}
 
-		if (typeof(data.unitToAdd) != 'undefined')
-		{
-			if (typeof(callbackFunctions) !== 'undefined' && typeof(callbackFunctions.removeEnemyUnit) === 'function')
-			{
+		if (typeof(data.unitToAdd) != 'undefined') {
+			if (typeof(callbackFunctions) !== 'undefined' && typeof(callbackFunctions.removeEnemyUnit) === 'function') {
 				callbackFunctions.removeEnemyUnit(data.unitToRemove);
-				svgRemoveClass(polygon, 'instancePolygonEnemy');
-				svgAddClass(polygon, 'instancePolygon');
+				Svg.removeClass(polygon, 'instancePolygonEnemy');
+				Svg.addClass(polygon, 'instancePolygon');
 			}
 
-			if (typeof(callbackFunctions) !== 'undefined' && typeof(callbackFunctions.addEnemyUnit) === 'function')
-			{
+			if (typeof(callbackFunctions) !== 'undefined' && typeof(callbackFunctions.addEnemyUnit) === 'function') {
 				callbackFunctions.addEnemyUnit(data.unitToAdd);
 
 				handleMoveToPolygon(jQuery('#' + data.unitToAdd.position), jQuery('#' + data.unitToAdd.ident));
 			}
 		}
 
-		if (typeof(data.itemForStash) != 'undefined')
-		{
-			if (typeof(callbackFunctions) !== 'undefined' && typeof(callbackFunctions.updateItems) === 'function')
-			{
+		if (typeof(data.itemForStash) != 'undefined') {
+			if (typeof(callbackFunctions) !== 'undefined' && typeof(callbackFunctions.updateItems) === 'function') {
 				callbackFunctions.updateItems(data.itemForStash);
 			}
 		}
@@ -182,11 +163,9 @@ function handleAttackPolygon(polygon, unit, data)
 	let targetUnit = jQuery('#' + polygon.data('unit'));
 
 	let damageDealt = 0;
-	if (typeof(data.damageDealt) != 'undefined')
-	{
+	if (typeof(data.damageDealt) != 'undefined') {
 		let hitType = null;
-		if (typeof(data.type) != 'undefined')
-		{
+		if (typeof(data.type) != 'undefined') {
 			hitType = data.type;
 		}
 
@@ -195,14 +174,13 @@ function handleAttackPolygon(polygon, unit, data)
 	}
 	window.turmoil.logCombat('Unit ' + unit.attr('id') + ' attacks unit ' + polygon.data('unit') + ' on ' + polygon.attr('id') + ' dealing ' + damageDealt + ' damage');
 
-	if (typeof(data.healthBar) != 'undefined')
-	{
+	if (typeof(data.healthBar) != 'undefined') {
 		jQuery('#' + polygon.data('unit') + 'Health').css('width', data.healthBar);
 	}
 
 	let effect = jQuery('#' + targetUnit.attr('id') + 'Effect');
 	effect.addClass('attackSwing');
-	playAudio('soundAttackMelee' + randomInt(3));
+	Sound.playAudio('soundAttackMelee' + Utils.randomInt(3));
 
 	setTimeout(function(){effect.removeClass('attackSwing');}, 500);
 }
@@ -212,23 +190,18 @@ function addDamageIndicator(unit, value, type)
 	let ident = 'indicator_' + new Date().getTime();
 	let styleClass = 'damageIndicator';
 
-	if (typeof(type) != 'undefined')
-	{
+	if (typeof(type) != 'undefined') {
 		styleClass += ' ';
-		switch (type)
-		{
-			case 'critical':
-			{
+		switch (type) {
+			case 'critical': {
 				styleClass += 'damageIndicatorCritical';
 				break;
 			}
-			case 'devastate':
-			{
+			case 'devastate': {
 				styleClass += 'damageIndicatorDevastate';
 				break;
 			}
-			case 'healing':
-			{
+			case 'healing': {
 				styleClass += 'damageIndicatorHealing';
 				break;
 			}
@@ -237,13 +210,12 @@ function addDamageIndicator(unit, value, type)
 
 	let damageIndicator = '<div id="' + ident + '" class="' + styleClass + '">' + value + '</div>';
 	unit.prepend(damageIndicator);
-	animateIndicator(ident);
+	Animations.animateIndicator(ident);
 }
 
 jQuery(function() {
 	jQuery(".instancePolygon").click(function() {
-		let polygon = jQuery(this);
-		actionOnPolygon(polygon);
+		Location.actionOnPolygon(jQuery(this));
 	});
 
 	jQuery('#window_instance').disableSelection();

@@ -5,6 +5,7 @@ import ItemSlotStash from "./ItemSlotStash";
 import '../../../stylesheets/window-stash.css';
 import {initializeStash} from "../../../js/window-stash";
 import {updateItemsInStashAction} from "../../../js/actions";
+import {Ajax} from "../../../js/turmoil-ajax";
 
 const mapStateToProps = state => {
 	return { stashItems: state.stashItems };
@@ -27,7 +28,7 @@ class ConnectedStash extends React.Component
 	componentDidMount() {
 		initializeStash()
 
-		window.turmoil.ajax.exec({
+		Ajax.exec({
 			url: 'initializeStash',
 			onSuccess: this.stashedItems
 		});

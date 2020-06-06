@@ -1,5 +1,5 @@
 import jQuery from "jquery";
-import {hideAllTooltips} from "./turmoil-tooltip";
+import {Tooltip} from "./turmoil-tooltip";
 
 jQuery(function () {
 	let slots = [
@@ -24,10 +24,10 @@ jQuery(function () {
 		jQuery('#' + value).draggable({
 			revert: true,
 			start: function (event, ui) {
-				hideAllTooltips();
+				Tooltip.hideAllTooltips();
 			},
 			stop: function (event, ui) {
-				hideAllTooltips();
+				Tooltip.hideAllTooltips();
 			}
 		});
 	});

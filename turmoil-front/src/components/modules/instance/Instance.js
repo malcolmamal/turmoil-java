@@ -5,6 +5,7 @@ import FriendlyUnit from "./FriendlyUnit";
 import EnemyUnit from "./EnemyUnit";
 import '../../../stylesheets/window-instance.css';
 import {updateEnemyUnitsAction, updateFriendlyUnitsAction} from "../../../js/actions";
+import {Ajax} from "../../../js/turmoil-ajax";
 
 const mapStateToProps = state => {
 	return {
@@ -23,13 +24,13 @@ function mapDispatchToProps(dispatch) {
 class ConnectedInstance extends React.Component
 {
 	componentDidMount() {
-		window.turmoil.ajax.exec({
+		Ajax.exec({
 			url: 'instance/initializeEnemyUnits',
 			onSuccess: this.props.updateEnemyUnits,
 			onSuccessThis: this
 		});
 
-		window.turmoil.ajax.exec({
+		Ajax.exec({
 			url: 'instance/initializeFriendlyUnits',
 			onSuccess: this.props.updateFriendlyUnits,
 			onSuccessThis: this
@@ -38,7 +39,7 @@ class ConnectedInstance extends React.Component
 
 	addUnit()
 	{
-		window.turmoil.ajax.exec({
+		Ajax.exec({
 			url: 'instance/instanceAddEnemy',
 			onSuccess: this.props.updateEnemyUnits,
 			onSuccessThis: this

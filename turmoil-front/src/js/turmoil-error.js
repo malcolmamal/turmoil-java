@@ -1,5 +1,4 @@
 export function initializeErrorModal() {
-
 	// Get the modal
 	window.modal = document.getElementById("myModal");
 

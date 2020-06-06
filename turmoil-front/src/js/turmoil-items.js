@@ -1,20 +1,13 @@
-import {hideAllTooltips} from "./turmoil-tooltip";
-import {playAudio} from './turmoil-general';
-import soundAccessoryJewellery from "../media/audio/change_bling_004.wav";
-import soundMediumArmor from "../media/audio/change_medium_002.wav";
-import soundWeapon from "../media/audio/change_weapon_004.wav";
-
-window.turmoil.sounds.soundAccessoryJewellery = soundAccessoryJewellery;
-window.turmoil.sounds.soundMediumArmor = soundMediumArmor;
-window.turmoil.sounds.soundWeapon = soundWeapon;
+import {Tooltip} from "./turmoil-tooltip";
+import {Sound} from './turmoil-sound';
+import {Ajax} from "./turmoil-ajax";
 
 export function actionRightClickOnEquipment(item, updateItems)
 {
-	hideAllTooltips();
+	Tooltip.hideAllTooltips();
 
-	if (item.ident)
-	{
-		window.turmoil.ajax.exec({
+	if (item.ident) {
+		Ajax.exec({
 			url: 'character/unequip/' + item.ident,
 			onSuccess: finalizeRightClickOnEquipment,
 			onSuccessThis: updateItems
@@ -24,20 +17,17 @@ export function actionRightClickOnEquipment(item, updateItems)
 
 function finalizeRightClickOnEquipment(data, callbackFunction)
 {
-	if (data != null && data.success === true)
-	{
-		if (typeof(data.itemForStash) !== 'undefined')
-		{
-			switch (data.itemForStash.type)
-			{
+	if (data != null && data.success === true) {
+		if (typeof(data.itemForStash) !== 'undefined') {
+			switch (data.itemForStash.type) {
 				case 'ACCESSORY':
-					playAudio('soundAccessoryJewellery');
+					Sound.playAudio('soundAccessoryJewellery');
 					break;
 				case 'ARMOR':
-					playAudio('soundMediumArmor');
+					Sound.playAudio('soundMediumArmor');
 					break;
 				case 'WEAPON':
-					playAudio('soundWeapon');
+					Sound.playAudio('soundWeapon');
 
 					//TODO: gfx effects
 
@@ -48,8 +38,7 @@ function finalizeRightClickOnEquipment(data, callbackFunction)
 					break;
 			}
 
-			if (typeof(callbackFunction) === 'function')
-			{
+			if (typeof(callbackFunction) === 'function') {
 				console.log('calling function from equipment!');
 				callbackFunction(data.itemForStash);
 			}
@@ -59,9 +48,9 @@ function finalizeRightClickOnEquipment(data, callbackFunction)
 
 export function actionRightClickOnStashedItem(itemId, updateItems)
 {
-	hideAllTooltips();
+	Tooltip.hideAllTooltips();
 
-	window.turmoil.ajax.exec({
+	Ajax.exec({
 		url: 'character/equip/' + itemId,
 		onSuccess: finalizeRightClickOnStashedItem,
 		onSuccessThis: updateItems
@@ -70,32 +59,20 @@ export function actionRightClickOnStashedItem(itemId, updateItems)
 
 function finalizeRightClickOnStashedItem(data, callbackFunction)
 {
-	if (data != null && data.success === true)
-	{
-		if (typeof(data.itemForEquipment) !== 'undefined')
-		{
-			switch (data.itemForEquipment.type)
-			{
+	if (data != null && data.success === true) {
+		if (typeof(data.itemForEquipment) !== 'undefined') {
+			switch (data.itemForEquipment.type) {
 				case 'ACCESSORY':
-					playAudio('soundAccessoryJewellery');
+					console.log('want to play soundAccessoryJewellery');
+					Sound.playAudio('soundAccessoryJewellery');
 					break;
 				case 'ARMOR':
-					playAudio('soundMediumArmor');
+					console.log('want to play soundMediumArmor');
+					Sound.playAudio('soundMediumArmor');
 					break;
 				case 'WEAPON':
-					playAudio('soundWeapon');
-
-					//TODO: also handle effect for weapons
-
-					// if (data.equippedItemSlot === 'slot_right_hand' || data.equippedItemSlot === 'slot_left_hand')
-					// {
-					// 	jQuery('#' + data.equippedItemSlot + '_effect').removeClass();
-					//
-					// 	if (typeof(data.equippedWeaponDamageType) != 'undefined') {
-					// 		jQuery('#' + data.equippedItemSlot + '_effect').addClass('item-weapon-bg-' + data.equippedWeaponDamageType);
-					// 	}
-					// }
-
+					console.log('want to play soundWeapon');
+					Sound.playAudio('soundWeapon');
 					break;
 			}
 		}
