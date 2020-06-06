@@ -1,13 +1,14 @@
 import React from "react";
 import {connect} from "react-redux";
+import jQuery from "jquery";
 import Window from "../../Window";
 import Field from "./Field";
 import FriendlyUnit from "./FriendlyUnit";
 import EnemyUnit from "./EnemyUnit";
-import '../../../stylesheets/window-instance.css';
-import '../../../stylesheets/window-location.css';
 import {ReduxActions} from "../../../js/redux/actions";
 import {Ajax} from "../../../js/core/turmoil-ajax";
+import {WindowLocation} from "../../../js/windows/window-location";
+import '../../../stylesheets/window-location.css';
 
 const mapStateToProps = state => {
 	return {
@@ -26,6 +27,12 @@ function mapDispatchToProps(dispatch) {
 class ConnectedLocation extends React.Component
 {
 	componentDidMount() {
+		jQuery('#window_location').disableSelection();
+
+		jQuery(".instancePolygon").click(function() {
+			WindowLocation.actionOnPolygon(jQuery(this));
+		});
+
 		Ajax.exec({
 			url: 'instance/initializeEnemyUnits',
 			onSuccess: this.props.updateEnemyUnits,
@@ -37,6 +44,10 @@ class ConnectedLocation extends React.Component
 			onSuccess: this.props.updateFriendlyUnits,
 			onSuccessThis: this
 		});
+
+		if (window.debug) {
+			console.log('Location initialized...');
+		}
 	}
 
 	render() {

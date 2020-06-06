@@ -2,8 +2,8 @@ import React from "react";
 import {connect} from "react-redux";
 import jQuery from "jquery";
 import Unit from "./Unit";
-import {actionOnUnit, handleMoveToPolygon} from "../../../js/windows/window-instance";
 import {ReduxActions} from "../../../js/redux/actions";
+import {WindowLocation} from "../../../js/windows/window-location";
 
 function mapDispatchToProps(dispatch) {
 	return {
@@ -24,7 +24,7 @@ class ConnectedEnemyUnit extends React.Component
 	}
 
 	actionOnUnitHandler(ident) {
-		actionOnUnit(ident, {updateItems: this.updateItems, removeEnemyUnit: this.removeEnemyUnit, addEnemyUnit: this.addEnemyUnit});
+		WindowLocation.actionOnUnit(ident, {updateItems: this.updateItems, removeEnemyUnit: this.removeEnemyUnit, addEnemyUnit: this.addEnemyUnit});
 	}
 
 	updateItems(item) {
@@ -52,7 +52,7 @@ class ConnectedEnemyUnit extends React.Component
 		const position = that.props.position;
 
 		setTimeout(function() {
-				handleMoveToPolygon(jQuery('#' + position), jQuery('#' + ident));
+				WindowLocation.handleMoveToPolygon(jQuery('#' + position), jQuery('#' + ident));
 			}, 125
 		);
 	}

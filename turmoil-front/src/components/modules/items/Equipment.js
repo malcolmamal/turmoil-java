@@ -1,10 +1,10 @@
 import React from "react";
 import {connect} from "react-redux";
+import jQuery from "jquery";
 import Window from "../../Window";
 import ItemSlotEquipment from "./ItemSlotEquipment";
 import {ReduxActions} from "../../../js/redux/actions";
 import {Ajax} from "../../../js/core/turmoil-ajax";
-import jQuery from "jquery";
 import {Tooltip} from "../../../js/core/turmoil-tooltip";
 
 const mapStateToProps = state => {

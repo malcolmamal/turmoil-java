@@ -1,7 +1,7 @@
 import React from "react";
 import jQuery from "jquery";
 import Unit from "./Unit";
-import {handleMoveToPolygon} from "../../../js/windows/window-instance";
+import {WindowLocation} from "../../../js/windows/window-location";
 
 export default class FriendlyUnit extends React.Component
 {
@@ -22,7 +22,7 @@ export default class FriendlyUnit extends React.Component
 		setTimeout(function() {
 				window.turmoil.activeUnit = jQuery('#' + ident);
 
-				handleMoveToPolygon(jQuery('#' + position), window.turmoil.activeUnit);
+				WindowLocation.handleMoveToPolygon(jQuery('#' + position), window.turmoil.activeUnit);
 			}, 200
 		);
 	}

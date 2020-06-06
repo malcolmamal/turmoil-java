@@ -5,6 +5,10 @@ import {Utils} from "./core/turmoil-utils";
 import {Layout} from "./core/turmoil-layout";
 import {Windows} from "./core/turmoil-windows";
 
+// styles
+import '../stylesheets/turmoil-general.css';
+import '../stylesheets/turmoil-windows.css';
+
 // sounds
 import soundMoveLeather from "../media/audio/move_leather.wav";
 import soundAttackMelee1 from "../media/audio/attack_melee_001.wav";

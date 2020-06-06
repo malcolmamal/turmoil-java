@@ -41,5 +41,31 @@ export let Animations = {
 				Animations.blink(this);
 			});
 		});
+	},
+	addDamageIndicator: function (unit, value, type) {
+		let ident = 'indicator_' + new Date().getTime();
+		let styleClass = 'damageIndicator';
+
+		if (typeof(type) != 'undefined') {
+			styleClass += ' ';
+			switch (type) {
+				case 'critical': {
+					styleClass += 'damageIndicatorCritical';
+					break;
+				}
+				case 'devastate': {
+					styleClass += 'damageIndicatorDevastate';
+					break;
+				}
+				case 'healing': {
+					styleClass += 'damageIndicatorHealing';
+					break;
+				}
+			}
+		}
+
+		let damageIndicator = '<div id="' + ident + '" class="' + styleClass + '">' + value + '</div>';
+		unit.prepend(damageIndicator);
+		Animations.animateIndicator(ident);
 	}
 }

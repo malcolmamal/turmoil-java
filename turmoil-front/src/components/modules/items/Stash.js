@@ -4,9 +4,9 @@ import jQuery from "jquery";
 import "jquery-ui/ui/widgets/sortable";
 import Window from "../../Window";
 import ItemSlotStash from "./ItemSlotStash";
-import '../../../stylesheets/window-stash.css';
 import {ReduxActions} from "../../../js/redux/actions";
 import {Ajax} from "../../../js/core/turmoil-ajax";
+import '../../../stylesheets/window-stash.css';
 
 const mapStateToProps = state => {
 	return { stashItems: state.stashItems };

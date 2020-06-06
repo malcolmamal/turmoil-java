@@ -3,9 +3,9 @@ import jQuery from "jquery";
 import "jquery-ui/ui/widgets/tabs";
 import "jquery-mousewheel";
 import "malihu-custom-scrollbar-plugin";
+import Window from "./Window";
 import "malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css";
 import '../stylesheets/window-console.css';
-import Window from "./Window";
 
 export default class Console extends React.Component
 {
