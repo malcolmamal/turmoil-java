@@ -2,7 +2,10 @@ import jQuery from "jquery";
 import moment from "moment";
 import "jquery-ui/themes/base/all.css";
 import {Utils} from "./turmoil-utils";
+import {Layout} from "./turmoil-layout";
+import {Windows} from "./turmoil-windows";
 
+// sounds
 import soundMoveLeather from "../media/audio/move_leather.wav";
 import soundAttackMelee1 from "../media/audio/attack_melee_001.wav";
 import soundAttackMelee2 from "../media/audio/attack_melee_002.wav";
@@ -108,3 +111,50 @@ window.turmoil.logCombat = function(content) {
 };
 
 window.turmoil.activeUnit = null;
+
+jQuery(function() {
+	Layout.setLayout();
+	Utils.addEvent(window, "resize", Layout.resizeEvent);
+
+	/**
+	 * TODO: maybe replace it with https://scotch.io/tutorials/implementing-smooth-scrolling-in-react
+	 */
+	let scrollableContainer = jQuery('.scrollableContainer');
+	if (scrollableContainer.length) {
+		if (jQuery.isFunction(jQuery().mCustomScrollbar)) {
+			scrollableContainer.mCustomScrollbar({theme:'dark'});
+		} else if (window.debug)
+		{
+			console.log('scrollableContainer found, but custom-scrollbar module is not active...')
+		}
+	}
+
+	jQuery(".flatSubMenu").mouseenter(function() {
+		Windows.resetZIndex();
+	});
+
+	jQuery.each(jQuery('.flatMenu').find('li'), function(index, value) {
+		jQuery(value).click(function() {
+			Layout.showSpinner();
+		});
+	});
+
+	Windows.initWindow('console', true);
+	Windows.initWindow('instance', true);
+	Windows.initWindow('equipment', true);
+	Windows.initWindow('stash', true);
+	Windows.initWindow('stats', true);
+	Windows.initWindow('location', true);
+
+	// TODO: handle browser window resize
+});
+
+if (typeof jQuery !== 'undefined') {
+	(function($) {
+		$('#spinner').ajaxStart(function() {
+			$(this).fadeIn();
+		}).ajaxStop(function() {
+			$(this).fadeOut();
+		});
+	})(jQuery);
+}
