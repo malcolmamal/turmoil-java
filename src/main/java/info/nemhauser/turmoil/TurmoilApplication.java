@@ -92,5 +92,7 @@ public class TurmoilApplication
  *  2. seems like items can now roll with HEALING damage type :-)
  *  3. spear in second hand, equipping and unequipping two handed mace duplicates visually the spear in stash, seems like equipping it does not unequip left hand -> fixed on backend, need to check front
  *  4. when we have a Staff equipped, we can equip a one hand weapons (wand)
- *  5. todo: inventory, open stashes
+ *  5. inventory, open stashes
+ *  6. some of the items (uniques or epics?) should also have negative stats (like in diablo1) but the positive stats should be much higher that in other legendaries
+ *
  */

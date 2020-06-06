@@ -1,10 +1,12 @@
 import React from "react";
 import {connect} from "react-redux";
+import jQuery from "jquery";
+import "jquery-ui/ui/widgets/sortable";
 import Window from "../../Window";
 import ItemSlotStash from "./ItemSlotStash";
+import {ReduxActions} from "../../../js/redux/actions";
+import {Ajax} from "../../../js/core/turmoil-ajax";
 import '../../../stylesheets/window-stash.css';
-import {initializeStash} from "../../../js/window-stash";
-import {updateItemsInStashAction} from "../../../js/actions";
 
 const mapStateToProps = state => {
 	return { stashItems: state.stashItems };
@@ -12,7 +14,7 @@ const mapStateToProps = state => {
 
 function mapDispatchToProps(dispatch) {
 	return {
-		updateItems: stashItems => dispatch(updateItemsInStashAction(stashItems))
+		updateItems: stashItems => dispatch(ReduxActions.updateItemsInStashAction(stashItems))
 	};
 }
 
@@ -25,16 +27,32 @@ class ConnectedStash extends React.Component
 	}
 
 	componentDidMount() {
-		initializeStash()
+		let stash = jQuery("#stashItemListContainer");
+		stash.sortable({
+			//forceHelperSize: true,
+			containment: "#stashItemContainer",
+			//grid: [ 6, 3 ],
+			distance: 45,
+			items: "> li",
+			update: function(event, ui) {
+				let resultOrder = jQuery(this).sortable('toArray').toString();
+				console.log(resultOrder);
+			}
+		});
 
-		window.turmoil.ajax.exec({
+		stash.disableSelection();
+
+		if (window.debug) {
+			console.log('Stash initialized...');
+		}
+
+		Ajax.exec({
 			url: 'initializeStash',
 			onSuccess: this.stashedItems
 		});
 	}
 
-	stashedItems(content)
-	{
+	stashedItems(content) {
 		this.props.updateItems({stashItems: content});
 	}
 

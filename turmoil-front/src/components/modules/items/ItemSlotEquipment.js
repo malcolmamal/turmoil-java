@@ -1,14 +1,16 @@
 import React from "react";
 import {connect} from "react-redux";
-import {actionRightClickOnEquipment} from "../../../js/turmoil-items";
-import {updateCharacterStatsAction, updateItemsInStashAction, updateItemsInEquipmentAction} from "../../../js/actions";
-import {updateCharacterState} from "../../../js/window-stats";
+import {ReduxActions} from "../../../js/redux/actions";
+import {WindowStats} from "../../../js/windows/window-stats";
+import {Tooltip} from "../../../js/core/turmoil-tooltip";
+import {Ajax} from "../../../js/core/turmoil-ajax";
+import {Sound} from "../../../js/core/turmoil-sound";
 
 function mapDispatchToProps(dispatch) {
 	return {
-		updateCharacterStats: characterState => dispatch(updateCharacterStatsAction(characterState)),
-		updateEquipmentItems: equipmentItems => dispatch(updateItemsInEquipmentAction(equipmentItems)),
-		updateStashItems: stashItems => dispatch(updateItemsInStashAction(stashItems))
+		updateCharacterStats: characterState => dispatch(ReduxActions.updateCharacterStatsAction(characterState)),
+		updateEquipmentItems: equipmentItems => dispatch(ReduxActions.updateItemsInEquipmentAction(equipmentItems)),
+		updateStashItems: stashItems => dispatch(ReduxActions.updateItemsInStashAction(stashItems))
 	};
 }
 
@@ -22,21 +24,53 @@ class ConnectedItemSlotEquipment extends React.Component
 		this.updateItems = this.updateItems.bind(this);
 	}
 
-	onContextMenuHandler(event, item)
-	{
+	onContextMenuHandler(event, item) {
 		event.preventDefault();
 		if (item.ident)
 		{
-			actionRightClickOnEquipment(item, this.updateItems);
+			this.actionRightClickOnEquipment(item, this.updateItems);
 
-			updateCharacterState(this.props.updateCharacterStats);
+			WindowStats.updateStats(this.props.updateCharacterStats);
 		}
 	}
 
-	updateItems(item)
-	{
+	updateItems(item) {
 		this.props.updateEquipmentItems({itemToRemove: item});
 		this.props.updateStashItems({itemToAdd: item});
+	}
+
+	actionRightClickOnEquipment(item, updateItems) {
+		Tooltip.hideAllTooltips();
+
+		if (item.ident) {
+			Ajax.exec({
+				url: 'character/unequip/' + item.ident,
+				onSuccess: this.finalizeRightClickOnEquipment,
+				onSuccessThis: updateItems
+			});
+		}
+	}
+
+	finalizeRightClickOnEquipment(data, callbackFunction) {
+		if (data != null && data.success === true) {
+			if (typeof(data.itemForStash) !== 'undefined') {
+				switch (data.itemForStash.type) {
+					case 'ACCESSORY':
+						Sound.playAudio('soundAccessoryJewellery');
+						break;
+					case 'ARMOR':
+						Sound.playAudio('soundMediumArmor');
+						break;
+					case 'WEAPON':
+						Sound.playAudio('soundWeapon');
+						break;
+				}
+
+				if (typeof(callbackFunction) === 'function') {
+					callbackFunction(data.itemForStash);
+				}
+			}
+		}
 	}
 
 	render() {

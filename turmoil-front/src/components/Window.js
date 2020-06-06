@@ -1,21 +1,12 @@
 import React from "react";
-import {
-	bringToTheTop,
-	switchMinimizeMaximize,
-	resizeToDefault,
-	actionClose,
-	actionMaximize,
-	actionMinimize,
-	switchShowClose
-} from '../js/turmoil-windows'
-
+import {Windows} from '../js/core/turmoil-windows'
 
 class WindowIcon extends React.Component {
 	render() {
 		const ident = this.props.ident;
 
 		return (
-			<div className={'windowIcon ' + ident + 'WindowIcon noSelection'} onClick={() => switchShowClose(ident, true)}>
+			<div className={'windowIcon ' + ident + 'WindowIcon noSelection'} onClick={() => Windows.switchShowClose(ident, true)}>
 				<div className="windowIconHover"/>
 				<div className="windowIconText noSelection">{ident}</div>
 			</div>
@@ -45,9 +36,9 @@ export default class Window extends React.Component
 						<div id={'handle_' + ident + '_container'}
 							 className={'handleContainer ' + ident + 'HandleContainer'}
 							 style={{backgroundPosition: '0 -120px'}}
-							 onClick={() => bringToTheTop(ident)}
-							 onDoubleClick={() => switchMinimizeMaximize(ident)}
-							 onContextMenu={() => resizeToDefault(ident)}
+							 onClick={() => Windows.bringToTheTop(ident)}
+							 onDoubleClick={() => Windows.switchMinimizeMaximize(ident)}
+							 onContextMenu={() => Windows.resizeToDefault(ident)}
 						>
 							<div className="handleLeft" style={{backgroundPosition: '0 -120px'}}/>
 							<div className={'handleBox ' + ident + 'HandleBox'} style={{textTransform: "capitalize"}}>{ident}</div>
@@ -57,23 +48,23 @@ export default class Window extends React.Component
 										 className="icons iconMaximize"
 										 style={{position: 'absolute', top: '7px', right: '33px', display: 'none'}}
 										 title="maximize"
-										 onClick={() => actionMaximize(ident)}>&nbsp;</div>
+										 onClick={() => Windows.actionMaximize(ident)}>&nbsp;</div>
 									<div id={ident + 'ButtonMinimize'}
 										 className="icons iconMinimize"
 										 style={{position: 'absolute', top: '7px', right: '33px'}}
 										 title="minimize"
-										 onClick={() => actionMinimize(ident)}>&nbsp;</div>
+										 onClick={() => Windows.actionMinimize(ident)}>&nbsp;</div>
 									<div className="icons iconClose"
 										 style={{position: 'absolute', top: '7px', right: '8px'}}
 										 title="close"
-										 onClick={() => actionClose(ident)}
+										 onClick={() => Windows.actionClose(ident)}
 									>&nbsp;</div>
 								</div>
 							</div>
 						</div>
 						<div id={'window_' + ident + '_content_wrapper'}
 							 style={{position: 'absolute', top: '40px', left: '0'}}
-							 onClick={() => bringToTheTop(ident)}
+							 onClick={() => Windows.bringToTheTop(ident)}
 						>
 							<div id={'window_' + ident}
 								className={'windowContent ' + ident + 'WindowContent'}

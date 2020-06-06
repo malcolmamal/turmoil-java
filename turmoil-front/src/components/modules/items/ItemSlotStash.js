@@ -1,14 +1,16 @@
 import React from "react";
 import {connect} from "react-redux";
-import {actionRightClickOnStashedItem} from "../../../js/turmoil-items";
-import {updateCharacterStatsAction, updateItemsInEquipmentAction, updateItemsInStashAction} from "../../../js/actions";
-import {updateCharacterState} from "../../../js/window-stats";
+import {ReduxActions} from "../../../js/redux/actions";
+import {WindowStats} from "../../../js/windows/window-stats";
+import {Tooltip} from "../../../js/core/turmoil-tooltip";
+import {Ajax} from "../../../js/core/turmoil-ajax";
+import {Sound} from "../../../js/core/turmoil-sound";
 
 function mapDispatchToProps(dispatch) {
 	return {
-		updateCharacterStats: characterState => dispatch(updateCharacterStatsAction(characterState)),
-		updateEquipmentItems: equipmentItems => dispatch(updateItemsInEquipmentAction(equipmentItems)),
-		updateStashItems: stashItems => dispatch(updateItemsInStashAction(stashItems))
+		updateCharacterStats: characterState => dispatch(ReduxActions.updateCharacterStatsAction(characterState)),
+		updateEquipmentItems: equipmentItems => dispatch(ReduxActions.updateItemsInEquipmentAction(equipmentItems)),
+		updateStashItems: stashItems => dispatch(ReduxActions.updateItemsInStashAction(stashItems))
 	};
 }
 
@@ -20,19 +22,50 @@ class ConnectedItemSlotStash extends React.Component
 		this.updateItems = this.updateItems.bind(this);
 	}
 
-	onContextMenuHandler(event, itemId)
-	{
+	onContextMenuHandler(event, itemId) {
 		event.preventDefault();
 
-		actionRightClickOnStashedItem(itemId, this.updateItems);
+		this.actionRightClickOnStashedItem(itemId, this.updateItems);
 
-		updateCharacterState(this.props.updateCharacterStats);
+		WindowStats.updateStats(this.props.updateCharacterStats);
 	}
 
-	updateItems(itemForStash, itemForEquipment)
-	{
+	updateItems(itemForStash, itemForEquipment) {
 		this.props.updateStashItems({itemToAdd: itemForStash, itemToRemove: itemForEquipment});
 		this.props.updateEquipmentItems({itemToAdd: itemForEquipment});
+	}
+
+	actionRightClickOnStashedItem(itemId, updateItems) {
+		Tooltip.hideAllTooltips();
+
+		Ajax.exec({
+			url: 'character/equip/' + itemId,
+			onSuccess: this.finalizeRightClickOnStashedItem,
+			onSuccessThis: updateItems
+		});
+	}
+
+	finalizeRightClickOnStashedItem(data, callbackFunction) {
+		if (data != null && data.success === true) {
+			if (typeof(data.itemForEquipment) !== 'undefined') {
+				switch (data.itemForEquipment.type) {
+					case 'ACCESSORY':
+						Sound.playAudio('soundAccessoryJewellery');
+						break;
+					case 'ARMOR':
+						Sound.playAudio('soundMediumArmor');
+						break;
+					case 'WEAPON':
+						Sound.playAudio('soundWeapon');
+						break;
+				}
+			}
+
+			if (typeof(callbackFunction) === 'function')
+			{
+				callbackFunction(data.itemForStash, data.itemForEquipment);
+			}
+		}
 	}
 
 	render() {

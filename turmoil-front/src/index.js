@@ -5,27 +5,17 @@ import './js/turmoil-init';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+// redux
+import {Provider} from "react-redux";
+import store from "./js/redux/store/index";
+
 // localization
 import {IntlProvider} from "react-intl";
 import locale_en from "./translations/en.json";
 import locale_pl from "./translations/pl.json";
 
-// redux
-import { Provider } from "react-redux";
-import store from "./js/store/index";
-
 // application
 import Turmoil from './components/Turmoil';
-
-// styles
-import './stylesheets/turmoil-general.css';
-import './stylesheets/turmoil-windows.css';
-
-// javascript
-
-import './js/turmoil-general';
-import './js/turmoil-tooltip';
-import './js/turmoil-windows';
 
 const data = {
 	'en': locale_en,

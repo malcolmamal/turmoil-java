@@ -59,7 +59,7 @@ public class ServerHelper
 		getCombatStates().put(character.toString(), combatState);
 	}
 
-	private static HashMap<String, CombatState> getCombatStates()
+	public static HashMap<String, CombatState> getCombatStates()
 	{
 		return new HashMap<String, CombatState>();
 	}

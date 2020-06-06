@@ -1,12 +1,16 @@
 package info.nemhauser.turmoil.response;
 
+import net.minidev.json.JSONObject;
+
+import java.util.Map;
+
 public class MoveResponse
 {
-	private String actionType;
-	private Boolean friendlyTurn;
-	private Boolean success;
-	private String polygonId;
-	private String enemyId;
+	private final String actionType;
+	private final Boolean friendlyTurn;
+	private final Boolean success;
+	private final String polygonId;
+	private final String enemyId;
 
 	public MoveResponse(String actionType, Boolean friendlyTurn, Boolean success, String polygonId, String enemyId)
 	{
@@ -40,5 +44,16 @@ public class MoveResponse
 	public String getEnemyId()
 	{
 		return enemyId;
+	}
+
+	public JSONObject toJSONObject()
+	{
+		return new JSONObject(Map.of(
+				"actionType", actionType,
+				"friendlyTurn", friendlyTurn,
+				"success", success,
+				"polygonId", polygonId,
+				"enemyId", enemyId
+		));
 	}
 }

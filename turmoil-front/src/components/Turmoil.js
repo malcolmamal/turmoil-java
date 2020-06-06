@@ -1,12 +1,12 @@
 import React from "react";
 import Header from "./layout/Header";
 import Footer from "./layout/Footer";
-import Instance from "./modules/instance/Instance";
-import Console from "./Console";
 import Error from "./layout/Error";
+import Console from "./Console";
 import Equipment from "./modules/items/Equipment";
 import Stash from "./modules/items/Stash";
 import Stats from "./modules/stats/Stats";
+import Location from "./modules/instance/Location";
 
 export default class Turmoil extends React.Component
 {
@@ -25,11 +25,12 @@ export default class Turmoil extends React.Component
 							<div className="shadowBottom"/>
 						</div>
 
-						<Instance />
 						<Console />
 						<Equipment />
 						<Stash />
 						<Stats />
+
+						<Location />
 
 					</div>
 				</div>

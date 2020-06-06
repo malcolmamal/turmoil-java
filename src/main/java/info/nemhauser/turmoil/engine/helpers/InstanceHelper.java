@@ -42,6 +42,7 @@ public class InstanceHelper
 		if (combatState == null)
 		{
 			combatState = createCombatState(character);
+			ServerHelper.getCombatStates().put(character.toString(), combatState);
 		}
 		return combatState;
 	}

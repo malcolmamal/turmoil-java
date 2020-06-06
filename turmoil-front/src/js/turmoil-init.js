@@ -1,13 +1,27 @@
 import jQuery from "jquery";
 import moment from "moment";
 import "jquery-ui/themes/base/all.css";
+import {Utils} from "./core/turmoil-utils";
+import {Layout} from "./core/turmoil-layout";
+import {Windows} from "./core/turmoil-windows";
+
+// styles
+import '../stylesheets/turmoil-general.css';
+import '../stylesheets/turmoil-windows.css';
+
+// sounds
+import soundMoveLeather from "../media/audio/move_leather.wav";
+import soundAttackMelee1 from "../media/audio/attack_melee_001.wav";
+import soundAttackMelee2 from "../media/audio/attack_melee_002.wav";
+import soundAttackMelee3 from "../media/audio/attack_melee_003.wav";
+import soundAccessoryJewellery from "../media/audio/change_bling_004.wav";
+import soundMediumArmor from "../media/audio/change_medium_002.wav";
+import soundWeapon from "../media/audio/change_weapon_004.wav";
 
 window.debug = true;
 window.debugPopup = true;
 
 window.turmoil = {};
-
-window.turmoil.instance = {};
 
 window.turmoil.equipment = {};
 window.turmoil.equipment.defaultItems = {
@@ -30,62 +44,62 @@ window.turmoil.equipment.defaultItems = {
 	slot_bracers: { slot: "slot_bracers", top: 105, left: 500, item: {}}
 };
 
-window.turmoil.sounds = {};
+window.turmoil.sounds = {
+	'soundMoveLeather': soundMoveLeather,
+	'soundAttackMelee1': soundAttackMelee1,
+	'soundAttackMelee2': soundAttackMelee2,
+	'soundAttackMelee3': soundAttackMelee3,
+	'soundAccessoryJewellery': soundAccessoryJewellery,
+	'soundMediumArmor': soundMediumArmor,
+	'soundWeapon': soundWeapon
+};
+
 window.turmoil.soundLoops = {};
+window.turmoil.soundLoopsPromises = {}; // promises: https://developers.google.com/web/updates/2017/06/play-request-was-interrupted
 
 window.turmoil.windowSettings = localStorage.getItem('windowSettings') === null ? {} : JSON.parse(localStorage.getItem('windowSettings'));
 
 window.turmoil.lastLogDate = null;
-window.turmoil.log = function(content, target)
-{
-	if (typeof(target) == 'undefined')
-	{
+window.turmoil.log = function(content, target) {
+	if (typeof(target) == 'undefined') {
 		target = 'all';
 	}
 
 	console.log('[' + target + ']', content);
 
 	let consoleTarget = jQuery('#console-' + target);
-	if (consoleTarget.length > 0)
-	{
+	if (consoleTarget.length > 0) {
 		let currentDate;
-		if (typeof(moment) == 'function')
-		{
+		if (typeof(moment) == 'function') {
 			currentDate = moment().format("YYYY-MM-DD HH:mm:ss.SSS");
 		}
-		else
-		{
-			currentDate = getCurrentDateTime();
+		else {
+			currentDate = Utils.getCurrentDateTime();
 		}
 		currentDate = '[' + currentDate + '] ';
 
 		let currentDateObject = new Date();
-		if (window.turmoil.lastLogDate != null)
-		{
+		if (window.turmoil.lastLogDate != null) {
 			let difference = currentDateObject.getTime() - window.turmoil.lastLogDate.getTime();
 			currentDate += ' (' + difference + 'ms) ';
 		}
 
 		consoleTarget.find('.mCSB_container').prepend(currentDate + content + '<br>');
 
-		if (target !== 'all')
-		{
+		if (target !== 'all') {
 			jQuery('#console-all').find('.mCSB_container').prepend(currentDate + content + '<br>');
 		}
 
 		window.turmoil.lastLogDate = currentDateObject;
 	}
-	else
-	{
+	else {
 		console.log('[' + target + ']', content);
 	}
 };
 
-window.turmoil.logDebug = function(content)
-{
+window.turmoil.logDebug = function(content) {
 	let caller = '';
-	if (typeof(arguments) == 'object')
-	{
+	if (typeof(arguments) == 'object') {
 		if (typeof(this.callee) == 'function' && typeof(this.callee.name) == 'string') {
 			caller = this.callee.name + '() - ';
 		}
@@ -94,17 +108,67 @@ window.turmoil.logDebug = function(content)
 	console.log('[debug]', caller + content);
 };
 
-window.turmoil.logCombat = function(content)
-{
+window.turmoil.logCombat = function(content) {
 	window.turmoil.log(content, 'combat');
 };
 
 window.turmoil.activeUnit = null;
 
-// functions
+function audioReady() {
+	return jQuery.when.apply(jQuery, jQuery('audio').map(function() {
+		let ready = new jQuery.Deferred();
+		jQuery(this).one('canplay', ready.resolve);
 
-function getCurrentDateTime()
-{
-	let currentDate = new Date();
-	return currentDate.toJSON().slice(0,10) + ' ' + currentDate.getHours() + ':' + currentDate.getMinutes() + ':' + currentDate.getSeconds() + '.' + currentDate.getMilliseconds();
+		return ready.promise();
+	}));
+}
+
+jQuery(function() {
+	Layout.setLayout();
+	Utils.addEvent(window, "resize", Layout.resizeEvent);
+
+	/**
+	 * TODO: maybe replace it with https://scotch.io/tutorials/implementing-smooth-scrolling-in-react
+	 */
+	let scrollableContainer = jQuery('.scrollableContainer');
+	if (scrollableContainer.length) {
+		if (jQuery.isFunction(jQuery().mCustomScrollbar)) {
+			scrollableContainer.mCustomScrollbar({theme:'dark'});
+		} else if (window.debug)
+		{
+			console.log('scrollableContainer found, but custom-scrollbar module is not active...')
+		}
+	}
+
+	jQuery(".flatSubMenu").mouseenter(function() {
+		Windows.resetZIndex();
+	});
+
+	jQuery.each(jQuery('.flatMenu').find('li'), function(index, value) {
+		jQuery(value).click(function() {
+			Layout.showSpinner();
+		});
+	});
+
+	Windows.initWindow('console', true);
+	Windows.initWindow('equipment', true);
+	Windows.initWindow('stash', true);
+	Windows.initWindow('stats', true);
+	Windows.initWindow('location', true);
+
+	audioReady().then(function() {
+		console.log('Audio assets initialized...');
+	});
+
+	// TODO: handle browser window resize
+});
+
+if (typeof jQuery !== 'undefined') {
+	(function(jQuery) {
+		jQuery('#spinner').ajaxStart(function() {
+			jQuery(this).fadeIn();
+		}).ajaxStop(function() {
+			jQuery(this).fadeOut();
+		});
+	}) (jQuery);
 }

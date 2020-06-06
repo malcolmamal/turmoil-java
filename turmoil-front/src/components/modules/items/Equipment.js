@@ -1,9 +1,11 @@
 import React from "react";
 import {connect} from "react-redux";
+import jQuery from "jquery";
 import Window from "../../Window";
 import ItemSlotEquipment from "./ItemSlotEquipment";
-import {updateItemsInEquipmentAction} from "../../../js/actions";
-import '../../../js/window-equipment';
+import {ReduxActions} from "../../../js/redux/actions";
+import {Ajax} from "../../../js/core/turmoil-ajax";
+import {Tooltip} from "../../../js/core/turmoil-tooltip";
 
 const mapStateToProps = state => {
 	return { equipmentItems: state.equipmentItems };
@@ -11,7 +13,7 @@ const mapStateToProps = state => {
 
 function mapDispatchToProps(dispatch) {
 	return {
-		updateItems: equipmentItems => dispatch(updateItemsInEquipmentAction(equipmentItems))
+		updateItems: equipmentItems => dispatch(ReduxActions.updateItemsInEquipmentAction(equipmentItems))
 	};
 }
 
@@ -24,19 +26,29 @@ class ConnectedEquipment extends React.Component
 	}
 
 	componentDidMount() {
-		window.turmoil.ajax.exec({
+		Object.keys(window.turmoil.equipment.defaultItems).forEach(function (value) {
+			jQuery('#' + value).draggable({
+				revert: true,
+				start: function (event, ui) {
+					Tooltip.hideAllTooltips();
+				},
+				stop: function (event, ui) {
+					Tooltip.hideAllTooltips();
+				}
+			});
+		});
+
+		Ajax.exec({
 			url: 'initializeEquipment',
 			onSuccess: this.wornItems
 		});
 	}
 
-	wornItems(content)
-	{
+	wornItems(content) {
 		this.props.updateItems({wornItems: content});
 	}
 
-	prepareEquipmentItems(equipmentItems)
-	{
+	prepareEquipmentItems(equipmentItems) {
 		let preparedItems = Object.assign({}, window.turmoil.equipment.defaultItems);
 		equipmentItems.map((item) => {
 			preparedItems[item.slot].item = item;

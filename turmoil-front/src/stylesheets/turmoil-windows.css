@@ -49,6 +49,10 @@
 	background: url('../images/ui/icons/icon_console.png') no-repeat;
 }
 
+.locationWindowIcon {
+	background: url('../images/ui/icons/icon_instance.png') no-repeat;
+}
+
 .ui-resizable-helper {
 	border: 1px dotted #A0A0A0;
 }
@@ -176,25 +180,6 @@
 }
 
 
-.instanceHandleContainer {
-	width: 650px;
-}
-
-.instanceHandleBox {
-	width: 500px;
-}
-
-.instanceWindowResizer {
-	width: 650px;
-	height: 620px;
-}
-
-.instanceWindowContent {
-	width: 650px;
-	height: 580px;
-}
-
-
 .statsHandleContainer {
 	width: 300px;
 }
@@ -230,4 +215,23 @@
 .consoleWindowContent {
 	width: 600px;
 	height: 260px;
+}
+
+
+.locationHandleContainer {
+	width: 850px;
+}
+
+.locationHandleBox {
+	width: 700px;
+}
+
+.locationWindowResizer {
+	width: 850px;
+	height: 820px;
+}
+
+.locationWindowContent {
+	width: 850px;
+	height: 780px;
 }

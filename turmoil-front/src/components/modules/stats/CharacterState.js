@@ -1,8 +1,8 @@
 import React from "react";
 import {connect} from "react-redux";
 import {FormattedMessage} from "react-intl";
-import {updateCharacterStatsAction} from "../../../js/actions";
-import {updateCharacterState} from "../../../js/window-stats";
+import {ReduxActions} from "../../../js/redux/actions";
+import {WindowStats} from "../../../js/windows/window-stats";
 
 const mapStateToProps = state => {
 	return { characterState: state.characterState };
@@ -10,14 +10,14 @@ const mapStateToProps = state => {
 
 function mapDispatchToProps(dispatch) {
 	return {
-		updateCharacterStats: characterState => dispatch(updateCharacterStatsAction(characterState))
+		updateCharacterStats: characterState => dispatch(ReduxActions.updateCharacterStatsAction(characterState))
 	};
 }
 
 class ConnectedCharacterState extends React.Component
 {
 	componentDidMount() {
-		updateCharacterState(this.props.updateCharacterStats);
+		WindowStats.updateStats(this.props.updateCharacterStats);
 	}
 
 	render() {
