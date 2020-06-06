@@ -1,7 +1,7 @@
 import jQuery from "jquery";
 import "jquery-ui/ui/widgets/tooltip";
-import '../../stylesheets/turmoil-tooltip.css';
 import {Ajax} from "./turmoil-ajax";
+import '../../stylesheets/turmoil-tooltip.css';
 
 export let Tooltip = {
 	emptyContent: "<div id='something-_ID_'>_CONTENT_</div>",
