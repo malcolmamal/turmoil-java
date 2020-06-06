@@ -32,6 +32,7 @@ window.turmoil.equipment.defaultItems = {
 
 window.turmoil.sounds = {};
 window.turmoil.soundLoops = {};
+window.turmoil.soundLoopsPromises = {}; // promises: https://developers.google.com/web/updates/2017/06/play-request-was-interrupted
 
 window.turmoil.windowSettings = localStorage.getItem('windowSettings') === null ? {} : JSON.parse(localStorage.getItem('windowSettings'));
 

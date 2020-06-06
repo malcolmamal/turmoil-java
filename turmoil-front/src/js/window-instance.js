@@ -17,21 +17,6 @@ export function actionOnUnit(unitId, callbacks)
 	let polygon = jQuery(getPolygonForUnit(unit));
 
 	return actionOnPolygon(polygon, unit, callbacks);
-
-	// if (jQuery(unit).hasClass('enemyUnit'))
-	// {
-	// 	let polygon = jQuery(getPolygonForUnit(unit));
-	// 	let url = 'instanceAttack/' + polygon.attr('id');
-	//
-	// 	if (svgHasClass(polygon, 'instancePolygonEnemy'))
-	// 	{
-	// 		window.turmoil.ajax.exec({
-	// 			url: url,
-	// 			onSuccess: finalizeActionOnPolygon,
-	// 			onSuccessThis: updateStash
-	// 		});
-	// 	}
-	// }
 }
 
 function actionOnPolygon(polygon, unit, callbacks)
@@ -43,39 +28,6 @@ function actionOnPolygon(polygon, unit, callbacks)
 		return;
 	}
 
-	// if (typeof(unit) == 'undefined')
-	// {
-	// 	if (typeof(window.turmoil.activeUnit) == 'undefined')
-	// 	{
-	// 		window.turmoil.logDebug('there is no active unit', arguments);
-	// 	}
-	// 	unit = window.turmoil.activeUnit;
-	// }
-	//
-	// let url = '';
-	// if (unit.hasClass('enemyUnit'))
-	// {
-	// 	url += 'instanceActionEnemy/' + unit.attr('id');
-	// }
-	// else
-	// {
-	// 	if (typeof(polygon) == 'undefined' || polygon == null)
-	// 	{
-	// 		window.turmoil.logDebug('wrong polygon parameter', arguments);
-	// 		return;
-	// 	}
-	//
-	// 	if (svgHasClass(polygon, 'instancePolygon'))
-	// 	{
-	// 		url += 'instanceMove/' + polygon.attr('id');
-	// 	}
-	// 	else
-	// 	{
-	// 		window.turmoil.logDebug('not possible to move to polygon ' + polygon.attr('id'), arguments);
-	// 		return;
-	// 	}
-	// }
-
 	window.turmoil.ajax.exec({
 		url: 'instance/instanceActionOnPosition/' + polygon.attr('id'),
 		onSuccess: finalizeActionsOnPolygon,
@@ -85,7 +37,6 @@ function actionOnPolygon(polygon, unit, callbacks)
 
 export function handleMoveToPolygon(polygon, unit)
 {
-	console.log("playing move for",  unit.attr('id'))
 	playAudioLoop('soundMoveLeather', unit.attr('id'));
 
 	//TODO: check if he has to move
@@ -152,7 +103,6 @@ export function handleMoveToPolygon(polygon, unit)
 				blink('#testElement');
 			}
 			svgRemoveClass(polygon, 'instancePolygon');
-			console.log("stop audio loop for", unit.attr('id'))
 			stopAudioLoop('soundMoveLeather', unit.attr('id'));
 		}
 	);
@@ -164,7 +114,6 @@ export function handleMoveToPolygon(polygon, unit)
 function finalizeActionsOnPolygon(data, callbackFunctions)
 {
 	data.actions.forEach(function (action, index) {
-		console.log('finalize for', action, index)
 		setTimeout(function() {
 			finalizeActionOnPolygon(action, callbackFunctions);
 			}, 400 * index
@@ -203,9 +152,9 @@ function finalizeActionOnPolygon(data, callbackFunctions)
 		{
 			if (typeof(callbackFunctions) !== 'undefined' && typeof(callbackFunctions.removeEnemyUnit) === 'function')
 			{
-				//TODO: remove also old css on polygon (maybe react wise?)
-				console.log("remove old unit", data.unitToRemove);
 				callbackFunctions.removeEnemyUnit(data.unitToRemove);
+				svgRemoveClass(polygon, 'instancePolygonEnemy');
+				svgAddClass(polygon, 'instancePolygon');
 			}
 
 			if (typeof(callbackFunctions) !== 'undefined' && typeof(callbackFunctions.addEnemyUnit) === 'function')
@@ -218,8 +167,6 @@ function finalizeActionOnPolygon(data, callbackFunctions)
 
 		if (typeof(data.itemForStash) != 'undefined')
 		{
-			console.log('item for stash', data.itemForStash);
-
 			if (typeof(callbackFunctions) !== 'undefined' && typeof(callbackFunctions.updateItems) === 'function')
 			{
 				callbackFunctions.updateItems(data.itemForStash);

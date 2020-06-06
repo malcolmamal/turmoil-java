@@ -149,10 +149,11 @@ export function playAudioLoop(audio, suffix)
 		if (window.turmoil.soundLoops[ident + '_loop'])
 		{
 			this.currentTime = 0;
-			this.play();
+			window.turmoil.soundLoopsPromises[ident] = this.play();
 		}
 	}, false);
-	sound.play();
+
+	window.turmoil.soundLoopsPromises[ident] = sound.play();
 }
 
 export function stopAudioLoop(audio, suffix)
@@ -160,10 +161,20 @@ export function stopAudioLoop(audio, suffix)
 	let ident = audio + '_' + suffix;
 	if (typeof(window.turmoil.soundLoops[ident]) != 'undefined')
 	{
-		console.log('stopping sound for', window.turmoil.soundLoops[ident])
 		let sound = window.turmoil.soundLoops[ident];
-		//TODO: handle promises: https://developers.google.com/web/updates/2017/06/play-request-was-interrupted
-		sound.pause();
+		let playPromise = window.turmoil.soundLoopsPromises[ident];
+
+		if (playPromise !== undefined) {
+			playPromise.then(_ => {
+				sound.pause();
+			})
+			.catch(error => {
+				console.log("sound pause catch", error);
+			});
+		}
+
+		window.turmoil.soundLoops[ident] = null;
+		window.turmoil.soundLoopsPromises[ident] = null;
 		window.turmoil.soundLoops[ident + '_loop'] = false;
 	}
 }
