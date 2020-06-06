@@ -180,25 +180,6 @@
 }
 
 
-.instanceHandleContainer {
-	width: 650px;
-}
-
-.instanceHandleBox {
-	width: 500px;
-}
-
-.instanceWindowResizer {
-	width: 650px;
-	height: 620px;
-}
-
-.instanceWindowContent {
-	width: 650px;
-	height: 580px;
-}
-
-
 .statsHandleContainer {
 	width: 300px;
 }
@@ -254,21 +235,3 @@
 	width: 850px;
 	height: 780px;
 }
-
-/*.locationHandleContainer {*/
-/*	width: 650px;*/
-/*}*/
-
-/*.locationHandleBox {*/
-/*	width: 500px;*/
-/*}*/
-
-/*.locationWindowResizer {*/
-/*	width: 650px;*/
-/*	height: 620px;*/
-/*}*/
-
-/*.locationWindowContent {*/
-/*	width: 650px;*/
-/*	height: 580px;*/
-/*}*/

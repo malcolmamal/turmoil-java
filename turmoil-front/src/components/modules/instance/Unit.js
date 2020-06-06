@@ -2,8 +2,7 @@ import React from "react";
 
 export default class Unit extends React.Component
 {
-	render()
-	{
+	render() {
 		const unitStyle = {
 			width: this.props.healthBar + 'px',
 		}

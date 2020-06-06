@@ -4,12 +4,7 @@ import {
 	UPDATE_ITEMS_IN_EQUIPMENT,
 	UPDATE_ITEMS_IN_STASH
 } from "../constants/action-types";
-import {
-	handleUpdateEnemyUnits,
-	handleUpdateFriendlyUnits,
-	handleUpdateItemsInEquipment,
-	handleUpdateItemsInStash
-} from "../handlers";
+import {ReduxHandlers} from "../handlers";
 
 const initialState = {
 	characterState: {},
@@ -27,16 +22,16 @@ function rootReducer(state = initialState, action) {
 			});
 		}
 		case UPDATE_ITEMS_IN_EQUIPMENT: {
-			return handleUpdateItemsInEquipment(state, action.payload);
+			return ReduxHandlers.handleUpdateItemsInEquipment(state, action.payload);
 		}
 		case UPDATE_ITEMS_IN_STASH: {
-			return handleUpdateItemsInStash(state, action.payload);
+			return ReduxHandlers.handleUpdateItemsInStash(state, action.payload);
 		}
 		case UPDATE_ENEMY_UNITS: {
-			return handleUpdateEnemyUnits(state, action.payload);
+			return ReduxHandlers.handleUpdateEnemyUnits(state, action.payload);
 		}
 		case UPDATE_FRIENDLY_UNITS: {
-			return handleUpdateFriendlyUnits(state, action.payload);
+			return ReduxHandlers.handleUpdateFriendlyUnits(state, action.payload);
 		}
 	}
 

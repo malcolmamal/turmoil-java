@@ -3,12 +3,12 @@ import {connect} from "react-redux";
 import jQuery from "jquery";
 import Unit from "./Unit";
 import {actionOnUnit, handleMoveToPolygon} from "../../../js/windows/window-instance";
-import {updateEnemyUnitsAction, updateItemsInStashAction} from "../../../js/redux/actions";
+import {ReduxActions} from "../../../js/redux/actions";
 
 function mapDispatchToProps(dispatch) {
 	return {
-		updateItems: stashItems => dispatch(updateItemsInStashAction(stashItems)),
-		updateEnemyUnits: stashItems => dispatch(updateEnemyUnitsAction(stashItems))
+		updateItems: stashItems => dispatch(ReduxActions.updateItemsInStashAction(stashItems)),
+		updateEnemyUnits: stashItems => dispatch(ReduxActions.updateEnemyUnitsAction(stashItems))
 	};
 }
 
@@ -23,23 +23,19 @@ class ConnectedEnemyUnit extends React.Component
 		this.removeEnemyUnit = this.removeEnemyUnit.bind(this);
 	}
 
-	actionOnUnitHandler(ident)
-	{
+	actionOnUnitHandler(ident) {
 		actionOnUnit(ident, {updateItems: this.updateItems, removeEnemyUnit: this.removeEnemyUnit, addEnemyUnit: this.addEnemyUnit});
 	}
 
-	updateItems(item)
-	{
+	updateItems(item) {
 		this.props.updateItems({itemToAdd: item});
 	}
 
-	addEnemyUnit(unit)
-	{
+	addEnemyUnit(unit) {
 		this.props.updateEnemyUnits({unitToAdd: unit});
 	}
 
-	removeEnemyUnit(unit)
-	{
+	removeEnemyUnit(unit) {
 		this.props.updateEnemyUnits({unitToRemove: unit});
 	}
 
@@ -50,8 +46,7 @@ class ConnectedEnemyUnit extends React.Component
 		);
 	}
 
-	componentDidMount()
-	{
+	componentDidMount() {
 		let that = this;
 		const ident = that.props.ident;
 		const position = that.props.position;

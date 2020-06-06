@@ -2,7 +2,7 @@ import React from "react";
 import {connect} from "react-redux";
 import Window from "../../Window";
 import ItemSlotEquipment from "./ItemSlotEquipment";
-import {updateItemsInEquipmentAction} from "../../../js/redux/actions";
+import {ReduxActions} from "../../../js/redux/actions";
 import {Ajax} from "../../../js/core/turmoil-ajax";
 import jQuery from "jquery";
 import {Tooltip} from "../../../js/core/turmoil-tooltip";
@@ -13,7 +13,7 @@ const mapStateToProps = state => {
 
 function mapDispatchToProps(dispatch) {
 	return {
-		updateItems: equipmentItems => dispatch(updateItemsInEquipmentAction(equipmentItems))
+		updateItems: equipmentItems => dispatch(ReduxActions.updateItemsInEquipmentAction(equipmentItems))
 	};
 }
 
@@ -44,13 +44,11 @@ class ConnectedEquipment extends React.Component
 		});
 	}
 
-	wornItems(content)
-	{
+	wornItems(content) {
 		this.props.updateItems({wornItems: content});
 	}
 
-	prepareEquipmentItems(equipmentItems)
-	{
+	prepareEquipmentItems(equipmentItems) {
 		let preparedItems = Object.assign({}, window.turmoil.equipment.defaultItems);
 		equipmentItems.map((item) => {
 			preparedItems[item.slot].item = item;

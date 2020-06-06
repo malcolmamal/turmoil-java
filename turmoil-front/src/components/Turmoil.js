@@ -1,7 +1,6 @@
 import React from "react";
 import Header from "./layout/Header";
 import Footer from "./layout/Footer";
-import Instance from "./modules/instance/Instance";
 import Console from "./Console";
 import Error from "./layout/Error";
 import Equipment from "./modules/items/Equipment";
@@ -26,7 +25,6 @@ export default class Turmoil extends React.Component
 							<div className="shadowBottom"/>
 						</div>
 
-						{/*<Instance />*/}
 						<Console />
 						<Equipment />
 						<Stash />

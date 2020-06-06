@@ -1,131 +1,103 @@
-// handlers
+import {Utils} from "../../core/turmoil-utils";
 
-export function handleUpdateItemsInEquipment(currentState, payload)
-{
-	let newState = {};
+export let ReduxHandlers = {
+	handleUpdateItemsInEquipment: function (currentState, payload) {
+		let newState = {};
 
-	if (typeof payload.wornItems !== 'undefined')
-	{
-		newState.equipmentItems = [...payload.wornItems.items];
+		if (typeof payload.wornItems !== 'undefined')
+		{
+			newState.equipmentItems = [...payload.wornItems.items];
 
-		return properResponse(currentState, newState);
+			return ReduxHandlers.properResponse(currentState, newState);
+		}
+
+		newState.equipmentItems = [...currentState.equipmentItems];
+
+		if (typeof payload.itemToAdd !== 'undefined')
+		{
+			let slot = payload.itemToAdd.slot;
+
+			Utils.removeFromArrayBySlot(slot, newState.equipmentItems);
+			newState.equipmentItems.push(payload.itemToAdd);
+		}
+
+		if (typeof payload.itemToRemove !== 'undefined')
+		{
+			let slot = payload.itemToRemove.slot;
+			let ident = payload.itemToRemove.ident;
+
+			Utils.removeFromArrayByIdent(ident, newState.equipmentItems);
+			newState.equipmentItems.push(window.turmoil.equipment.defaultItems[slot]);
+		}
+
+		return ReduxHandlers.properResponse(currentState, newState);
+	},
+	handleUpdateItemsInStash: function (currentState, payload) {
+		let newState = {};
+
+		if (typeof payload.stashItems !== 'undefined')
+		{
+			newState.stashItems = [...payload.stashItems.items];
+
+			return ReduxHandlers.properResponse(currentState, newState);
+		}
+
+		newState.stashItems = [...currentState.stashItems];
+
+		if (typeof payload.itemToAdd !== 'undefined')
+		{
+			newState.stashItems.push(payload.itemToAdd);
+		}
+
+		if (typeof payload.itemToRemove !== 'undefined')
+		{
+			let ident = payload.itemToRemove.ident;
+
+			Utils.removeFromArrayByIdent(ident, newState.stashItems);
+		}
+
+		return ReduxHandlers.properResponse(currentState, newState);
+	},
+	handleUpdateEnemyUnits: function (currentState, payload) {
+		let newState = {};
+
+		if (typeof payload.enemyUnits !== 'undefined')
+		{
+			newState.enemyUnits = [...payload.enemyUnits];
+
+			return ReduxHandlers.properResponse(currentState, newState);
+		}
+
+		newState.enemyUnits = [...currentState.enemyUnits];
+
+		if (typeof payload.unitToAdd !== 'undefined')
+		{
+			newState.enemyUnits.push(payload.unitToAdd);
+		}
+
+		if (typeof payload.unitToRemove !== 'undefined')
+		{
+			let ident = payload.unitToRemove.ident;
+
+			Utils.removeFromArrayByIdent(ident, newState.enemyUnits);
+		}
+
+		return ReduxHandlers.properResponse(currentState, newState);
+	},
+	handleUpdateFriendlyUnits: function (currentState, payload) {
+		let newState = {};
+
+		if (typeof payload.friendlyUnits !== 'undefined')
+		{
+			newState.friendlyUnits = [...payload.friendlyUnits];
+
+			return ReduxHandlers.properResponse(currentState, newState);
+		}
+
+		return ReduxHandlers.properResponse(currentState, newState);
+	},
+
+	properResponse: function (currentState, newState) {
+		return Object.assign({}, currentState, newState);
 	}
-
-	newState.equipmentItems = [...currentState.equipmentItems];
-
-	if (typeof payload.itemToAdd !== 'undefined')
-	{
-		let slot = payload.itemToAdd.slot;
-
-		removeFromArrayBySlot(slot, newState.equipmentItems);
-		newState.equipmentItems.push(payload.itemToAdd);
-	}
-
-	if (typeof payload.itemToRemove !== 'undefined')
-	{
-		let slot = payload.itemToRemove.slot;
-		let ident = payload.itemToRemove.ident;
-
-		removeFromArrayByIdent(ident, newState.equipmentItems);
-		newState.equipmentItems.push(window.turmoil.equipment.defaultItems[slot]);
-	}
-
-	return properResponse(currentState, newState);
-}
-
-export function handleUpdateItemsInStash(currentState, payload)
-{
-	let newState = {};
-
-	if (typeof payload.stashItems !== 'undefined')
-	{
-		newState.stashItems = [...payload.stashItems.items];
-
-		return properResponse(currentState, newState);
-	}
-
-	newState.stashItems = [...currentState.stashItems];
-
-	if (typeof payload.itemToAdd !== 'undefined')
-	{
-		newState.stashItems.push(payload.itemToAdd);
-	}
-
-	if (typeof payload.itemToRemove !== 'undefined')
-	{
-		let ident = payload.itemToRemove.ident;
-
-		removeFromArrayByIdent(ident, newState.stashItems);
-	}
-
-	return properResponse(currentState, newState);
-}
-
-export function handleUpdateEnemyUnits(currentState, payload)
-{
-	let newState = {};
-
-	if (typeof payload.enemyUnits !== 'undefined')
-	{
-		newState.enemyUnits = [...payload.enemyUnits];
-
-		return properResponse(currentState, newState);
-	}
-
-	newState.enemyUnits = [...currentState.enemyUnits];
-
-	if (typeof payload.unitToAdd !== 'undefined')
-	{
-		newState.enemyUnits.push(payload.unitToAdd);
-	}
-
-	if (typeof payload.unitToRemove !== 'undefined')
-	{
-		let ident = payload.unitToRemove.ident;
-
-		removeFromArrayByIdent(ident, newState.enemyUnits);
-	}
-
-	return properResponse(currentState, newState);
-}
-
-export function handleUpdateFriendlyUnits(currentState, payload)
-{
-	let newState = {};
-
-	if (typeof payload.friendlyUnits !== 'undefined')
-	{
-		newState.friendlyUnits = [...payload.friendlyUnits];
-
-		return properResponse(currentState, newState);
-	}
-
-	return properResponse(currentState, newState);
-}
-
-// helper functions
-
-function removeFromArrayByIdent(ident, itemsArray)
-{
-	let index;
-
-	for (index = itemsArray.length; index-- > 0 && itemsArray[index].ident !== ident;) {}
-	if (index > -1) {
-		itemsArray.splice(index, 1);
-	}
-}
-
-function removeFromArrayBySlot(slot, itemsArray)
-{
-	let index;
-
-	for (index = itemsArray.length; index-- > 0 && itemsArray[index].slot !== slot;) {}
-	if (index > -1) {
-		itemsArray.splice(index, 1);
-	}
-}
-
-function properResponse(currentState, newState)
-{
-	return Object.assign({}, currentState, newState);
 }

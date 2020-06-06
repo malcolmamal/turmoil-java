@@ -6,23 +6,20 @@ import {
 	UPDATE_FRIENDLY_UNITS
 } from "../constants/action-types";
 
-export function updateCharacterStatsAction(payload) {
-	console.log("wtf");
-	return { type: UPDATE_CHARACTER_STATE, payload }
-}
-
-export function updateItemsInEquipmentAction(payload) {
-	return { type: UPDATE_ITEMS_IN_EQUIPMENT, payload }
-}
-
-export function updateItemsInStashAction(payload) {
-	return { type: UPDATE_ITEMS_IN_STASH, payload }
-}
-
-export function updateEnemyUnitsAction(payload) {
-	return { type: UPDATE_ENEMY_UNITS, payload }
-}
-
-export function updateFriendlyUnitsAction(payload) {
-	return { type: UPDATE_FRIENDLY_UNITS, payload }
+export let ReduxActions = {
+	updateCharacterStatsAction: function (payload) {
+		return { type: UPDATE_CHARACTER_STATE, payload }
+	},
+	updateItemsInEquipmentAction: function (payload) {
+		return { type: UPDATE_ITEMS_IN_EQUIPMENT, payload }
+	},
+	updateItemsInStashAction: function (payload) {
+		return { type: UPDATE_ITEMS_IN_STASH, payload }
+	},
+	updateEnemyUnitsAction: function (payload) {
+		return { type: UPDATE_ENEMY_UNITS, payload }
+	},
+	updateFriendlyUnitsAction: function (payload) {
+		return { type: UPDATE_FRIENDLY_UNITS, payload }
+	}
 }

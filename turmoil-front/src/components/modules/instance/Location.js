@@ -6,7 +6,7 @@ import FriendlyUnit from "./FriendlyUnit";
 import EnemyUnit from "./EnemyUnit";
 import '../../../stylesheets/window-instance.css';
 import '../../../stylesheets/window-location.css';
-import {updateEnemyUnitsAction, updateFriendlyUnitsAction} from "../../../js/redux/actions";
+import {ReduxActions} from "../../../js/redux/actions";
 import {Ajax} from "../../../js/core/turmoil-ajax";
 
 const mapStateToProps = state => {
@@ -18,8 +18,8 @@ const mapStateToProps = state => {
 
 function mapDispatchToProps(dispatch) {
 	return {
-		updateEnemyUnits: enemyUnits => dispatch(updateEnemyUnitsAction(enemyUnits)),
-		updateFriendlyUnits: friendlyUnits => dispatch(updateFriendlyUnitsAction(friendlyUnits)),
+		updateEnemyUnits: enemyUnits => dispatch(ReduxActions.updateEnemyUnitsAction(enemyUnits)),
+		updateFriendlyUnits: friendlyUnits => dispatch(ReduxActions.updateFriendlyUnitsAction(friendlyUnits)),
 	};
 }
 

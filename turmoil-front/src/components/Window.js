@@ -1,7 +1,6 @@
 import React from "react";
 import {Windows} from '../js/core/turmoil-windows'
 
-
 class WindowIcon extends React.Component {
 	render() {
 		const ident = this.props.ident;

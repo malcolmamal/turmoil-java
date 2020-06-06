@@ -6,8 +6,6 @@ export let Windows = {
 	windowSizes: {
 		consoleWidth: 600,
 		consoleHeight: 260,
-		instanceWidth: 650,
-		instanceHeight: 610,
 		equipmentWidth: 800,
 		equipmentHeight: 830,
 		stashWidth: 500,

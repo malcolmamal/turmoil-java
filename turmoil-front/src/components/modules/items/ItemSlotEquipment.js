@@ -1,14 +1,14 @@
 import React from "react";
 import {connect} from "react-redux";
 import {actionRightClickOnEquipment} from "../../../js/turmoil-items";
-import {updateCharacterStatsAction, updateItemsInStashAction, updateItemsInEquipmentAction} from "../../../js/redux/actions";
+import {ReduxActions} from "../../../js/redux/actions";
 import {WindowStats} from "../../../js/windows/window-stats";
 
 function mapDispatchToProps(dispatch) {
 	return {
-		updateCharacterStats: characterState => dispatch(updateCharacterStatsAction(characterState)),
-		updateEquipmentItems: equipmentItems => dispatch(updateItemsInEquipmentAction(equipmentItems)),
-		updateStashItems: stashItems => dispatch(updateItemsInStashAction(stashItems))
+		updateCharacterStats: characterState => dispatch(ReduxActions.updateCharacterStatsAction(characterState)),
+		updateEquipmentItems: equipmentItems => dispatch(ReduxActions.updateItemsInEquipmentAction(equipmentItems)),
+		updateStashItems: stashItems => dispatch(ReduxActions.updateItemsInStashAction(stashItems))
 	};
 }
 
@@ -22,8 +22,7 @@ class ConnectedItemSlotEquipment extends React.Component
 		this.updateItems = this.updateItems.bind(this);
 	}
 
-	onContextMenuHandler(event, item)
-	{
+	onContextMenuHandler(event, item) {
 		event.preventDefault();
 		if (item.ident)
 		{
@@ -33,8 +32,7 @@ class ConnectedItemSlotEquipment extends React.Component
 		}
 	}
 
-	updateItems(item)
-	{
+	updateItems(item) {
 		this.props.updateEquipmentItems({itemToRemove: item});
 		this.props.updateStashItems({itemToAdd: item});
 	}

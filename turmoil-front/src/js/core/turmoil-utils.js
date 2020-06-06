@@ -24,5 +24,23 @@ export let Utils = {
 		else {
 			element["on" + type] = eventHandle;
 		}
+	},
+	removeFromArrayByIdent: function (ident, itemsArray)
+	{
+		let index;
+
+		for (index = itemsArray.length; index-- > 0 && itemsArray[index].ident !== ident;) {}
+		if (index > -1) {
+			itemsArray.splice(index, 1);
+		}
+	},
+	removeFromArrayBySlot: function (slot, itemsArray)
+	{
+		let index;
+
+		for (index = itemsArray.length; index-- > 0 && itemsArray[index].slot !== slot;) {}
+		if (index > -1) {
+			itemsArray.splice(index, 1);
+		}
 	}
 }

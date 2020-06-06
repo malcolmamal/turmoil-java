@@ -138,7 +138,6 @@ jQuery(function() {
 	});
 
 	Windows.initWindow('console', true);
-	Windows.initWindow('instance', true);
 	Windows.initWindow('equipment', true);
 	Windows.initWindow('stash', true);
 	Windows.initWindow('stats', true);

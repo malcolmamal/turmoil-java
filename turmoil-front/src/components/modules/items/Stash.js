@@ -5,7 +5,7 @@ import "jquery-ui/ui/widgets/sortable";
 import Window from "../../Window";
 import ItemSlotStash from "./ItemSlotStash";
 import '../../../stylesheets/window-stash.css';
-import {updateItemsInStashAction} from "../../../js/redux/actions";
+import {ReduxActions} from "../../../js/redux/actions";
 import {Ajax} from "../../../js/core/turmoil-ajax";
 
 const mapStateToProps = state => {
@@ -14,7 +14,7 @@ const mapStateToProps = state => {
 
 function mapDispatchToProps(dispatch) {
 	return {
-		updateItems: stashItems => dispatch(updateItemsInStashAction(stashItems))
+		updateItems: stashItems => dispatch(ReduxActions.updateItemsInStashAction(stashItems))
 	};
 }
 
@@ -52,8 +52,7 @@ class ConnectedStash extends React.Component
 		});
 	}
 
-	stashedItems(content)
-	{
+	stashedItems(content) {
 		this.props.updateItems({stashItems: content});
 	}
 

@@ -1,14 +1,14 @@
 import React from "react";
 import {connect} from "react-redux";
 import {actionRightClickOnStashedItem} from "../../../js/turmoil-items";
-import {updateCharacterStatsAction, updateItemsInEquipmentAction, updateItemsInStashAction} from "../../../js/redux/actions";
+import {ReduxActions} from "../../../js/redux/actions";
 import {WindowStats} from "../../../js/windows/window-stats";
 
 function mapDispatchToProps(dispatch) {
 	return {
-		updateCharacterStats: characterState => dispatch(updateCharacterStatsAction(characterState)),
-		updateEquipmentItems: equipmentItems => dispatch(updateItemsInEquipmentAction(equipmentItems)),
-		updateStashItems: stashItems => dispatch(updateItemsInStashAction(stashItems))
+		updateCharacterStats: characterState => dispatch(ReduxActions.updateCharacterStatsAction(characterState)),
+		updateEquipmentItems: equipmentItems => dispatch(ReduxActions.updateItemsInEquipmentAction(equipmentItems)),
+		updateStashItems: stashItems => dispatch(ReduxActions.updateItemsInStashAction(stashItems))
 	};
 }
 

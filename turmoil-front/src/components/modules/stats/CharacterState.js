@@ -1,7 +1,7 @@
 import React from "react";
 import {connect} from "react-redux";
 import {FormattedMessage} from "react-intl";
-import {updateCharacterStatsAction} from "../../../js/redux/actions";
+import {ReduxActions} from "../../../js/redux/actions";
 import {WindowStats} from "../../../js/windows/window-stats";
 
 const mapStateToProps = state => {
@@ -10,7 +10,7 @@ const mapStateToProps = state => {
 
 function mapDispatchToProps(dispatch) {
 	return {
-		updateCharacterStats: characterState => dispatch(updateCharacterStatsAction(characterState))
+		updateCharacterStats: characterState => dispatch(ReduxActions.updateCharacterStatsAction(characterState))
 	};
 }
 
