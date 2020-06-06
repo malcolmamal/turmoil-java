@@ -7,6 +7,7 @@ import {
 } from "../constants/action-types";
 
 export function updateCharacterStatsAction(payload) {
+	console.log("wtf");
 	return { type: UPDATE_CHARACTER_STATE, payload }
 }
 

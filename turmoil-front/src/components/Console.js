@@ -1,6 +1,10 @@
 import React from "react";
+import jQuery from "jquery";
+import "jquery-ui/ui/widgets/tabs";
+import "jquery-mousewheel";
+import "malihu-custom-scrollbar-plugin";
+import "malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css";
 import '../stylesheets/window-console.css';
-import '../js/windows/window-console';
 import Window from "./Window";
 
 export default class Console extends React.Component
@@ -52,6 +56,14 @@ export default class Console extends React.Component
 	}
 
 	componentDidMount() {
+		jQuery(function() {
+			jQuery("#consoleTabs").tabs();
+
+			if (window.debug) {
+				console.log('Tabs initialized...');
+			}
+		});
+
 		console.log('Console initialized...');
 	}
 }

@@ -3,8 +3,9 @@ import {connect} from "react-redux";
 import Window from "../../Window";
 import ItemSlotEquipment from "./ItemSlotEquipment";
 import {updateItemsInEquipmentAction} from "../../../js/redux/actions";
-import '../../../js/windows/window-equipment';
 import {Ajax} from "../../../js/core/turmoil-ajax";
+import jQuery from "jquery";
+import {Tooltip} from "../../../js/core/turmoil-tooltip";
 
 const mapStateToProps = state => {
 	return { equipmentItems: state.equipmentItems };
@@ -25,6 +26,18 @@ class ConnectedEquipment extends React.Component
 	}
 
 	componentDidMount() {
+		Object.keys(window.turmoil.equipment.defaultItems).forEach(function (value) {
+			jQuery('#' + value).draggable({
+				revert: true,
+				start: function (event, ui) {
+					Tooltip.hideAllTooltips();
+				},
+				stop: function (event, ui) {
+					Tooltip.hideAllTooltips();
+				}
+			});
+		});
+
 		Ajax.exec({
 			url: 'initializeEquipment',
 			onSuccess: this.wornItems

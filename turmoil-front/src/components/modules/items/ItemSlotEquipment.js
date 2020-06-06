@@ -2,7 +2,7 @@ import React from "react";
 import {connect} from "react-redux";
 import {actionRightClickOnEquipment} from "../../../js/turmoil-items";
 import {updateCharacterStatsAction, updateItemsInStashAction, updateItemsInEquipmentAction} from "../../../js/redux/actions";
-import {updateCharacterState} from "../../../js/windows/window-stats";
+import {WindowStats} from "../../../js/windows/window-stats";
 
 function mapDispatchToProps(dispatch) {
 	return {
@@ -29,7 +29,7 @@ class ConnectedItemSlotEquipment extends React.Component
 		{
 			actionRightClickOnEquipment(item, this.updateItems);
 
-			updateCharacterState(this.props.updateCharacterStats);
+			WindowStats.updateStats(this.props.updateCharacterStats);
 		}
 	}
 

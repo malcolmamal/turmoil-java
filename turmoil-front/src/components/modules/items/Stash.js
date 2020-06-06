@@ -1,9 +1,10 @@
 import React from "react";
 import {connect} from "react-redux";
+import jQuery from "jquery";
+import "jquery-ui/ui/widgets/sortable";
 import Window from "../../Window";
 import ItemSlotStash from "./ItemSlotStash";
 import '../../../stylesheets/window-stash.css';
-import {initializeStash} from "../../../js/windows/window-stash";
 import {updateItemsInStashAction} from "../../../js/redux/actions";
 import {Ajax} from "../../../js/core/turmoil-ajax";
 
@@ -26,7 +27,24 @@ class ConnectedStash extends React.Component
 	}
 
 	componentDidMount() {
-		initializeStash()
+		let stash = jQuery("#stashItemListContainer");
+		stash.sortable({
+			//forceHelperSize: true,
+			containment: "#stashItemContainer",
+			//grid: [ 6, 3 ],
+			distance: 45,
+			items: "> li",
+			update: function(event, ui) {
+				let resultOrder = jQuery(this).sortable('toArray').toString();
+				console.log(resultOrder);
+			}
+		});
+
+		stash.disableSelection();
+
+		if (window.debug) {
+			console.log('Stash initialized...');
+		}
 
 		Ajax.exec({
 			url: 'initializeStash',

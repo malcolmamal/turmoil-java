@@ -2,7 +2,7 @@ import React from "react";
 import {connect} from "react-redux";
 import {actionRightClickOnStashedItem} from "../../../js/turmoil-items";
 import {updateCharacterStatsAction, updateItemsInEquipmentAction, updateItemsInStashAction} from "../../../js/redux/actions";
-import {updateCharacterState} from "../../../js/windows/window-stats";
+import {WindowStats} from "../../../js/windows/window-stats";
 
 function mapDispatchToProps(dispatch) {
 	return {
@@ -20,17 +20,15 @@ class ConnectedItemSlotStash extends React.Component
 		this.updateItems = this.updateItems.bind(this);
 	}
 
-	onContextMenuHandler(event, itemId)
-	{
+	onContextMenuHandler(event, itemId) {
 		event.preventDefault();
 
 		actionRightClickOnStashedItem(itemId, this.updateItems);
 
-		updateCharacterState(this.props.updateCharacterStats);
+		WindowStats.updateStats(this.props.updateCharacterStats);
 	}
 
-	updateItems(itemForStash, itemForEquipment)
-	{
+	updateItems(itemForStash, itemForEquipment) {
 		this.props.updateStashItems({itemToAdd: itemForStash, itemToRemove: itemForEquipment});
 		this.props.updateEquipmentItems({itemToAdd: itemForEquipment});
 	}
