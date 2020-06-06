@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import jQuery from "jquery";
 import Unit from "./Unit";
 import {actionOnUnit, handleMoveToPolygon} from "../../../js/windows/window-instance";
-import {updateEnemyUnitsAction, updateItemsInStashAction} from "../../../js/actions";
+import {updateEnemyUnitsAction, updateItemsInStashAction} from "../../../js/redux/actions";
 
 function mapDispatchToProps(dispatch) {
 	return {

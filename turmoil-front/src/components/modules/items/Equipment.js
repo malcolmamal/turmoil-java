@@ -2,7 +2,7 @@ import React from "react";
 import {connect} from "react-redux";
 import Window from "../../Window";
 import ItemSlotEquipment from "./ItemSlotEquipment";
-import {updateItemsInEquipmentAction} from "../../../js/actions";
+import {updateItemsInEquipmentAction} from "../../../js/redux/actions";
 import '../../../js/windows/window-equipment';
 import {Ajax} from "../../../js/core/turmoil-ajax";
 

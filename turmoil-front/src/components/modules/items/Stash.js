@@ -4,7 +4,7 @@ import Window from "../../Window";
 import ItemSlotStash from "./ItemSlotStash";
 import '../../../stylesheets/window-stash.css';
 import {initializeStash} from "../../../js/windows/window-stash";
-import {updateItemsInStashAction} from "../../../js/actions";
+import {updateItemsInStashAction} from "../../../js/redux/actions";
 import {Ajax} from "../../../js/core/turmoil-ajax";
 
 const mapStateToProps = state => {

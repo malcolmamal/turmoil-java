@@ -12,7 +12,7 @@ import locale_pl from "./translations/pl.json";
 
 // redux
 import { Provider } from "react-redux";
-import store from "./js/store/index";
+import store from "./js/redux/store/index";
 
 // application
 import Turmoil from './components/Turmoil';
