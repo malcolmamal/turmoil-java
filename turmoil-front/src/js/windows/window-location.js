@@ -34,10 +34,6 @@ export let WindowLocation = {
 	handleMoveToPolygon: function (polygon, unit) {
 		Sound.playAudioLoop('soundMoveLeather', unit.attr('id'));
 
-		//TODO: check if he has to move
-
-		window.turmoil.log('Unit ' + unit.attr('id') + ' moves to ' + polygon.attr('id'));
-
 		if (unit.data('previousPolygonId') != null) {
 			let previousPolygon = jQuery('#' + unit.data('previousPolygonId'));
 
@@ -85,12 +81,14 @@ export let WindowLocation = {
 				}
 				else {
 					Svg.addClass(polygon, 'instancePolygonActive');
-
-					//TODO: blink the active unit!
-					Animations.blink('#testElement');
 				}
 				Svg.removeClass(polygon, 'instancePolygon');
 				Sound.stopAudioLoop('soundMoveLeather', unit.attr('id'));
+
+				if (window.turmoil.activeUnit.attr('id') === unit.attr('id'))
+				{
+					Animations.blink('#' + unit.attr('id'));
+				}
 			}
 		);
 

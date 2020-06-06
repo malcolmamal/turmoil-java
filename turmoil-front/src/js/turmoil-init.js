@@ -114,6 +114,15 @@ window.turmoil.logCombat = function(content) {
 
 window.turmoil.activeUnit = null;
 
+function audioReady() {
+	return jQuery.when.apply(jQuery, jQuery('audio').map(function() {
+		let ready = new jQuery.Deferred();
+		jQuery(this).one('canplay', ready.resolve);
+
+		return ready.promise();
+	}));
+}
+
 jQuery(function() {
 	Layout.setLayout();
 	Utils.addEvent(window, "resize", Layout.resizeEvent);
@@ -146,6 +155,10 @@ jQuery(function() {
 	Windows.initWindow('stash', true);
 	Windows.initWindow('stats', true);
 	Windows.initWindow('location', true);
+
+	audioReady().then(function() {
+		console.log('Audio assets initialized...');
+	});
 
 	// TODO: handle browser window resize
 });

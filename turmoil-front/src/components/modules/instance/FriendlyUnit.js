@@ -21,7 +21,6 @@ export default class FriendlyUnit extends React.Component
 		const position = that.props.position;
 		setTimeout(function() {
 				window.turmoil.activeUnit = jQuery('#' + ident);
-
 				WindowLocation.handleMoveToPolygon(jQuery('#' + position), window.turmoil.activeUnit);
 			}, 200
 		);
