@@ -225,7 +225,7 @@ public class Character extends Person
 				slotRightHand = weapon;
 				slotRightHand.setItemSlot(ItemSlot.RIGHT_HAND);
 			}
-			else if (slotLeftHand == null)
+			else if (slotLeftHand == null && slotRightHand.isOneHanded())
 			{
 				slotLeftHand = weapon;
 				slotLeftHand.setItemSlot(ItemSlot.LEFT_HAND);
