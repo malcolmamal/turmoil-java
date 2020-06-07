@@ -7,13 +7,11 @@ import info.nemhauser.turmoil.engine.domain.Character;
 import info.nemhauser.turmoil.engine.domain.Item;
 import info.nemhauser.turmoil.engine.domain.Monster;
 import info.nemhauser.turmoil.engine.exceptions.GraphException;
-import info.nemhauser.turmoil.engine.exceptions.InvalidEnemyException;
 import info.nemhauser.turmoil.engine.helpers.CharacterStateHelper;
 import info.nemhauser.turmoil.engine.helpers.CombatHelper;
 import info.nemhauser.turmoil.engine.helpers.ExperienceHelper;
 import info.nemhauser.turmoil.engine.helpers.InstanceHelper;
 import info.nemhauser.turmoil.engine.instances.CombatState;
-import info.nemhauser.turmoil.engine.world.map.graph.Instance;
 import info.nemhauser.turmoil.engine.world.map.graph.Pathing;
 import info.nemhauser.turmoil.response.*;
 
@@ -52,7 +50,7 @@ class InstanceController {
 
 		JSONArray array = new JSONArray();
 
-		array.add(new FriendlyUnitResponse(TurmoilApplication.getCombatState().friend));
+		array.add(new FriendlyUnitResponse(TurmoilApplication.getCombatState().friend, TurmoilApplication.getCombatState().getPolygonsInRange()));
 
 		JSONObject object = new JSONObject();
 		object.put("friendlyUnits", array);
@@ -139,13 +137,12 @@ class InstanceController {
 
 			JSONObject object = new JSONObject(Map.of(
 					"success", true,
-					"friendlyTurn", true,
 					"actionType", "attack",
 					"type", damageDealt.isCritical() ? "critical" : "",
 					"polygonId", position,
 					"damageDealt", damageDealt.getValue(),
 					"healthBar", enemy.getHealthBarValue(),
-					"enemyId", enemy.getIdent()
+					"attackingUnit", character.getIdent()
 			));
 
 			if (enemy.currentHealth < 0)
@@ -187,30 +184,51 @@ class InstanceController {
 		Logger.log("Moving character to " + position);
 
 		CombatState cs = TurmoilApplication.getCombatState();
+
+		if (cs.friend.getInstancePosition().equals(position))
+		{
+			throw new GraphException("Cannot move to the same position (" + position + ")");
+		}
+
+		if (!cs.getPolygonsInRange().contains(position))
+		{
+			throw new GraphException("Cannot move to position (" + position + ") since it is out of range ("
+				+ cs.friend.getMovementPoints() + ")");
+		}
+
 		if (cs.getEnemiesOnPositions().containsKey(position))
 		{
-			throw new GraphException("Cannot move to position since it is already occupied: " + position);
+			throw new GraphException("Cannot move to position (" + position + ") since it is already occupied");
 		}
+
+		Pathing pathing = new Pathing(cs.getInstanceGraphForEnemy(cs.friend), cs.friend.instancePosition, position);
+		//TODO: do not return next but according to movementPoints
+		pathing.getNextPosition();
+
 		cs.friend.instancePosition = position;
 
-		return new MoveResponse("move", true, true, position);
+		return new MoveResponse(
+				"move",
+				true,
+				cs.friend.instancePosition,
+				cs.friend.getIdent(),
+				new FriendlyUnitResponse(cs.friend, cs.getPolygonsInRange())
+		);
 	}
 
 	private JSONObject actionEnemy(Monster enemy)
 	{
-		Logger.log("!!!!!! doing stuff for " + enemy.getIdent());
-
 		CombatState cs = TurmoilApplication.getCombatState();
 
-		String enemyPosition = enemy.getGraphPosition();
-		String characterPosition = cs.friend.getGraphPosition();
+		String enemyPosition = enemy.getInstancePosition();
+		String characterPosition = cs.friend.getInstancePosition();
 
 		Pathing pathing;
 		String moveTo;
 		try
 		{
 			pathing = new Pathing(cs.getInstanceGraphForEnemy(enemy), enemyPosition, characterPosition);
-			moveTo = "polygon-" + pathing.getNextPosition();
+			moveTo = pathing.getNextPosition();
 		}
 		catch (GraphException e)
 		{

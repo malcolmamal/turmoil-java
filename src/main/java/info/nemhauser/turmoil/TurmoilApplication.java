@@ -40,6 +40,7 @@ public class TurmoilApplication
 
 		character = new Character("testElement");
 		character.setName("Fox Nemhauser");
+		character.setMovementPoints(3);
 		serverState.getCharacters().put("fox", character);
 
 		characterState = new CharacterState();
@@ -99,5 +100,7 @@ public class TurmoilApplication
  *   9. add movement range, show available movement at front, deny wrong movement on backend
  *  10.
  *  11. known issue, how to handle? (base armor is shown but +armor attribute is not added to base visually)
+ *  12. when trying to move -> also check obstacles, try to handle it visually
+ *  13. moveToPosition -> unify for friend and enemy, check if the path's length is appropriate to movementPoints
  *
  */

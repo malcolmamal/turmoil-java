@@ -117,15 +117,15 @@ public class Sandbox
 
 			CombatState cs = InstanceHelper.getCombatState(character);
 
-			String enemyPosition = cs.enemy.instancePosition.substring(8);
-			String characterPosition = cs.friend.instancePosition.substring(8);
+			String enemyPosition = cs.enemy.instancePosition;
+			String characterPosition = cs.friend.instancePosition;
 
 			DefaultUndirectedGraph<String, DefaultEdge> graph = InstanceHelper.getInstanceGraph();
 			//List<DefaultEdge> sp = (List<DefaultEdge>)DijkstraShortestPath.findPathBetween(graph, enemyPosition, characterPosition);
 			DijkstraShortestPath<String, DefaultEdge> dijkstraGraph = new DijkstraShortestPath<String, DefaultEdge>(graph);
 			GraphWalk<String, DefaultEdge> graphWalk = (GraphWalk<String, DefaultEdge>) dijkstraGraph.getPath(enemyPosition, characterPosition);
-			//KShortestSimplePaths pathing = new KShortestSimplePaths(graph, cs.enemy.instancePosition.substring(8), 1);
-			//List<GraphPath<String, DefaultEdge>> path = pathing.getPaths(cs.friend.instancePosition.substring(8));
+			//KShortestSimplePaths pathing = new KShortestSimplePaths(graph, cs.enemy.instancePosition, 1);
+			//List<GraphPath<String, DefaultEdge>> path = pathing.getPaths(cs.friend.instancePosition);
 
 			System.out.println(graphWalk.toString());
 

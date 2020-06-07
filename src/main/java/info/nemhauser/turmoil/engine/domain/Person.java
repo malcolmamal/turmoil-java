@@ -24,6 +24,8 @@ abstract public class Person
 	public Integer health = 100;
 	public Integer currentHealth = 100;
 
+	private int movementPoints = 1;
+
 	Gender gender = Gender.UNKNOWN;
 
 	public Person(String ident)
@@ -62,11 +64,6 @@ abstract public class Person
 				+ ".png";
 	}
 
-	public String getGraphPosition()
-	{
-		return instancePosition.substring(8);
-	}
-
 	public String getInstancePosition()
 	{
 		return instancePosition;
@@ -85,5 +82,15 @@ abstract public class Person
 	public double getHealthBarValue()
 	{
 		return Math.floor(currentHealth * healthBarValue / health);
+	}
+
+	public int getMovementPoints()
+	{
+		return movementPoints;
+	}
+
+	public void setMovementPoints(int movementPoints)
+	{
+		this.movementPoints = movementPoints;
 	}
 }

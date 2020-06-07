@@ -2,6 +2,7 @@ import jQuery from "jquery";
 import {Utils} from "./turmoil-utils";
 import {Sound} from "./turmoil-sound";
 import {Svg} from "./turmoil-svg";
+import {WindowLocation} from "../windows/window-location";
 
 export let Animations = {
 	animateToTop: function (id) {
@@ -99,7 +100,7 @@ export let Animations = {
 				Svg.removeClass(polygon, 'instancePolygon');
 				Sound.stopAudioLoop('soundMoveLeather', unit.attr('id'));
 
-				if (window.turmoil.activeUnit.attr('id') === unit.attr('id'))
+				if (window.turmoil.instance.activeUnit === unit.attr('id'))
 				{
 					Animations.blink('#' + unit.attr('id'));
 				}

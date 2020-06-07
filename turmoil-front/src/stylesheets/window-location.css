@@ -8,14 +8,21 @@
 	top: 6px;
 }
 
-.instancePolygon {
+.instancePolygonInRange {
 	opacity: 0.5;
 	/*stroke: none;*/
 	fill: white;
 	cursor: url("../images/ui/cursors/cursor_move_positive.png"), auto;
 }
 
-.instancePolygon:hover {
+.instancePolygon {
+	opacity: 0.5;
+	/*stroke: none;*/
+	fill: darkgray;
+	cursor: url("../images/ui/cursors/cursor_move_negative.png"), auto;
+}
+
+.instancePolygonInRange:hover {
 	fill: lime;
 }
 

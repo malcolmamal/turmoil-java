@@ -70,11 +70,19 @@ class ConnectedLocation extends React.Component
 		return (
 			<Window ident="location" background={background}>
 				{this.props.friendlyUnits.map(unit => (
-					<FriendlyUnit ident={unit.ident} portrait={unit.portrait} healthBar={unit.healthBar} position={unit.position} key={unit.ident}/>
+					<FriendlyUnit
+						ident={unit.ident}
+						portrait={unit.portrait}
+						healthBar={unit.healthBar}
+						position={unit.position}
+						key={unit.ident}
+						movement={unit.movementPoints}
+						polygonsInRange={unit.polygonsInRange}
+					/>
 				))}
 
 				{this.props.enemyUnits.map(unit => (
-					<EnemyUnit ident={unit.ident} portrait={unit.portrait} healthBar={unit.healthBar} position={unit.position} key={unit.ident}/>
+					<EnemyUnit ident={unit.ident} portrait={unit.portrait} healthBar={unit.healthBar} position={unit.position} key={unit.ident} movement={unit.movementPoints}/>
 				))}
 
 				<div className="instanceSvg">

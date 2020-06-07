@@ -11,18 +11,25 @@ export default class FriendlyUnit extends React.Component
 
 	render() {
 		return(
-			<Unit ident={this.props.ident} portrait={this.props.portrait} healthBar={this.props.healthBar} onClick={this.actionOnUnitHandler}/>
+			<Unit ident={this.props.ident} portrait={this.props.portrait} healthBar={this.props.healthBar} movement={this.props.movement} onClick={this.actionOnUnitHandler}/>
 		);
 	}
 
 	componentDidMount() {
-		let that = this;
-		const ident = that.props.ident;
-		const position = that.props.position;
+		const ident = this.props.ident;
+		const position = this.props.position;
+
+		window.turmoil.instance.activeUnit = ident;
+		window.turmoil.instance.polygonsInRange = this.props.polygonsInRange;
+
 		setTimeout(function() {
-				window.turmoil.activeUnit = jQuery('#' + ident);
-				WindowLocation.handleMoveToPolygon(jQuery('#' + position), window.turmoil.activeUnit);
+				WindowLocation.handleMoveToPolygon(jQuery('#' + position), jQuery('#' + ident));
 			}, 200
+		);
+
+		setTimeout(function() {
+				WindowLocation.setActivePolygons();
+			}, 500
 		);
 	}
 }

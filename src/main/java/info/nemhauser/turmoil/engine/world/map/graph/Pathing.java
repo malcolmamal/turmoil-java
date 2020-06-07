@@ -27,12 +27,12 @@ public class Pathing
 
 		if (graphWalk == null)
 		{
-			throw new GraphException("Empty graph walk for <" + source + ", " + target + ">" );
+			throw new GraphException("Empty graph walk for (" + source + ", " + target + ")" );
 		}
 
 		if (graphWalk.getEdgeList() == null)
 		{
-			throw new GraphException("Empty edge list for <" + source + ", " + target + ">" );
+			throw new GraphException("Empty edge list for (" + source + ", " + target + ")" );
 		}
 
 		if (source.equals(graph.getEdgeSource(graphWalk.getEdgeList().get(0))))

@@ -22,12 +22,12 @@ public class Instance
 			for (int j = 1; j <= maxHeight; j++)
 			{
 				String vertex = i + "-" + j;
-				graph.addVertex(vertex);
+				addVertex(graph, vertex);
 
 				if (j > 1)
 				{
 					// connection from down to up
-					graph.addEdge(i + "-" + (j-1), vertex);
+					addEdge(graph, i + "-" + (j-1), vertex);
 				}
 
 				// connection from right vertex to left
@@ -38,21 +38,21 @@ public class Instance
 						// connection going down
 						if (j > 1)
 						{
-							graph.addEdge((i-1) + "-" + (j-1), vertex);
+							addEdge(graph, (i-1) + "-" + (j-1), vertex);
 						}
 
 						// connection going up
-						graph.addEdge((i-1) + "-" + j, vertex);
+						addEdge(graph, (i-1) + "-" + j, vertex);
 					}
 					else
 					{
 						// connection going down
-						graph.addEdge((i-1) + "-" + j, vertex);
+						addEdge(graph, (i-1) + "-" + j, vertex);
 
 						// connection going up
 						if (j < maxHeight)
 						{
-							graph.addEdge((i-1) + "-" + (j+1), vertex);
+							addEdge(graph, (i-1) + "-" + (j+1), vertex);
 						}
 					}
 				}
@@ -60,5 +60,15 @@ public class Instance
 		}
 
 		return graph;
+	}
+
+	private static void addVertex(DefaultUndirectedGraph<String, DefaultEdge> graph, String vertex)
+	{
+		graph.addVertex("polygon-" + vertex);
+	}
+
+	private static void addEdge(DefaultUndirectedGraph<String, DefaultEdge> graph, String sourceVertex, String targetVertex)
+	{
+		graph.addEdge("polygon-" + sourceVertex, "polygon-" + targetVertex);
 	}
 }

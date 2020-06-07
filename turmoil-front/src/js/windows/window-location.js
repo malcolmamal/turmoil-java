@@ -10,11 +10,19 @@ export let WindowLocation = {
 		return jQuery('#' + jQuery(unit).data('previousPolygonId'));
 	},
 	actionOnPolygon: function (polygon, unit, callbacks) {
+		if (!WindowLocation.areActionsAllowed()) {
+			window.turmoil.logDebug('Actions are currently blocked', arguments);
+
+			return;
+		}
+
 		if (typeof(polygon) == 'undefined' || polygon == null) {
 			window.turmoil.logDebug('Wrong polygon parameter', arguments);
 
 			return;
 		}
+
+		WindowLocation.blockActions();
 
 		Ajax.exec({
 			url: 'instance/instanceActionOnPosition/' + polygon.attr('id'),
@@ -31,19 +39,22 @@ export let WindowLocation = {
 	},
 	finalizeActionsOnPolygon: function (data, callbackFunctions) {
 		// TODO: this timeout should be a setting for user
+		WindowLocation.inactivatePolygons();
 
 		data.actions.forEach(function (action, index, thisArray) {
 			setTimeout(function() {
 					WindowLocation.finalizeActionOnPolygon(action, callbackFunctions);
 				},
-				650 * index
+				550 * index
 			);
 
 			if (Object.is(thisArray.length - 1, index)) {
 				setTimeout(function() {
 						WindowLocation.inactivateUnits();
+						WindowLocation.setActivePolygons();
+						WindowLocation.enableActions();
 					},
-					750 * index
+					550 * index + 300
 				);
 			}
 		});
@@ -53,21 +64,23 @@ export let WindowLocation = {
 			window.turmoil.logErrors(data.message);
 		}
 		else if (data != null && data.success === true && typeof(data.polygonId) != 'undefined') {
-			let unit = window.turmoil.activeUnit;
+			if (typeof(data.unit) !== 'undefined' && typeof(data.unit.polygonsInRange) !== 'undefined') {
+				window.turmoil.instance.polygonsInRange = data.unit.polygonsInRange;
+			}
 
 			let polygon = jQuery('#' + data.polygonId);
 			if (polygon.length > 0 && typeof(data.actionType) != 'undefined') {
 				if (data.actionType === 'attack') {
-					if (typeof(data.attackingUnit) != 'undefined') {
-						unit = jQuery('#' + data.attackingUnit);
+					if (typeof(data.attackingUnit) == 'undefined') {
+						window.turmoil.logErrors("Attack action failed");
 					}
-					WindowLocation.handleAttackPolygon(polygon, unit, data);
+					WindowLocation.handleAttackPolygon(polygon, jQuery('#' + data.attackingUnit), data);
 				}
 				else if (data.actionType === 'move') {
-					if (typeof(data.unitToMove) != 'undefined') {
-						unit = jQuery('#' + data.unitToMove);
+					if (typeof(data.unitToMove) == 'undefined') {
+						window.turmoil.logErrors("Move action failed");
 					}
-					WindowLocation.handleMoveToPolygon(polygon, unit);
+					WindowLocation.handleMoveToPolygon(polygon, jQuery('#' + data.unitToMove));
 				}
 			}
 
@@ -170,8 +183,30 @@ export let WindowLocation = {
 		}
 	},
 	inactivateUnits: function () {
-		jQuery('.instancePolygonEnemyActive').each(function (index) {
+		jQuery('.instancePolygonEnemyActive').each(function () {
 			Svg.replaceClass(jQuery(this), 'instancePolygonEnemy', 'instancePolygonEnemyActive');
 		});
+	},
+	setActivePolygons: function () {
+		window.turmoil.instance.polygonsInRange.forEach(function (element) {
+			let polygon = jQuery('#' + element);
+			if (polygon.hasClass("instancePolygon")) {
+				Svg.replaceClass(polygon, "instancePolygonInRange", "instancePolygon");
+			}
+		});
+	},
+	inactivatePolygons: function () {
+		jQuery('.instancePolygonInRange').each(function () {
+			Svg.replaceClass(jQuery(this), 'instancePolygon', 'instancePolygonInRange');
+		});
+	},
+	enableActions() {
+		window.turmoil.instance.isActive = true;
+	},
+	blockActions() {
+		window.turmoil.instance.isActive = false;
+	},
+	areActionsAllowed() {
+		return window.turmoil.instance.isActive;
 	}
 }

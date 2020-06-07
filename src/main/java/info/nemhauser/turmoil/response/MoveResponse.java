@@ -7,26 +7,23 @@ import java.util.Map;
 public class MoveResponse
 {
 	private final String actionType;
-	private final Boolean friendlyTurn;
 	private final Boolean success;
 	private final String polygonId;
+	private final String unitToMove;
+	private final EnemyUnitResponse unitResponse;
 
-	public MoveResponse(String actionType, Boolean friendlyTurn, Boolean success, String polygonId)
+	public MoveResponse(String actionType, Boolean success, String polygonId, String unitToMove, EnemyUnitResponse unitResponse)
 	{
 		this.actionType = actionType;
-		this.friendlyTurn = friendlyTurn;
 		this.success = success;
 		this.polygonId = polygonId;
+		this.unitToMove = unitToMove;
+		this.unitResponse = unitResponse;
 	}
 
 	public String getActionType()
 	{
 		return actionType;
-	}
-
-	public Boolean getFriendlyTurn()
-	{
-		return friendlyTurn;
 	}
 
 	public Boolean getSuccess()
@@ -39,13 +36,19 @@ public class MoveResponse
 		return polygonId;
 	}
 
+	public String getUnitToMove()
+	{
+		return unitToMove;
+	}
+
 	public JSONObject toJSONObject()
 	{
 		return new JSONObject(Map.of(
 				"actionType", actionType,
-				"friendlyTurn", friendlyTurn,
 				"success", success,
-				"polygonId", polygonId
+				"polygonId", polygonId,
+				"unitToMove", unitToMove,
+				"unit", unitResponse
 		));
 	}
 }

@@ -4,16 +4,18 @@ import info.nemhauser.turmoil.engine.domain.Monster;
 import info.nemhauser.turmoil.engine.domain.Person;
 import info.nemhauser.turmoil.engine.exceptions.GraphException;
 import info.nemhauser.turmoil.engine.world.map.graph.Instance;
+import info.nemhauser.turmoil.engine.world.map.graph.Neighbourhood;
+import info.nemhauser.turmoil.engine.world.map.graph.Utils;
+import org.jgrapht.Graphs;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.DefaultUndirectedGraph;
 import org.springframework.util.SerializationUtils;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
+import java.util.*;
 
 public class CombatState
 {
-	private DefaultUndirectedGraph<String, DefaultEdge> instanceGraph;
+	private final DefaultUndirectedGraph<String, DefaultEdge> instanceGraph;
 
 	public Person friend;
 	public Monster enemy;
@@ -51,20 +53,15 @@ public class CombatState
 		return instanceGraph;
 	}
 
-	public DefaultUndirectedGraph<String, DefaultEdge> getInstanceGraphForEnemy(Monster enemy) throws GraphException
+	public DefaultUndirectedGraph<String, DefaultEdge> getInstanceGraphForEnemy(Person enemy) throws GraphException
 	{
-		DefaultUndirectedGraph<String, DefaultEdge> graph = (DefaultUndirectedGraph<String, DefaultEdge>) SerializationUtils.deserialize(SerializationUtils.serialize(instanceGraph));
-
-		if (graph == null)
-		{
-			throw new GraphException("Could not copy a graph");
-		}
+		DefaultUndirectedGraph<String, DefaultEdge> graph = Utils.cloneGraph(instanceGraph);
 
 		for (Monster monster : enemies.values())
 		{
-			String position = monster.getGraphPosition();
+			String position = monster.getInstancePosition();
 
-			if (position.equals(enemy.getGraphPosition()))
+			if (position.equals(enemy.getInstancePosition()))
 			{
 				continue;
 			}
@@ -101,5 +98,10 @@ public class CombatState
 	public void removeEnemy(Monster enemy)
 	{
 		enemies.remove(enemy.getIdent());
+	}
+
+	public Set<String> getPolygonsInRange()
+	{
+		return Neighbourhood.getVerticesInRange(instanceGraph, friend.getInstancePosition(), friend.getMovementPoints());
 	}
 }

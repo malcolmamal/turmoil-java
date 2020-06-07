@@ -4,11 +4,12 @@ import info.nemhauser.turmoil.engine.domain.Person;
 
 public class EnemyUnitResponse
 {
-	private String ident;
-	private String portrait;
-	private String position;
-	private int health;
-	private double healthBar;
+	private final String ident;
+	private final String portrait;
+	private final String position;
+	private final int health;
+	private final double healthBar;
+	private final int movementPoints;
 
 	public EnemyUnitResponse(Person monster)
 	{
@@ -17,6 +18,7 @@ public class EnemyUnitResponse
 		this.position = monster.getInstancePosition();
 		this.health = monster.getCurrentHealth();
 		this.healthBar = monster.getHealthBarValue();
+		this.movementPoints = monster.getMovementPoints();
 	}
 
 	public String getIdent()
@@ -42,5 +44,10 @@ public class EnemyUnitResponse
 	public double getHealthBar()
 	{
 		return healthBar;
+	}
+
+	public int getMovementPoints()
+	{
+		return movementPoints;
 	}
 }

@@ -44,6 +44,17 @@ window.turmoil.equipment.defaultItems = {
 	slot_bracers: { slot: "slot_bracers", top: 105, left: 500, item: {}}
 };
 
+window.turmoil.instance = {
+	activeUnit: null,
+	isActive: true,
+	polygonsInRange: [
+		'polygon-9-4',
+		'polygon-9-3',
+		'polygon-10-5'
+	],
+	units: {}
+};
+
 window.turmoil.sounds = {
 	'soundMoveLeather': soundMoveLeather,
 	'soundAttackMelee1': soundAttackMelee1,
@@ -115,8 +126,6 @@ window.turmoil.logCombat = function(content) {
 window.turmoil.logErrors = function(content) {
 	window.turmoil.log(content, 'errors');
 };
-
-window.turmoil.activeUnit = null;
 
 function audioReady() {
 	return jQuery.when.apply(jQuery, jQuery('audio').map(function() {

@@ -2,6 +2,12 @@ import React from "react";
 
 export default class Unit extends React.Component
 {
+	refreshUnitData(ident, movement) {
+		window.turmoil.instance.units[ident] = {
+			movement: movement
+		}
+	}
+
 	render() {
 		const unitStyle = {
 			width: this.props.healthBar + 'px',
@@ -9,6 +15,8 @@ export default class Unit extends React.Component
 		const imageClass = this.props.enemy ? " instancePortraitFlipped instanceEnemy" : "";
 		const mainDivClass = this.props.enemy ? " enemyUnit" : "";
 		const unitAlt = this.props.title ? this.props.title : "unit";
+
+		this.refreshUnitData(this.props.ident, this.props.movement);
 
 		return(
 			<div className={"instanceElement" + mainDivClass} id={this.props.ident} onClick={() => this.props.onClick(this.props.ident)}>

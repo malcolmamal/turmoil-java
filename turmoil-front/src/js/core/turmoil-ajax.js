@@ -1,5 +1,6 @@
 import jQuery from "jquery";
 import {Layout} from "./turmoil-layout";
+import {WindowLocation} from "../windows/window-location";
 
 /**
  * window.turmoil.ajax.exec({
@@ -35,13 +36,10 @@ export let Ajax = {
 					//dataType:"script",
 					success: function(data, textStatus, xhr) {
 						if (textStatus === 'success') {
-							if (typeof(params.eval) !== 'undefined' && params.eval === true) {
-								console.log('is this EVAL even a thing?')
-								eval(data);
-							}
-
 							if (typeof(data.success) !== 'undefined' && data.success === false)
 							{
+								WindowLocation.enableActions();
+
 								let requestData = params.url + (dataString != null ? '?' + dataString : '');
 								Ajax.handleAjaxError(
 									"<b>" + requestData + "<br><br></b>" + data.message,
@@ -49,8 +47,7 @@ export let Ajax = {
 									textStatus
 								);
 							}
-
-							if (typeof(params.onSuccess) !== 'undefined') {
+							else if (typeof(params.onSuccess) !== 'undefined') {
 
 								if (typeof(params.onSuccessThis) !== 'undefined') {
 									params.onSuccess(data, params.onSuccessThis);

@@ -42,14 +42,13 @@ class ConnectedEnemyUnit extends React.Component
 	render()
 	{
 		return(
-			<Unit ident={this.props.ident} portrait={this.props.portrait} healthBar={this.props.healthBar} enemy={true} onClick={this.actionOnUnitHandler}/>
+			<Unit ident={this.props.ident} portrait={this.props.portrait} healthBar={this.props.healthBar}  movement={this.props.movement} enemy={true} onClick={this.actionOnUnitHandler}/>
 		);
 	}
 
 	componentDidMount() {
-		let that = this;
-		const ident = that.props.ident;
-		const position = that.props.position;
+		const ident = this.props.ident;
+		const position = this.props.position;
 
 		setTimeout(function() {
 				WindowLocation.handleMoveToPolygon(jQuery('#' + position), jQuery('#' + ident));
