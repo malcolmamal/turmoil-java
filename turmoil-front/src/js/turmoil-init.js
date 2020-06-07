@@ -47,11 +47,7 @@ window.turmoil.equipment.defaultItems = {
 window.turmoil.instance = {
 	activeUnit: null,
 	isActive: true,
-	polygonsInRange: [
-		'polygon-9-4',
-		'polygon-9-3',
-		'polygon-10-5'
-	],
+	polygonsInRange: [],
 	units: {}
 };
 

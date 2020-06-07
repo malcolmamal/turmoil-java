@@ -64,6 +64,8 @@ export let Ajax = {
 						Layout.hideSpinner();
 					},
 					error: function(XMLHttpRequest, textStatus, errorThrown) {
+						WindowLocation.enableActions();
+
 						Ajax.handleAjaxError(XMLHttpRequest.responseText, errorThrown, textStatus);
 					},
 					complete: function(xhr, textStatus) {
