@@ -38,14 +38,13 @@ export let WindowLocation = {
 		return WindowLocation.actionOnPolygon(polygon, unit, callbacks);
 	},
 	finalizeActionsOnPolygon: function (data, callbackFunctions) {
-		// TODO: this timeout should be a setting for user
 		WindowLocation.inactivatePolygons();
 
 		data.actions.forEach(function (action, index, thisArray) {
 			setTimeout(function() {
 					WindowLocation.finalizeActionOnPolygon(action, callbackFunctions);
 				},
-				550 * index
+				window.turmoil.settings.delayBetweenActions * index
 			);
 
 			if (Object.is(thisArray.length - 1, index)) {
@@ -54,7 +53,7 @@ export let WindowLocation = {
 						WindowLocation.setActivePolygons();
 						WindowLocation.enableActions();
 					},
-					550 * index + 300
+					window.turmoil.settings.delayBetweenActions * index + window.turmoil.settings.delayBetweenActions / 2
 				);
 			}
 		});

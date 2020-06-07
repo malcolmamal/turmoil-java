@@ -21,7 +21,11 @@ import soundWeapon from "../media/audio/change_weapon_004.wav";
 window.debug = true;
 window.debugPopup = true;
 
-window.turmoil = {};
+window.turmoil = {
+	settings: {
+		delayBetweenActions: 550 // TODO: this timeout should be a setting for user
+	}
+};
 
 window.turmoil.equipment = {};
 window.turmoil.equipment.defaultItems = {
