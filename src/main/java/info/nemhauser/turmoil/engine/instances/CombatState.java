@@ -2,9 +2,11 @@ package info.nemhauser.turmoil.engine.instances;
 
 import info.nemhauser.turmoil.engine.domain.Monster;
 import info.nemhauser.turmoil.engine.domain.Person;
+import info.nemhauser.turmoil.engine.exceptions.GraphException;
 import info.nemhauser.turmoil.engine.world.map.graph.Instance;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.DefaultUndirectedGraph;
+import org.springframework.util.SerializationUtils;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -49,6 +51,37 @@ public class CombatState
 		return instanceGraph;
 	}
 
+	public DefaultUndirectedGraph<String, DefaultEdge> getInstanceGraphForEnemy(Monster enemy) throws GraphException
+	{
+		DefaultUndirectedGraph<String, DefaultEdge> graph = (DefaultUndirectedGraph<String, DefaultEdge>) SerializationUtils.deserialize(SerializationUtils.serialize(instanceGraph));
+
+		if (graph == null)
+		{
+			throw new GraphException("Could not copy a graph");
+		}
+
+		for (Monster monster : enemies.values())
+		{
+			String position = monster.getGraphPosition();
+
+			if (position.equals(enemy.getGraphPosition()))
+			{
+				continue;
+			}
+
+			if (graph.removeVertex(position))
+			{
+				System.out.println("removed vertex: " + position);
+			}
+			else
+			{
+				System.out.println("failed to remove vertex: " + position);
+			}
+		}
+
+		return graph;
+	}
+
 	public HashMap<String, Monster> getEnemiesOnPositions()
 	{
 		HashMap<String, Monster> enemiesOnPositions = new HashMap<>();
@@ -58,5 +91,15 @@ public class CombatState
 		}
 
 		return enemiesOnPositions;
+	}
+
+	public Monster getEnemyOnPosition(String position)
+	{
+		return getEnemiesOnPositions().get(position);
+	}
+
+	public void removeEnemy(Monster enemy)
+	{
+		enemies.remove(enemy.getIdent());
 	}
 }

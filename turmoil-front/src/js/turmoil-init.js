@@ -112,6 +112,10 @@ window.turmoil.logCombat = function(content) {
 	window.turmoil.log(content, 'combat');
 };
 
+window.turmoil.logErrors = function(content) {
+	window.turmoil.log(content, 'errors');
+};
+
 window.turmoil.activeUnit = null;
 
 function audioReady() {

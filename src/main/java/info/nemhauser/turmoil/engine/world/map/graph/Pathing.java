@@ -1,5 +1,6 @@
 package info.nemhauser.turmoil.engine.world.map.graph;
 
+import info.nemhauser.turmoil.engine.exceptions.GraphException;
 import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.DefaultUndirectedGraph;
@@ -18,11 +19,21 @@ public class Pathing
 		this.target = target;
 	}
 
-	public static String getNextPosition(DefaultUndirectedGraph<String, DefaultEdge> graph, String source, String target)
+	public static String getNextPosition(DefaultUndirectedGraph<String, DefaultEdge> graph, String source, String target) throws GraphException
 	{
 		//TODO: check if path not exists
 
 		GraphWalk<String, DefaultEdge> graphWalk = getPath(graph, source, target);
+
+		if (graphWalk == null)
+		{
+			throw new GraphException("Empty graph walk for <" + source + ", " + target + ">" );
+		}
+
+		if (graphWalk.getEdgeList() == null)
+		{
+			throw new GraphException("Empty edge list for <" + source + ", " + target + ">" );
+		}
 
 		if (source.equals(graph.getEdgeSource(graphWalk.getEdgeList().get(0))))
 		{
@@ -46,7 +57,7 @@ public class Pathing
 		return getPath(graph, source, target).getEdgeList().size() - 1;
 	}
 
-	public String getNextPosition()
+	public String getNextPosition() throws GraphException
 	{
 		return getNextPosition(graph, source, target);
 	}

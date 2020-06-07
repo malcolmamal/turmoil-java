@@ -6,6 +6,8 @@ import info.nemhauser.turmoil.engine.combat.effects.DamageDealt;
 import info.nemhauser.turmoil.engine.domain.Character;
 import info.nemhauser.turmoil.engine.domain.Item;
 import info.nemhauser.turmoil.engine.domain.Monster;
+import info.nemhauser.turmoil.engine.exceptions.GraphException;
+import info.nemhauser.turmoil.engine.exceptions.InvalidEnemyException;
 import info.nemhauser.turmoil.engine.helpers.CharacterStateHelper;
 import info.nemhauser.turmoil.engine.helpers.CombatHelper;
 import info.nemhauser.turmoil.engine.helpers.ExperienceHelper;
@@ -13,10 +15,7 @@ import info.nemhauser.turmoil.engine.helpers.InstanceHelper;
 import info.nemhauser.turmoil.engine.instances.CombatState;
 import info.nemhauser.turmoil.engine.world.map.graph.Instance;
 import info.nemhauser.turmoil.engine.world.map.graph.Pathing;
-import info.nemhauser.turmoil.response.EnemyUnitResponse;
-import info.nemhauser.turmoil.response.FriendlyUnitResponse;
-import info.nemhauser.turmoil.response.ItemInStashResponse;
-import info.nemhauser.turmoil.response.MoveResponse;
+import info.nemhauser.turmoil.response.*;
 
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
@@ -79,27 +78,6 @@ class InstanceController {
 		return object;
 	}
 
-	@RequestMapping(value = "/instanceMove/{position}", produces = "application/json")
-	public @ResponseBody
-	MoveResponse instanceMove(@PathVariable String position)
-	{
-		return moveToPosition(position);
-	}
-
-	@RequestMapping(value = "/instanceAttack/{position}", produces = "application/json")
-	public @ResponseBody
-	JSONObject instanceAttack(@PathVariable String position)
-	{
-		return attackEnemyOnPosition(position);
-	}
-
-	@RequestMapping(value = "/instanceActionEnemy/{enemy}", produces = "application/json")
-	public @ResponseBody
-	JSONObject instanceActionEnemy(@PathVariable String enemy)
-	{
-		return actionEnemy(enemy);
-	}
-
 	@RequestMapping(value = "/instance/instanceActionOnPosition/{position}", produces = "application/json")
 	public @ResponseBody
 	JSONObject instanceActionOnPosition(@PathVariable String position)
@@ -118,14 +96,24 @@ class InstanceController {
 		else
 		{
 			// move
-			array.add(moveToPosition(position).toJSONObject());
+			try
+			{
+				array.add(moveToPosition(position).toJSONObject());
+			}
+			catch (GraphException e)
+			{
+				return new ExceptionResponse(e).toJSONObject();
+			}
 		}
 
 		// enemy action
-
-		array.add(actionEnemy(cs.enemy.getIdent()));
+		for (Monster enemy: cs.getEnemies().values())
+		{
+			array.add(actionEnemy(enemy));
+		}
 
 		JSONObject object = new JSONObject();
+		object.put("success", true);
 		object.put("actions", array);
 
 		return object;
@@ -139,9 +127,15 @@ class InstanceController {
 		if (position != null)
 		{
 			CombatState cs = TurmoilApplication.getCombatState();
+			Monster enemy = cs.getEnemyOnPosition(position);
+
+			if (enemy == null)
+			{
+				return new FailedResponse("Could not find enemy for position " + position).toJSONObject();
+			}
 
 			DamageDealt damageDealt = CombatHelper.computeDamageToDeal(character);
-			cs.enemy.currentHealth -= (int)damageDealt.getValue();
+			enemy.currentHealth -= (int)damageDealt.getValue();
 
 			JSONObject object = new JSONObject(Map.of(
 					"success", true,
@@ -150,25 +144,28 @@ class InstanceController {
 					"type", damageDealt.isCritical() ? "critical" : "",
 					"polygonId", position,
 					"damageDealt", damageDealt.getValue(),
-					"healthBar", cs.enemy.getHealthBarValue(),
-					"enemyId", cs.enemy.getIdent()
+					"healthBar", enemy.getHealthBarValue(),
+					"enemyId", enemy.getIdent()
 			));
 
-			if (cs.enemy.currentHealth < 0)
+			if (enemy.currentHealth < 0)
 			{
-				object.put("unitToRemove", new EnemyUnitResponse(cs.enemy));
+				object.put("unitToRemove", new EnemyUnitResponse(enemy));
 
-				Item item = cs.enemy.lootBag.get("loot");
+				Item item = enemy.lootBag.get("loot");
 				if (item != null)
 				{
 					TurmoilApplication.getServerState().addItem(item);
 					object.put("itemForStash", new ItemInStashResponse(item));
 				}
 
-				cs.addEnemy(InstanceHelper.createMonster(TurmoilApplication.getCharacter("fox")));
+				cs.removeEnemy(enemy);
 
-				object.put("unitToAdd", new EnemyUnitResponse(cs.enemy));
-				object.put("healthBar", cs.enemy.getHealthBarValue());
+				Monster newEnemy = InstanceHelper.createMonster(TurmoilApplication.getCharacter("fox"));
+				cs.addEnemy(newEnemy);
+
+				object.put("unitToAdd", new EnemyUnitResponse(newEnemy));
+				object.put("healthBar", enemy.getHealthBarValue());
 
 				//TODO: handle it properly
 				character.experience += 10;
@@ -185,33 +182,45 @@ class InstanceController {
 		return new JSONObject();
 	}
 
-	private MoveResponse moveToPosition(String position)
+	private MoveResponse moveToPosition(String position) throws GraphException
 	{
 		Logger.log("Moving character to " + position);
 
 		CombatState cs = TurmoilApplication.getCombatState();
+		if (cs.getEnemiesOnPositions().containsKey(position))
+		{
+			throw new GraphException("Cannot move to position since it is already occupied: " + position);
+		}
 		cs.friend.instancePosition = position;
 
-		return new MoveResponse("move", true, true, position, cs.enemy.getIdent());
+		return new MoveResponse("move", true, true, position);
 	}
 
-	private JSONObject actionEnemy(String enemy)
+	private JSONObject actionEnemy(Monster enemy)
 	{
-		Logger.log("!!!!!! doing stuff for " + enemy);
+		Logger.log("!!!!!! doing stuff for " + enemy.getIdent());
 
 		CombatState cs = TurmoilApplication.getCombatState();
 
-		String enemyPosition = cs.enemy.instancePosition.substring(8);
-		String characterPosition = cs.friend.instancePosition.substring(8);
+		String enemyPosition = enemy.getGraphPosition();
+		String characterPosition = cs.friend.getGraphPosition();
 
-		Pathing pathing = new Pathing(cs.getInstanceGraph(), enemyPosition, characterPosition);
-
-		String moveTo = "polygon-" + pathing.getNextPosition();
+		Pathing pathing;
+		String moveTo;
+		try
+		{
+			pathing = new Pathing(cs.getInstanceGraphForEnemy(enemy), enemyPosition, characterPosition);
+			moveTo = "polygon-" + pathing.getNextPosition();
+		}
+		catch (GraphException e)
+		{
+			return new ExceptionResponse(e).toJSONObject();
+		}
 
 		Logger.log("Move distance: " + pathing.getDistance());
 		Logger.log("enemy will move to: " + moveTo);
 
-		if (moveTo.equals(cs.friend.instancePosition))
+		if (moveTo.equals(cs.friend.getInstancePosition()))
 		{
 			Logger.log("Enemy should attack!");
 
@@ -223,17 +232,17 @@ class InstanceController {
 					"actionType", "attack",
 					"damageDealt", 5,
 					"healthBar", cs.friend.getHealthBarValue(),
-					"attackingUnit", enemy
+					"attackingUnit", enemy.getIdent()
 			));
 		}
 
-		cs.enemy.instancePosition = moveTo;
+		enemy.setInstancePosition(moveTo);
 
 		return new JSONObject(Map.of(
 				"success", true,
 				"polygonId", moveTo,
 				"actionType", "move",
-				"unitToMove", enemy
+				"unitToMove", enemy.getIdent()
 		));
 	}
 }

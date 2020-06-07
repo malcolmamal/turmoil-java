@@ -32,6 +32,13 @@
 	cursor: url("../images/ui/cursors/cursor_move_negative.png"), auto;
 }
 
+.instancePolygonEnemyActive {
+	opacity: 0.6;
+	/*stroke: none;*/
+	fill: red;
+	cursor: url("../images/ui/cursors/cursor_move_negative.png"), auto;
+}
+
 .instanceText {
 	text-align: center;
 	text-anchor: middle;

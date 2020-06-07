@@ -91,13 +91,13 @@ public class TurmoilApplication
  *   1. at some point make sure that initial actions are loaded in one go
  *   2. seems like items can now roll with HEALING damage type :-)
  *   3. spear in second hand, equipping and unequipping two handed mace duplicates visually the spear in stash, seems like equipping it does not unequip left hand -> fixed on backend, need to check front
- *   4. most likely fixed already: when we have a Staff equipped, we can equip a one hand weapons (wand)
+ *   4.
  *   5. inventory, open stashes
  *   6. some of the items (uniques or epics?) should also have negative stats (like in diablo1) but the positive stats should be much higher that in other legendaries
  *   x.
  *   8. jira
  *   9. add movement range, show available movement at front, deny wrong movement on backend
- *  10. move all enemy units in their turn, add all units to the graph so it is known that it cannot be moved on to
+ *  10.
  *  11. known issue, how to handle? (base armor is shown but +armor attribute is not added to base visually)
  *
  */

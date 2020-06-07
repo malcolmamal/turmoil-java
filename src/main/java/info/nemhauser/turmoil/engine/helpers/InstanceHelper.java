@@ -49,6 +49,8 @@ public class InstanceHelper
 
 	public static Monster createMonster(Character character)
 	{
+		//TODO: make sure nothing resides on the position (no enemy or friendly units)
+
 		monsterPosition++;
 		if (monsterPosition > 6)
 		{

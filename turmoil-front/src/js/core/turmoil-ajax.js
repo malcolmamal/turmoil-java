@@ -36,7 +36,18 @@ export let Ajax = {
 					success: function(data, textStatus, xhr) {
 						if (textStatus === 'success') {
 							if (typeof(params.eval) !== 'undefined' && params.eval === true) {
+								console.log('is this EVAL even a thing?')
 								eval(data);
+							}
+
+							if (typeof(data.success) !== 'undefined' && data.success === false)
+							{
+								let requestData = params.url + (dataString != null ? '?' + dataString : '');
+								Ajax.handleAjaxError(
+									"<b>" + requestData + "<br><br></b>" + data.message,
+									'problem with request: ' + requestData,
+									textStatus
+								);
 							}
 
 							if (typeof(params.onSuccess) !== 'undefined') {

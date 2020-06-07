@@ -62,9 +62,19 @@ abstract public class Person
 				+ ".png";
 	}
 
+	public String getGraphPosition()
+	{
+		return instancePosition.substring(8);
+	}
+
 	public String getInstancePosition()
 	{
 		return instancePosition;
+	}
+
+	public void setInstancePosition(String instancePosition)
+	{
+		this.instancePosition = instancePosition;
 	}
 
 	public Integer getCurrentHealth()

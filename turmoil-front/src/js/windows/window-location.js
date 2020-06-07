@@ -30,15 +30,29 @@ export let WindowLocation = {
 		return WindowLocation.actionOnPolygon(polygon, unit, callbacks);
 	},
 	finalizeActionsOnPolygon: function (data, callbackFunctions) {
-		data.actions.forEach(function (action, index) {
+		// TODO: this timeout should be a setting for user
+
+		data.actions.forEach(function (action, index, thisArray) {
 			setTimeout(function() {
-				WindowLocation.finalizeActionOnPolygon(action, callbackFunctions);
-			}, 400 * index
+					WindowLocation.finalizeActionOnPolygon(action, callbackFunctions);
+				},
+				650 * index
 			);
+
+			if (Object.is(thisArray.length - 1, index)) {
+				setTimeout(function() {
+						WindowLocation.inactivateUnits();
+					},
+					750 * index
+				);
+			}
 		});
 	},
 	finalizeActionOnPolygon: function (data, callbackFunctions) {
-		if (data != null && data.success === true && typeof(data.polygonId) != 'undefined') {
+		if (data != null && data.success === false) {
+			window.turmoil.logErrors(data.message);
+		}
+		else if (data != null && data.success === true && typeof(data.polygonId) != 'undefined') {
 			let unit = window.turmoil.activeUnit;
 
 			let polygon = jQuery('#' + data.polygonId);
@@ -79,6 +93,8 @@ export let WindowLocation = {
 		}
 	},
 	handleMoveToPolygon: function (polygon, unit) {
+		WindowLocation.inactivateUnits();
+
 		if (unit.data('previousPolygonId') != null) {
 			let previousPolygon = jQuery('#' + unit.data('previousPolygonId'));
 
@@ -123,6 +139,7 @@ export let WindowLocation = {
 	},
 	handleAttackPolygon: function (polygon, unit, data) {
 		//TODO: make sure that it is not possible to do actions when enemy is doing stuff
+		WindowLocation.markUnitAsActive(unit);
 
 		let targetUnit = jQuery('#' + polygon.data('unit'));
 
@@ -143,5 +160,18 @@ export let WindowLocation = {
 		}
 
 		Animations.attackSwing(targetUnit.attr('id'));
+	},
+	markUnitAsActive: function (unit) {
+		if (unit.hasClass('enemyUnit')) {
+			WindowLocation.inactivateUnits();
+
+			let polygon = jQuery('#' + unit.data('previousPolygonId'));
+			Svg.replaceClass(polygon, 'instancePolygonEnemyActive', 'instancePolygonEnemy');
+		}
+	},
+	inactivateUnits: function () {
+		jQuery('.instancePolygonEnemyActive').each(function (index) {
+			Svg.replaceClass(jQuery(this), 'instancePolygonEnemy', 'instancePolygonEnemyActive');
+		});
 	}
 }

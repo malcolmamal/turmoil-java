@@ -28,12 +28,14 @@ export default class Console extends React.Component
 							<li><a href="#console-all"><span>All</span></a></li>
 							<li><a href="#console-combat"><span>Combat</span></a></li>
 							<li><a href="#console-loot"><span>Loot</span></a></li>
+							<li><a href="#console-errors"><span>Errors</span></a></li>
 							<li><a href="#console-chat"><span>Chat</span></a></li>
 							<li><a href="#console-other"><span>Other</span></a></li>
 						</ul>
 						<div id="console-all" className="scrollableContainer consoleTab"/>
 						<div id="console-combat" className="scrollableContainer consoleTab"/>
 						<div id="console-loot" className="scrollableContainer consoleTab"/>
+						<div id="console-errors" className="scrollableContainer consoleTab"/>
 						<div id="console-chat" className="scrollableContainer consoleTab">
 							Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod
 							tincidunt ut laoreet dolore magna aliquam erat volutpat.
