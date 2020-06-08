@@ -108,7 +108,7 @@ public class CharacterStateHelper
 
 	public static void updateCharacterStateWithArmor(CharacterState characterState, Armor armor)
 	{
-		characterState.armor += armor.armorValue;
+		characterState.increaseArmor(armor.armorValue);
 	}
 
 	public static void updateCharacterStateWithWeapon(CharacterState characterState, Weapon weapon)
@@ -175,11 +175,11 @@ public class CharacterStateHelper
 				characterState.statIntelligence += attribute.primaryValue;
 				characterState.statVitality += attribute.secondaryValue;
 			}
-			case CRITICAL_CHANCE -> characterState.critChance += attribute.primaryValue;
-			case CRITICAL_DAMAGE -> characterState.critDamage += attribute.primaryValue;
+			case CRITICAL_CHANCE -> characterState.increaseCritChance(attribute.primaryValue);
+			case CRITICAL_DAMAGE -> characterState.increaseCritDamage(attribute.primaryValue);
 			case DAMAGE_VALUE -> {
-				characterState.damageMin += attribute.primaryValue;
-				characterState.damageMax += attribute.secondaryValue;
+				characterState.increaseDamageMin(attribute.primaryValue);
+				characterState.increaseDamageMax(attribute.secondaryValue);
 			}
 			case DAMAGE_PHYSICAL_VALUE -> {
 				characterState.damageMinPhysical += attribute.primaryValue;
@@ -212,15 +212,15 @@ public class CharacterStateHelper
 			case DAMAGE_LIGHTNING_PERCENTAGE -> characterState.damagePercentageLightning += attribute.primaryValue;
 			case DAMAGE_POISON_PERCENTAGE -> characterState.damagePercentagePoison += attribute.primaryValue;
 			case DAMAGE_ARCANE_PERCENTAGE -> characterState.damagePercentageArcane += attribute.primaryValue;
-			case RESIST_FIRE -> characterState.resistFire += attribute.primaryValue;
-			case RESIST_COLD -> characterState.resistCold += attribute.primaryValue;
-			case RESIST_LIGHTNING -> characterState.resistLightning += attribute.primaryValue;
-			case RESIST_POISON -> characterState.resistPoison += attribute.primaryValue;
-			case RESIST_ARCANE -> characterState.resistArcane += attribute.primaryValue;
-			case RESIST_BLEED -> characterState.resistBleed += attribute.primaryValue;
-			case RESIST_PIERCING -> characterState.resistPiercing += attribute.primaryValue;
-			case RESIST_ALL -> characterState.resistAll += attribute.primaryValue;
-			case ARMOR -> characterState.armor += attribute.primaryValue;
+			case RESIST_FIRE -> characterState.increaseResistFire(attribute.primaryValue);
+			case RESIST_COLD -> characterState.increaseResistCold(attribute.primaryValue);
+			case RESIST_LIGHTNING -> characterState.increaseResistLightning(attribute.primaryValue);
+			case RESIST_POISON -> characterState.increaseResistPoison(attribute.primaryValue);
+			case RESIST_ARCANE -> characterState.increaseResistArcane(attribute.primaryValue);
+			case RESIST_BLEED -> characterState.increaseResistBleed(attribute.primaryValue);
+			case RESIST_PIERCING -> characterState.increaseResistPiercing(attribute.primaryValue);
+			case RESIST_ALL -> characterState.increaseResistAll(attribute.primaryValue);
+			case ARMOR -> characterState.increaseArmor(attribute.primaryValue);
 			case EVASION_BLOCK -> characterState.evasionBlock += attribute.primaryValue;
 			case EVASION_DODGE -> characterState.evasionDodge += attribute.primaryValue;
 			case EVASION_PARRY -> characterState.evasionParry += attribute.primaryValue;

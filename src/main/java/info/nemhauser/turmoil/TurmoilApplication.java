@@ -58,10 +58,15 @@ public class TurmoilApplication
 
 		serverState.addItem(ItemGenerator.rollItem(character));
 		serverState.addItem(ItemGenerator.rollItem(character));
-		serverState.addItem(ItemGenerator.rollItem(character));
-		serverState.addItem(ItemGenerator.rollItem(character));
-		serverState.addItem(ItemGenerator.rollItem(character));
-		serverState.addItem(ItemGenerator.rollItem(character));
+		serverState.addItem(ItemGenerator.rollItem(character, 20));
+		serverState.addItem(ItemGenerator.rollItem(character, 20));
+		serverState.addItem(ItemGenerator.rollItem(character, 50));
+		serverState.addItem(ItemGenerator.rollItem(character, 50));
+		serverState.addItem(ItemGenerator.rollItem(character, 50));
+		serverState.addItem(ItemGenerator.rollItem(character, 50));
+		serverState.addItem(ItemGenerator.rollItem(character, 70));
+		serverState.addItem(ItemGenerator.rollItem(character, 100));
+		serverState.addItem(ItemGenerator.rollItem(character, 100));
 
 		combatState = InstanceHelper.getCombatState(character);
 	}
@@ -102,5 +107,7 @@ public class TurmoilApplication
  *  11. known issue, how to handle? (base armor is shown but +armor attribute is not added to base visually)
  *  12. when trying to move -> also check obstacles, try to handle it visually
  *  13. moveToPosition -> unify for friend and enemy, check if the path's length is appropriate to movementPoints
+ *  14. do not forget about devastate
+ *  15. request sent twice sometimes (click and then click before the item disappears, maybe blocking actions on stash/equipment should happen too?)
  *
  */

@@ -44,7 +44,12 @@ public class ItemGenerator
 
 	public static Item rollItem(Character character)
 	{
-		ItemRarity rarity = (ItemRarity)ServerHelper.getEnumValues().getProperRandomItemRarity();
+		return rollItem(character, 0);
+	}
+
+	public static Item rollItem(Character character, int boost)
+	{
+		ItemRarity rarity = (ItemRarity)ServerHelper.getEnumValues().getProperRandomItemRarity(boost);
 		ItemType itemType = (ItemType)ServerHelper.getEnumValues().getRandomItemType();
 
 		return rollItemOfRarityAndType(character, rarity, itemType);

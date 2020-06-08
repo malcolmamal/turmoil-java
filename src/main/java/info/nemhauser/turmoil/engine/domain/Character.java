@@ -1,6 +1,8 @@
 package info.nemhauser.turmoil.engine.domain;
 
+import info.nemhauser.turmoil.engine.enums.DamageType;
 import info.nemhauser.turmoil.engine.enums.ItemSlot;
+import info.nemhauser.turmoil.engine.enums.ItemType;
 import info.nemhauser.turmoil.engine.enums.WeaponType;
 import info.nemhauser.turmoil.engine.exceptions.CouldNotEquipException;
 import info.nemhauser.turmoil.engine.helpers.CharacterStateHelper;
@@ -35,8 +37,6 @@ public class Character extends Person
 	Accessory slotRingTwo;
 	Accessory slotRingThree;
 	Accessory slotRingFour;
-
-	private CharacterState characterState;
 
 	public Character(String ident)
 	{
@@ -111,7 +111,7 @@ public class Character extends Person
 		if (itemToReturn != null)
 		{
 			// TODO: do it better
-			CharacterStateHelper.removeItem(characterState, itemToReturn);
+			CharacterStateHelper.removeItem(getCharacterState(), itemToReturn);
 		}
 
 		return itemToReturn;
@@ -143,7 +143,7 @@ public class Character extends Person
 		if (item.getItemSlot() != null)
 		{
 			// TODO: do it better
-			CharacterStateHelper.addItem(characterState, item);
+			CharacterStateHelper.addItem(getCharacterState(), item);
 		}
 
 		return itemToReturn;
@@ -340,11 +340,29 @@ public class Character extends Person
 
 	public CharacterState getCharacterState()
 	{
-		return characterState;
+		return (CharacterState) characterState;
 	}
 
 	public void setCharacterState(CharacterState characterState)
 	{
 		this.characterState = characterState;
+	}
+
+	@Override
+	public DamageType getDamageType()
+	{
+		if (slotRightHand == null)
+		{
+			return DamageType.PHYSICAL;
+		}
+
+		return slotRightHand.damageType;
+	}
+
+	@Override
+	public Boolean isCharacter()
+	{
+		// TODO: check if parent class can check for current class
+		return true;
 	}
 }

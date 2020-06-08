@@ -63,6 +63,11 @@ public class EnumValues
 
 	public Enum getProperRandomItemRarity()
 	{
+		return getProperRandomItemRarity(0);
+	}
+
+	public Enum getProperRandomItemRarity(int boost)
+	{
 		/*
 		35% COMMON
 		30% MAGIC
@@ -73,7 +78,7 @@ public class EnumValues
 		2% EPIC
 		*/
 
-		int rolledValue = new Random().nextInt(100) + 1;
+		int rolledValue = new Random().nextInt(100) + 1 - boost;
 
 		if (rolledValue <= 2)
 		{

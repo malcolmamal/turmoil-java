@@ -1,4 +1,4 @@
-package info.nemhauser.turmoil.engine.combat.effects;
+package info.nemhauser.turmoil.engine.mechanics.combat.effects;
 
 import info.nemhauser.turmoil.engine.enums.DamageMagnitude;
 import info.nemhauser.turmoil.engine.enums.DamageType;

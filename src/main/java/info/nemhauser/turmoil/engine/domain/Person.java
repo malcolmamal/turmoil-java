@@ -1,5 +1,6 @@
 package info.nemhauser.turmoil.engine.domain;
 
+import info.nemhauser.turmoil.engine.enums.DamageType;
 import info.nemhauser.turmoil.engine.enums.Gender;
 
 import java.util.Date;
@@ -27,6 +28,9 @@ abstract public class Person
 	private int movementPoints = 1;
 
 	Gender gender = Gender.UNKNOWN;
+
+	// TODO rename to personState
+	protected PersonState characterState;
 
 	public Person(String ident)
 	{
@@ -92,5 +96,15 @@ abstract public class Person
 	public void setMovementPoints(int movementPoints)
 	{
 		this.movementPoints = movementPoints;
+	}
+
+	public abstract DamageType getDamageType();
+
+	public abstract Boolean isCharacter();
+
+	//TODO: rename to personState?
+	public PersonState getCharacterState()
+	{
+		return characterState;
 	}
 }

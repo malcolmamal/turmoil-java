@@ -2,14 +2,13 @@ package info.nemhauser.turmoil.controller;
 
 import info.nemhauser.turmoil.TurmoilApplication;
 import info.nemhauser.turmoil.config.Logger;
-import info.nemhauser.turmoil.engine.combat.effects.DamageDealt;
+import info.nemhauser.turmoil.engine.mechanics.combat.CombatManager;
+import info.nemhauser.turmoil.engine.mechanics.combat.effects.DamageDealt;
 import info.nemhauser.turmoil.engine.domain.Character;
 import info.nemhauser.turmoil.engine.domain.Item;
 import info.nemhauser.turmoil.engine.domain.Monster;
 import info.nemhauser.turmoil.engine.exceptions.GraphException;
 import info.nemhauser.turmoil.engine.helpers.CharacterStateHelper;
-import info.nemhauser.turmoil.engine.helpers.CombatHelper;
-import info.nemhauser.turmoil.engine.helpers.ExperienceHelper;
 import info.nemhauser.turmoil.engine.helpers.InstanceHelper;
 import info.nemhauser.turmoil.engine.instances.CombatState;
 import info.nemhauser.turmoil.engine.world.map.graph.Pathing;
@@ -132,13 +131,13 @@ class InstanceController {
 				return new FailedResponse("Could not find enemy for position " + position).toJSONObject();
 			}
 
-			DamageDealt damageDealt = CombatHelper.computeDamageToDeal(character);
+			DamageDealt damageDealt = CombatManager.dealDamage(character, enemy);
 			enemy.currentHealth -= (int)damageDealt.getValue();
 
 			JSONObject object = new JSONObject(Map.of(
 					"success", true,
 					"actionType", "attack",
-					"type", damageDealt.isCritical() ? "critical" : "",
+					"type", damageDealt.isCritical() ? "critical" : "", //TODO include devastate
 					"polygonId", position,
 					"damageDealt", damageDealt.getValue(),
 					"healthBar", enemy.getHealthBarValue(),
@@ -242,13 +241,15 @@ class InstanceController {
 		{
 			Logger.log("Enemy should attack!");
 
-			cs.friend.currentHealth -= 5;
+			DamageDealt damageDealt = CombatManager.dealDamage(enemy, cs.friend);
+			cs.friend.currentHealth -= (int)damageDealt.getValue();
 
 			return new JSONObject(Map.of(
 					"success", true,
 					"polygonId", moveTo,
 					"actionType", "attack",
-					"damageDealt", 5,
+					"type", damageDealt.isCritical() ? "critical" : "", //TODO include devastate
+					"damageDealt", damageDealt.getValue(),
 					"healthBar", cs.friend.getHealthBarValue(),
 					"attackingUnit", enemy.getIdent()
 			));

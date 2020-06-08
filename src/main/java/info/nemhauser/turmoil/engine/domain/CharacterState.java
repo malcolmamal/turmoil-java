@@ -2,7 +2,7 @@ package info.nemhauser.turmoil.engine.domain;
 
 import java.util.HashMap;
 
-public class CharacterState
+public class CharacterState extends PersonState
 {
 	public Integer level;
 	public Integer experience;
@@ -13,14 +13,12 @@ public class CharacterState
 	public double statIntelligence;
 	public double statVitality;
 
-	public double health;
-	public double mana;
+
 
 	public double healthPercentage;
 	public double manaPercentage;
 
-	public double damageMin;
-	public double damageMax;
+
 
 	public double damageMinPhysical;
 	public double damageMaxPhysical;
@@ -43,26 +41,9 @@ public class CharacterState
 	public double damagePercentagePoison;
 	public double damagePercentageArcane;
 
-	public double damageAvg;
-
-	public double critChance;
-	public double critDamage;
-
-	public double armor;
-
 	public double evasionDodge;
 	public double evasionBlock;
 	public double evasionParry;
-
-	public double resistFire;
-	public double resistCold;
-	public double resistLightning;
-	public double resistPoison;
-	public double resistArcane;
-	public double resistBleed;
-	public double resistPiercing;
-	public double resistAllElemental;
-	public double resistAll;
 
 	public double lifeHit;
 	public double lifeLeech;
@@ -90,6 +71,7 @@ public class CharacterState
 	public double chanceToDevastate;
 
 	private final HashMap<String, Item> items = new HashMap<>();
+
 
 	public void resetValues()
 	{
