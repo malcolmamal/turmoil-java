@@ -19,7 +19,7 @@ public class Monster extends Person
 
 		instancePosition = "polygon-8-" + position;
 
-		characterState = new PersonState(100, 100, 10, 20, 5, 50);
+		characterState = new PersonState(100, 100, 5, 10, 10, 50);
 	}
 
 	public String toString() {
@@ -43,10 +43,5 @@ public class Monster extends Person
 	public Boolean isCharacter()
 	{
 		return false;
-	}
-
-	public DamageMagnitude getDamageMagnitude()
-	{
-		return DamageMagnitude.NORMAL;
 	}
 }

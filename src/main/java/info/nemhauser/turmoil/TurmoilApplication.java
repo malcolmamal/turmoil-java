@@ -107,7 +107,10 @@ public class TurmoilApplication
  *  11. known issue, how to handle? (base armor is shown but +armor attribute is not added to base visually)
  *  12. when trying to move -> also check obstacles, try to handle it visually
  *  13. moveToPosition -> unify for friend and enemy, check if the path's length is appropriate to movementPoints
- *  14. do not forget about devastate
- *  15. request sent twice sometimes (click and then click before the item disappears, maybe blocking actions on stash/equipment should happen too?)
+ *  14.
+ *  15. request sent twice sometimes (click and then click before the item disappears, maybe blocking actions on stash/equipment should happen too?) !!!!
+ *  16. do something on dying animation maybe? just do not remove it right away, show the damages and maybe some fade away
+ *  17. something wrong with resist computation (when two items are added)
+ *  18. seems like wearing two hander and trying to equip a shield works... but should not
  *
  */

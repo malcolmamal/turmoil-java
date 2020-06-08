@@ -199,42 +199,42 @@ public class PersonState
 
 	public void increaseResistFire(double value)
 	{
-		this.resistFire = value;
+		this.resistFire += value;
 	}
 
 	public void increaseResistCold(double value)
 	{
-		this.resistCold = value;
+		this.resistCold += value;
 	}
 
 	public void increaseResistLightning(double value)
 	{
-		this.resistLightning = value;
+		this.resistLightning += value;
 	}
 
 	public void increaseResistPoison(double value)
 	{
-		this.resistPoison = value;
+		this.resistPoison += value;
 	}
 
 	public void increaseResistArcane(double value)
 	{
-		this.resistArcane = value;
+		this.resistArcane += value;
 	}
 
 	public void increaseResistBleed(double value)
 	{
-		this.resistBleed = value;
+		this.resistBleed += value;
 	}
 
 	public void increaseResistPiercing(double value)
 	{
-		this.resistPiercing = value;
+		this.resistPiercing += value;
 	}
 
 	public void increaseResistAll(double value)
 	{
-		this.resistAll = value;
+		this.resistAll += value;
 	}
 
 	public double getArmor()

@@ -12,7 +12,8 @@ public class CombatManager
 	public static DamageDealt dealDamage(Person attacker, Person defender)
 	{
 		PersonState attackerState = attacker.getCharacterState();
-		DamageMagnitude magnitude = getDamageMagnitude(attacker, attackerState);
+		DamageMagnitude magnitude = getDamageMagnitude(attackerState);
+
 
 		long damageToDeal = getPureDamageToDeal(attackerState, magnitude);
 
@@ -57,26 +58,21 @@ public class CombatManager
 		return defenderState.getResistForDamageType(damageType);
 	}
 
-	public static DamageMagnitude getDamageMagnitude(Person person, PersonState personState)
+	public static DamageMagnitude getDamageMagnitude(PersonState personState)
 	{
-		if (person.isCharacter())
+		if (personState.getCritChance() > 0 && Math.round(100 * new Random().nextDouble()) <= personState.getCritChance())
 		{
-			if (personState.getCritChance() > 0 && Math.round(100 * new Random().nextDouble()) <= personState.getCritChance())
+			/*
+			 * 10% chance for a crit to be magnitude
+			 */
+			if (Math.round(100 * new Random().nextDouble()) <= 10)
 			{
-				/*
-				 * 10% chance for a crit to be magnitude
-				 */
-				if (Math.round(100 * new Random().nextDouble()) <= 10)
-				{
-					return DamageMagnitude.DEVASTATE;
-				}
-
-				return DamageMagnitude.CRITICAL;
+				return DamageMagnitude.DEVASTATE;
 			}
 
-			return DamageMagnitude.NORMAL;
+			return DamageMagnitude.CRITICAL;
 		}
 
-		return ((Monster) person).getDamageMagnitude();
+		return DamageMagnitude.NORMAL;
 	}
 }

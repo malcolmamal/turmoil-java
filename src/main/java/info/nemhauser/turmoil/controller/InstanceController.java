@@ -137,7 +137,7 @@ class InstanceController {
 			JSONObject object = new JSONObject(Map.of(
 					"success", true,
 					"actionType", "attack",
-					"type", damageDealt.isCritical() ? "critical" : "", //TODO include devastate
+					"type", damageDealt.getMagnitude().toString().toLowerCase(),
 					"polygonId", position,
 					"damageDealt", damageDealt.getValue(),
 					"healthBar", enemy.getHealthBarValue(),
@@ -248,7 +248,7 @@ class InstanceController {
 					"success", true,
 					"polygonId", moveTo,
 					"actionType", "attack",
-					"type", damageDealt.isCritical() ? "critical" : "", //TODO include devastate
+					"type", damageDealt.getMagnitude().toString().toLowerCase(),
 					"damageDealt", damageDealt.getValue(),
 					"healthBar", cs.friend.getHealthBarValue(),
 					"attackingUnit", enemy.getIdent()
