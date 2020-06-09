@@ -24,6 +24,17 @@ export let Ajax = {
 					});
 				}
 
+				if (typeof(params.blockActions) !== 'undefined' && params.blockActions === true) {
+
+					if (!WindowLocation.areActionsAllowed()) {
+						window.turmoil.logDebug('Actions are currently blocked', arguments);
+
+						return;
+					}
+
+					WindowLocation.blockActions();
+				}
+
 				Layout.showSpinner();
 
 				jQuery.ajax({

@@ -5,6 +5,7 @@ import {WindowStats} from "../../../js/windows/window-stats";
 import {Tooltip} from "../../../js/core/turmoil-tooltip";
 import {Ajax} from "../../../js/core/turmoil-ajax";
 import {Sound} from "../../../js/core/turmoil-sound";
+import {WindowLocation} from "../../../js/windows/window-location";
 
 function mapDispatchToProps(dispatch) {
 	return {
@@ -33,6 +34,8 @@ class ConnectedItemSlotStash extends React.Component
 	updateItems(itemForStash, itemForEquipment) {
 		this.props.updateStashItems({itemToAdd: itemForStash, itemToRemove: itemForEquipment});
 		this.props.updateEquipmentItems({itemToAdd: itemForEquipment});
+
+		WindowLocation.enableActions();
 	}
 
 	actionRightClickOnStashedItem(itemId, updateItems) {
@@ -41,7 +44,8 @@ class ConnectedItemSlotStash extends React.Component
 		Ajax.exec({
 			url: 'character/equip/' + itemId,
 			onSuccess: this.finalizeRightClickOnStashedItem,
-			onSuccessThis: updateItems
+			onSuccessThis: updateItems,
+			blockActions: true
 		});
 	}
 

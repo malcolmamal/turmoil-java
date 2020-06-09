@@ -5,6 +5,7 @@ import {WindowStats} from "../../../js/windows/window-stats";
 import {Tooltip} from "../../../js/core/turmoil-tooltip";
 import {Ajax} from "../../../js/core/turmoil-ajax";
 import {Sound} from "../../../js/core/turmoil-sound";
+import {WindowLocation} from "../../../js/windows/window-location";
 
 function mapDispatchToProps(dispatch) {
 	return {
@@ -26,8 +27,7 @@ class ConnectedItemSlotEquipment extends React.Component
 
 	onContextMenuHandler(event, item) {
 		event.preventDefault();
-		if (item.ident)
-		{
+		if (item.ident) {
 			this.actionRightClickOnEquipment(item, this.updateItems);
 
 			WindowStats.updateStats(this.props.updateCharacterStats);
@@ -37,6 +37,8 @@ class ConnectedItemSlotEquipment extends React.Component
 	updateItems(item) {
 		this.props.updateEquipmentItems({itemToRemove: item});
 		this.props.updateStashItems({itemToAdd: item});
+
+		WindowLocation.enableActions();
 	}
 
 	actionRightClickOnEquipment(item, updateItems) {
@@ -46,7 +48,8 @@ class ConnectedItemSlotEquipment extends React.Component
 			Ajax.exec({
 				url: 'character/unequip/' + item.ident,
 				onSuccess: this.finalizeRightClickOnEquipment,
-				onSuccessThis: updateItems
+				onSuccessThis: updateItems,
+				blockActions: true
 			});
 		}
 	}

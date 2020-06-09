@@ -10,24 +10,17 @@ export let WindowLocation = {
 		return jQuery('#' + jQuery(unit).data('previousPolygonId'));
 	},
 	actionOnPolygon: function (polygon, unit, callbacks) {
-		if (!WindowLocation.areActionsAllowed()) {
-			window.turmoil.logDebug('Actions are currently blocked', arguments);
-
-			return;
-		}
-
 		if (typeof(polygon) == 'undefined' || polygon == null) {
 			window.turmoil.logDebug('Wrong polygon parameter', arguments);
 
 			return;
 		}
 
-		WindowLocation.blockActions();
-
 		Ajax.exec({
 			url: 'instance/instanceActionOnPosition/' + polygon.attr('id'),
 			onSuccess: WindowLocation.finalizeActionsOnPolygon,
-			onSuccessThis: callbacks
+			onSuccessThis: callbacks,
+			blockActions: true
 		});
 	},
 	actionOnUnit: function (unitId, callbacks)
