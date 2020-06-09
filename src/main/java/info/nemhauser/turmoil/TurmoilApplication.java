@@ -99,7 +99,7 @@ public class TurmoilApplication
  *   3. spear in second hand, equipping and unequipping two handed mace duplicates visually the spear in stash, seems like equipping it does not unequip left hand -> fixed on backend, need to check front
  *   4.
  *   5. inventory, open stashes
- *   6. some of the items (uniques or epics?) should also have negative stats (like in diablo1) but the positive stats should be much higher that in other legendaries
+ *   6. some of the items (uniques or epics?) should also have negative stats (like in diablo 1) but the positive stats should be much higher that in other legendaries
  *   x.
  *   8. jira
  *   9. add movement range, show available movement at front, deny wrong movement on backend
@@ -112,5 +112,6 @@ public class TurmoilApplication
  *  16. do something on dying animation maybe? just do not remove it right away, show the damages and maybe some fade away
  *  17.
  *  18. seems like wearing two hander and trying to equip a shield works... but should not
+ *  19. put some armor and random resists on mobs (also add to tooltip)
  *
  */

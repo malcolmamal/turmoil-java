@@ -12,6 +12,8 @@ public class Monster extends Person
 	public Weapon slotRightHand;
 	public HashMap<String, Item> lootBag = new HashMap<>();
 
+	private DamageType damageType;
+
 	public Monster(int position)
 	{
 		super("testEnemy" + identNumber++);
@@ -19,14 +21,15 @@ public class Monster extends Person
 		instancePosition = "polygon-8-" + position;
 
 		characterState = new PersonState(100, 100, 5, 10, 10, 50);
+
+		pickDamageType();
 	}
 
 	public String toString() {
 		return name;
 	}
 
-	@Override
-	public DamageType getDamageType()
+	private void pickDamageType()
 	{
 		DamageType damageType = Random.randomEnum(DamageType.class);
 
@@ -35,11 +38,17 @@ public class Monster extends Person
 			damageType = DamageType.PHYSICAL;
 		}
 
-		return damageType;
+		this.damageType = damageType;
 	}
 
 	public String getFullImagePath()
 	{
 		return getImagePath() + getFileCode();
+	}
+
+	@Override
+	public DamageType getDamageType()
+	{
+		return damageType;
 	}
 }
