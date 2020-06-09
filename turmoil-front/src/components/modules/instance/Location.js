@@ -58,6 +58,10 @@ class ConnectedLocation extends React.Component
 			height: '780px'
 		};
 
+		/*
+		 * TODO: this needs to come from back end at some point
+		 */
+
 		let fields = [];
 		for (let i = 1; i < 11; i++)
 		{
