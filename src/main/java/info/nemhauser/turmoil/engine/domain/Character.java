@@ -358,11 +358,4 @@ public class Character extends Person
 
 		return slotRightHand.damageType;
 	}
-
-	@Override
-	public Boolean isCharacter()
-	{
-		// TODO: check if parent class can check for current class
-		return true;
-	}
 }

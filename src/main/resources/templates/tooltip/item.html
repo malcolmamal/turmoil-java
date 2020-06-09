@@ -4,11 +4,11 @@
 
 <div class="turmoil-tooltip d3-tooltip d3-tooltip-item" th:attr="item=${item.getFileCode()} + '_' + ${item.id}">
 
-	<div th:insert="tooltip/fragments/tooltip :: headline (item=${item})"></div>
+	<div th:insert="tooltip/fragments/item :: headline (item=${item})"></div>
 
 	<div th:class="'tooltip-body effect-bg effect-bg-' + ${item.getTooltipEffectClass()}">
 
-		<div th:insert="tooltip/fragments/tooltip :: itemSlotTooltip (item=${item})"></div>
+		<div th:insert="tooltip/fragments/item :: itemSlotTooltip (item=${item})"></div>
 
 		<div class="d3-item-properties">
 
@@ -16,7 +16,7 @@
 				<li class="item-slot" th:text="#{${'turmoil.item.type.' + item.getItemTypeClass()}}"></li>
 			</ul>
 
-			<div th:insert="tooltip/fragments/tooltip :: rarity (item=${item})"></div>
+			<div th:insert="tooltip/fragments/item :: rarity (item=${item})"></div>
 
 			<div th:if="${item.isArmor()}">
 				<ul class="item-armor-weapon item-armor-armor">
@@ -37,15 +37,15 @@
 
 			<div class="item-before-effects"></div>
 
-			<div th:insert="tooltip/fragments/tooltip :: attributes (item=${item})"></div>
+			<div th:insert="tooltip/fragments/item :: attributes (item=${item})"></div>
 
-			<div th:insert="tooltip/fragments/tooltip :: requirements (item=${item})"></div>
+			<div th:insert="tooltip/fragments/item :: requirements (item=${item})"></div>
 
 			<span class="clear"><!-- --></span>
 		</div>
 	</div>
 
-	<div th:insert="tooltip/fragments/tooltip :: flavor (item=${item})"></div>
+	<div th:insert="tooltip/fragments/item :: flavor (item=${item})"></div>
 
 </div>
 

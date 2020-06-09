@@ -95,11 +95,6 @@ public class Item
 		return "/images/items/";
 	}
 
-	public String getImageFile()
-	{
-		return getFileCode() + ".png";
-	}
-
 	public String getFullImagePath()
 	{
 		return getImagePath() + "/" + getFileCode() + ".png";

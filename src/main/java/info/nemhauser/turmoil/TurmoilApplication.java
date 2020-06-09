@@ -108,9 +108,9 @@ public class TurmoilApplication
  *  12. when trying to move -> also check obstacles, try to handle it visually
  *  13. moveToPosition -> unify for friend and enemy, check if the path's length is appropriate to movementPoints
  *  14.
- *  15. request sent twice sometimes (click and then click before the item disappears, maybe blocking actions on stash/equipment should happen too?) !!!!
+ *  15. request sent twice sometimes (click and then click before the item disappears, maybe blocking actions on stash/equipment should happen too?) !!!! blocking actions added, maybe this will help
  *  16. do something on dying animation maybe? just do not remove it right away, show the damages and maybe some fade away
- *  17. something wrong with resist computation (when two items are added)
+ *  17.
  *  18. seems like wearing two hander and trying to equip a shield works... but should not
  *
  */

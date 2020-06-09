@@ -42,7 +42,7 @@ class ConnectedEnemyUnit extends React.Component
 	render()
 	{
 		return(
-			<Unit ident={this.props.ident} portrait={this.props.portrait} healthBar={this.props.healthBar}  movement={this.props.movement} enemy={true} onClick={this.actionOnUnitHandler}/>
+			<Unit ident={this.props.ident} portrait={this.props.portrait} healthBar={this.props.healthBar} movement={this.props.movement} enemy={true} onClick={this.actionOnUnitHandler}/>
 		);
 	}
 

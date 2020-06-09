@@ -83,7 +83,7 @@ class ConnectedItemSlotEquipment extends React.Component
 		const itemIdent = item.ident ? item.ident : "";
 
 		const tooltipId = item.ident ? "tooltip_" + item.fileCode + "_" + item.ident : "";
-		const tooltipClass = item.ident ? " tooltip itemTooltip" : "";
+		const tooltipClass = item.ident ? Tooltip.tooltipClass : "";
 
 		const iconItemSize = this.props.iconItemSize ? this.props.iconItemSize : "default";
 		const itemBackgroundImage = item.filePath ? "url(" + item.filePath + ")" : "";
@@ -110,7 +110,8 @@ class ConnectedItemSlotEquipment extends React.Component
 							id={tooltipId}
 							className={"icon-item-inner icon-item-" + iconItemSize + tooltipClass}
 							style={{backgroundImage: itemBackgroundImage}}
-							item={itemIdent}
+							data-ident={itemIdent}
+							data-tooltip-type="item"
 						/>
 					</span>
 				</span>

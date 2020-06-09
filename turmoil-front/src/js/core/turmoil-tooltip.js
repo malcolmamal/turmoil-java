@@ -5,6 +5,7 @@ import '../../stylesheets/turmoil-tooltip.css';
 
 export let Tooltip = {
 	emptyContent: "<div id='something-_ID_'>_CONTENT_</div>",
+	tooltipClass: " tooltip itemTooltip",
 	tooltipContents: {},
 
 	hideAllTooltips: function () {
@@ -34,11 +35,19 @@ export let Tooltip = {
 		}
 	},
 	handleItemTooltipContent: function handleItemTooltipContent(element) {
-		let item = element.attr('item');
+		let ident = element.data('ident');
+		let type = element.data('tooltip-type');
 
-		let content = Tooltip.emptyContent.replace('_CONTENT_', '').replace('_ID_', item);
-		if (Tooltip.tooltipContents[item]) {
-			content = Tooltip.tooltipContents[item]
+		console.log('shift', window.pressedKeys.shift);
+
+		if (type === 'monster' && !window.pressedKeys.shift) {
+			return;
+		}
+
+		let content = Tooltip.emptyContent.replace('_CONTENT_', '').replace('_ID_', ident);
+		if (type !== 'monster' && Tooltip.tooltipContents[ident]) {
+			// TODO: low priority but it would be nice to figure out if we actually need to fetch monster tooltip every time
+			content = Tooltip.tooltipContents[ident]
 		}
 		else {
 			// hide all the other existing tooltips
@@ -47,18 +56,18 @@ export let Tooltip = {
 			jQuery.ajax({
 				type:'POST',
 				crossDomain: true,
-				url: Ajax.baseUrl + 'tooltip/' + item,
+				url: Ajax.baseUrl + 'tooltip/' + type + "/" + ident,
 				success: function(data, textStatus) {
 					if (textStatus === 'success') {
-						Tooltip.prepareTooltip(item, data);
+						Tooltip.prepareTooltip(ident, data);
 
 						// in case the tooltip will be partially outside the viewport, it has to be closed and opened again for jqueryui to reposition the tooltip
 						setTimeout(function () {
-							Tooltip.reopenTooltipIfNotVisible(element, '#something-' + item);
+							Tooltip.reopenTooltipIfNotVisible(element, '#something-' + ident);
 						}, 10);
 					}
 					else if (window.debug) {
-						console.log('Tooltip Ajax error', textStatus, item, data);
+						console.log('Tooltip Ajax error', textStatus, ident, data);
 					}
 				},
 				error: function(XMLHttpRequest, textStatus, errorThrown) {

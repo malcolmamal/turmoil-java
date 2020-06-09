@@ -127,6 +127,21 @@ window.turmoil.logErrors = function(content) {
 	window.turmoil.log(content, 'errors');
 };
 
+window.pressedKeys = {
+	alt: false,
+	ctrl: false,
+	shift: false
+};
+
+window.onkeyup = checkKeys;
+window.onkeydown = checkKeys;
+
+function checkKeys(e) {
+	window.pressedKeys.alt =  e.altKey;
+	window.pressedKeys.ctrl =  e.ctrlKey;
+	window.pressedKeys.shift =  e.shiftKey;
+}
+
 function audioReady() {
 	return jQuery.when.apply(jQuery, jQuery('audio').map(function() {
 		let ready = new jQuery.Deferred();

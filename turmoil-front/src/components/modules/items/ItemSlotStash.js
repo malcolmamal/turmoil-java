@@ -84,8 +84,11 @@ class ConnectedItemSlotStash extends React.Component
 			<li className="stashItemListEntry" id={"stash_item_" + itemId} item={itemId}
 				onContextMenu={(event) => { this.onContextMenuHandler(event, itemId) }}
 			>
-				<a className="slot slot-mainHand tooltip itemTooltip" id={"tooltip_" + itemFileCode + "_" + itemId}
-					item={itemId}>
+				<a className={"slot slot-mainHand" + Tooltip.tooltipClass}
+				   id={"tooltip_" + itemFileCode + "_" + itemId}
+				   data-ident={itemId}
+				   data-tooltip-type="item"
+				>
 					<span className={"stashItem d3-icon d3-icon-item stash-icon-item-large d3-icon-item-" + itemRarityClass}>
 						<span className="icon-item-gradient">
 							<span className="icon-item-inner stash-icon-item-default"

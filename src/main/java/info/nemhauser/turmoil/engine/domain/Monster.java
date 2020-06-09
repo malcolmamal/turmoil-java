@@ -1,6 +1,5 @@
 package info.nemhauser.turmoil.engine.domain;
 
-import info.nemhauser.turmoil.engine.enums.DamageMagnitude;
 import info.nemhauser.turmoil.engine.enums.DamageType;
 import info.nemhauser.turmoil.utils.Random;
 
@@ -39,9 +38,8 @@ public class Monster extends Person
 		return damageType;
 	}
 
-	@Override
-	public Boolean isCharacter()
+	public String getFullImagePath()
 	{
-		return false;
+		return getImagePath() + getFileCode();
 	}
 }

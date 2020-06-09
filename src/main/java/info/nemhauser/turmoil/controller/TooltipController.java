@@ -1,15 +1,8 @@
 package info.nemhauser.turmoil.controller;
 
 import info.nemhauser.turmoil.TurmoilApplication;
-import info.nemhauser.turmoil.config.Logger;
-import info.nemhauser.turmoil.engine.domain.Armor;
-import info.nemhauser.turmoil.engine.domain.Attribute;
 import info.nemhauser.turmoil.engine.domain.Item;
-import info.nemhauser.turmoil.engine.enums.ArmorType;
-import info.nemhauser.turmoil.engine.enums.ItemRarity;
-import info.nemhauser.turmoil.engine.enums.ItemType;
-import info.nemhauser.turmoil.engine.generators.ItemAttributeGenerator;
-import info.nemhauser.turmoil.engine.templates.ArmorTemplate;
+import info.nemhauser.turmoil.engine.domain.Monster;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 public class TooltipController
 {
 	@RequestMapping("/tooltipTest")
-	public String getTooltip(@RequestParam(value = "id") String id, Model model) {
+	public String getTooltipTest(@RequestParam(value = "id") String id, Model model) {
 
 		model.addAttribute("myId", id);
 		model.addAttribute("yourId", "Aneta");
@@ -26,8 +19,8 @@ public class TooltipController
 		return "index";
 	}
 
-	@RequestMapping("/tooltip/{item}")
-	public String getTooltipAdvanced(@PathVariable String item, Model model) throws Exception
+	@RequestMapping("/tooltip/item/{item}")
+	public String getTooltipForItem(@PathVariable String item, Model model) throws Exception
 	{
 		//TODO: handle not found
 
@@ -48,5 +41,21 @@ public class TooltipController
 		model.addAttribute("item", itemForTooltip);
 
 		return "tooltip/item";
+	}
+
+	@RequestMapping("/tooltip/monster/{monster}")
+	public String getTooltipForMonster(@PathVariable String monster, Model model) throws Exception
+	{
+		//TODO: handle not found
+
+		Monster monsterForTooltip = TurmoilApplication.getCombatState().getEnemies().get(monster);
+		if (monsterForTooltip == null)
+		{
+			throw new Exception("Tried to find monster but failed, for code:" + monster);
+		}
+
+		model.addAttribute("monster", monsterForTooltip);
+
+		return "tooltip/monster";
 	}
 }

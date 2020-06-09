@@ -100,11 +100,29 @@ abstract public class Person
 
 	public abstract DamageType getDamageType();
 
-	public abstract Boolean isCharacter();
-
 	//TODO: rename to personState?
 	public PersonState getCharacterState()
 	{
 		return characterState;
+	}
+
+	public String getImagePath()
+	{
+		return "/images/portraits/";
+	}
+
+	public String getFileCode()
+	{
+		return getPortrait();
+	}
+
+	public Integer getLevel()
+	{
+		return level;
+	}
+
+	public void setLevel(Integer level)
+	{
+		this.level = level;
 	}
 }
