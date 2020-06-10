@@ -82,6 +82,7 @@ class ConnectedLocation extends React.Component
 						key={unit.ident}
 						movement={unit.movementPoints}
 						polygonsInRange={unit.polygonsInRange}
+						gender={unit.gender}
 					/>
 				))}
 

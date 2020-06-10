@@ -219,5 +219,16 @@ export let WindowLocation = {
 			root.style.setProperty('--cursor-current', rootStyles.getPropertyValue('--cursor-melee'));
 			window.turmoil.instance.attackType = WindowLocation.ATTACK_TYPE_MELEE;
 		}
+	},
+	setEquipmentBackground: function (gender) {
+		let root = document.querySelector(':root');
+		let rootStyles = getComputedStyle(root);
+
+		if (gender === "female") {
+			root.style.setProperty('--equipment-background-current', rootStyles.getPropertyValue('--equipment-background-female'));
+		}
+		else {
+			root.style.setProperty('--equipment-background-current', rootStyles.getPropertyValue('--equipment-background-male'));
+		}
 	}
 }

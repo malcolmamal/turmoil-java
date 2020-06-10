@@ -59,7 +59,7 @@ public class InstanceHelper
 
 		Monster monster = new Monster(monsterPosition);
 		monster.level = character.level;
-		monster.health = 35;
+		monster.health = 50;
 		monster.currentHealth = monster.health;
 
 		monster.slotRightHand = (Weapon)ItemGenerator.rollMonsterWeapon(monster);

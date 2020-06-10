@@ -58,7 +58,6 @@ class ConnectedEquipment extends React.Component
 	}
 
 	render() {
-		const backgroundImage = "url('../images/character_male.png')";
 		const equipmentItems = this.prepareEquipmentItems(this.props.equipmentItems);
 
 		return (
@@ -69,8 +68,8 @@ class ConnectedEquipment extends React.Component
 					style={{width: '800px', height: '830px'}}
 				>
 					<div id="window_equipment" className="windowContent equipmentWindowContent" style={{transform: 'scale(1)', WebkitTransform: 'scale(1)', MozTransform: 'scale(1)', OTransform: 'scale(1)'}}>
-						<div className="windowContentInner"
-							 style={{backgroundImage: backgroundImage, width: '800px', height: '830px'}}
+						<div className="windowContentInner equipmentBackground"
+							 style={{width: '800px', height: '830px'}}
 						>
 							{equipmentItems.map(item => (
 								<ItemSlotEquipment

@@ -22,6 +22,8 @@ export default class FriendlyUnit extends React.Component
 		window.turmoil.instance.activeUnit = ident;
 		window.turmoil.instance.polygonsInRange = this.props.polygonsInRange;
 
+		WindowLocation.setEquipmentBackground(this.props.gender);
+
 		setTimeout(function() {
 				WindowLocation.handleMoveToPolygon(jQuery('#' + position), jQuery('#' + ident));
 			}, 200

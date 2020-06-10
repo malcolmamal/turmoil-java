@@ -27,7 +27,7 @@ abstract public class Person
 
 	private int movementPoints = 1;
 
-	Gender gender = Gender.UNKNOWN;
+	private Gender gender = Gender.UNKNOWN;
 
 	// TODO rename to personState
 	protected PersonState characterState;
@@ -124,5 +124,10 @@ abstract public class Person
 	public void setLevel(Integer level)
 	{
 		this.level = level;
+	}
+
+	public Gender getGender()
+	{
+		return gender;
 	}
 }

@@ -102,6 +102,14 @@
 	--cursor-melee: url("../images/ui/cursors/cursor_attack.png"), auto;
 	--cursor-bow: url("../images/ui/cursors/cursor_attack_range.png"), auto;
 	--cursor-current: var(--cursor-melee);
+
+	--equipment-background-male: url('../images/character_male.png');
+	--equipment-background-female: url('../images/character_female.png');
+	--equipment-background-current: var(--equipment-background-male);
+}
+
+.equipmentBackground {
+	background-image: var(--equipment-background-current);
 }
 
 .instanceEnemyCursor {

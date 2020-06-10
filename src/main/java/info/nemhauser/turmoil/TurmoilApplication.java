@@ -114,11 +114,13 @@ public class TurmoilApplication
  *  18. seems like wearing two hander and trying to equip a shield works... but should not
  *  19. put some armor and random resists on mobs (also add to tooltip)
  *  20. potions / skills soon?
- *  21. add character gender and then update equipment background
+ *  21.
  *  22. level and experience
  *  23. would be nice to add bow (ranged) logic (add range param to bows)
  *  24. check what about critical hits of player
  *  25. scaling of items and monsters with level
  *  26. should be able to equip bow if we have quiver in secondary slot, however bow and sword should not be possible
+ *  27. make movement actions faster (and maybe slow down attack actions?) so the flow is better
+ *  28. pass whole unit in props for FriendlyUnit and EnemyUnit
  *
  */
