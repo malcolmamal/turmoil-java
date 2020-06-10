@@ -131,6 +131,25 @@
 	height: 80px;
 }
 
+.attackArrow {
+	position: absolute;
+	top: -15px;
+	left: -65px;
+	background: url("../images/animations/animation_arrow.png") 0 0 no-repeat;
+	animation: walk-cycle 0.25s steps(5, end) forwards;
+	-webkit-animation: walk-cycle 0.25s steps(5, end) forwards;
+
+	transform: scale(0.4);
+	-webkit-transform: scale(0.4);
+	-moz-transform: scale(0.4);
+	-o-transform: scale(0.4);
+	opacity: 0.8;
+	z-index: 10000;
+
+	width: 192px;
+	height: 80px;
+}
+
 @keyframes walk-cycle {
 	0% { background-position: 0 0; }
 	100% { background-position: -960px 0; }

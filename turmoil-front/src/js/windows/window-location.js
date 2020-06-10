@@ -202,5 +202,22 @@ export let WindowLocation = {
 	},
 	areActionsAllowed() {
 		return window.turmoil.instance.isActive;
+	},
+	setAttackType: function (item) {
+		if (item.slot !== "slot_right_hand") {
+			return;
+		}
+
+		let root = document.querySelector(':root');
+		let rootStyles = getComputedStyle(root);
+
+		if (item.itemSpecificType === "BOW") {
+			root.style.setProperty('--cursor-current', rootStyles.getPropertyValue('--cursor-bow'));
+			window.turmoil.instance.attackType = WindowLocation.ATTACK_TYPE_BOW;
+		}
+		else {
+			root.style.setProperty('--cursor-current', rootStyles.getPropertyValue('--cursor-melee'));
+			window.turmoil.instance.attackType = WindowLocation.ATTACK_TYPE_MELEE;
+		}
 	}
 }

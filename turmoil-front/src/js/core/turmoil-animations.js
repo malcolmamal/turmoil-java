@@ -73,14 +73,30 @@ export let Animations = {
 	},
 	attackSwing: function (unitId) {
 		let effect = jQuery('#' + unitId + 'Effect');
-		effect.addClass('attackSwing');
-		Sound.playAudio('soundAttackMelee' + Utils.randomInt(3));
 
-		setTimeout(function() {
-				effect.removeClass('attackSwing');
-			},
-			500
-		);
+		//TODO: check attack type per attacking unit
+		let targetUnit = jQuery('#' + unitId);
+
+		if (window.turmoil.instance.attackType === WindowLocation.ATTACK_TYPE_BOW && targetUnit.hasClass('enemyUnit')) {
+			effect.addClass('attackArrow');
+			Sound.playAudio('soundAttackBow' + Utils.randomInt(3));
+
+			setTimeout(function() {
+					effect.removeClass('attackArrow');
+				},
+				500
+			);
+		}
+		else {
+			effect.addClass('attackSwing');
+			Sound.playAudio('soundAttackMelee' + Utils.randomInt(3));
+
+			setTimeout(function() {
+					effect.removeClass('attackSwing');
+				},
+				500
+			);
+		}
 	},
 	moveUnit: function (unit, polygon, positionX, positionY) {
 		Sound.playAudioLoop('soundMoveLeather', unit.attr('id'));

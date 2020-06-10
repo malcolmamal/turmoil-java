@@ -14,6 +14,9 @@ import soundMoveLeather from "../media/audio/move_leather.wav";
 import soundAttackMelee1 from "../media/audio/attack_melee_001.wav";
 import soundAttackMelee2 from "../media/audio/attack_melee_002.wav";
 import soundAttackMelee3 from "../media/audio/attack_melee_003.wav";
+import soundAttackBow1 from "../media/audio/attack_bow_001.wav";
+import soundAttackBow2 from "../media/audio/attack_bow_002.wav";
+import soundAttackBow3 from "../media/audio/attack_bow_003.wav";
 import soundAccessoryJewellery from "../media/audio/change_bling_004.wav";
 import soundMediumArmor from "../media/audio/change_medium_002.wav";
 import soundWeapon from "../media/audio/change_weapon_004.wav";
@@ -52,6 +55,7 @@ window.turmoil.equipment.defaultItems = {
 window.turmoil.instance = {
 	activeUnit: null,
 	isActive: true,
+	attackType: WindowLocation.ATTACK_TYPE_MELEE,
 	polygonsInRange: [],
 	units: {}
 };
@@ -61,6 +65,9 @@ window.turmoil.sounds = {
 	'soundAttackMelee1': soundAttackMelee1,
 	'soundAttackMelee2': soundAttackMelee2,
 	'soundAttackMelee3': soundAttackMelee3,
+	'soundAttackBow1': soundAttackBow1,
+	'soundAttackBow2': soundAttackBow2,
+	'soundAttackBow3': soundAttackBow3,
 	'soundAccessoryJewellery': soundAccessoryJewellery,
 	'soundMediumArmor': soundMediumArmor,
 	'soundWeapon': soundWeapon
