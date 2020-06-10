@@ -66,11 +66,7 @@ public class CombatState
 				continue;
 			}
 
-			if (graph.removeVertex(position))
-			{
-				System.out.println("removed vertex: " + position);
-			}
-			else
+			if (!graph.removeVertex(position))
 			{
 				System.out.println("failed to remove vertex: " + position);
 			}

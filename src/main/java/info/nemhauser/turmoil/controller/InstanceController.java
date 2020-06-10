@@ -144,7 +144,7 @@ class InstanceController {
 					"attackingUnit", character.getIdent()
 			));
 
-			if (enemy.currentHealth < 0)
+			if (enemy.currentHealth <= 0)
 			{
 				object.put("unitToRemove", new EnemyUnitResponse(enemy));
 

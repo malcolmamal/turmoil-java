@@ -6,6 +6,8 @@ import {Animations} from "../core/turmoil-animations";
 import {Ajax} from "../core/turmoil-ajax";
 
 export let WindowLocation = {
+	ATTACK_TYPE_MELEE: "melee",
+	ATTACK_TYPE_BOW: "bow",
 	getPolygonForUnit: function (unit) {
 		return jQuery('#' + jQuery(unit).data('previousPolygonId'));
 	},

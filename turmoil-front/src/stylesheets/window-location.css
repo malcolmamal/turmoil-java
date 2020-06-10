@@ -96,7 +96,16 @@
 	transform: scaleX(-1);
 	filter: FlipH;
 	-ms-filter: "FlipH";
-	cursor: url("../images/ui/cursors/cursor_attack.png"), auto;
+}
+
+:root {
+	--cursor-melee: url("../images/ui/cursors/cursor_attack.png"), auto;
+	--cursor-bow: url("../images/ui/cursors/cursor_attack_range.png"), auto;
+	--cursor-current: var(--cursor-melee);
+}
+
+.instanceEnemyCursor {
+	cursor: var(--cursor-current);
 }
 
 .instanceEnemy {

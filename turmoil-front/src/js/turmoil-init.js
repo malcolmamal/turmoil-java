@@ -17,6 +17,7 @@ import soundAttackMelee3 from "../media/audio/attack_melee_003.wav";
 import soundAccessoryJewellery from "../media/audio/change_bling_004.wav";
 import soundMediumArmor from "../media/audio/change_medium_002.wav";
 import soundWeapon from "../media/audio/change_weapon_004.wav";
+import {WindowLocation} from "./windows/window-location";
 
 window.debug = true;
 window.debugPopup = true;

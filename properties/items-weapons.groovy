@@ -16,11 +16,143 @@ legendaries {
 		weapon_type = WeaponType.ONE_HANDED_SWORD
 	}
 
-	MAXIMUS {
+	EXECUTIONER {
 		min_damage = 15
-		max_damage = 25
+		max_damage = 45
+		damage_type = DamageType.PHYSICAL
+		weapon_type = WeaponType.TWO_HANDED_AXE
+	}
+
+	MESSERSCHMIDTS_REAVER {
+		min_damage = 15
+		max_damage = 45
+		damage_type = DamageType.FIRE
+		weapon_type = WeaponType.TWO_HANDED_AXE
+	}
+
+	SKORN {
+		min_damage = 15
+		max_damage = 45
+		weapon_type = WeaponType.TWO_HANDED_AXE
+	}
+
+	MAXIMUS {
+		min_damage = 25
+		max_damage = 35
 		damage_type = DamageType.FIRE
 		weapon_type = WeaponType.TWO_HANDED_SWORD
+	}
+
+	SCOURGE {
+		min_damage = 25
+		max_damage = 35
+		damage_type = DamageType.POISON
+		weapon_type = WeaponType.TWO_HANDED_SWORD
+	}
+
+	BLADE_OF_PROPHECY {
+		min_damage = 25
+		max_damage = 35
+		damage_type = DamageType.PHYSICAL
+		weapon_type = WeaponType.TWO_HANDED_SWORD
+	}
+
+	WARMONGER {
+		min_damage = 25
+		max_damage = 35
+		damage_type = DamageType.FIRE
+		weapon_type = WeaponType.TWO_HANDED_SWORD
+	}
+
+	FAITHFUL_MEMORY {
+		min_damage = 25
+		max_damage = 35
+		damage_type = DamageType.ARCANE
+		weapon_type = WeaponType.TWO_HANDED_SWORD
+	}
+
+	SUNDER {
+		min_damage = 20
+		max_damage = 40
+		damage_type = DamageType.PHYSICAL
+		weapon_type = WeaponType.TWO_HANDED_MACE
+	}
+
+	FURNACE {
+		min_damage = 20
+		max_damage = 40
+		damage_type = DamageType.FIRE
+		weapon_type = WeaponType.TWO_HANDED_MACE
+	}
+
+	SCHAEFERS_HAMMER {
+		min_damage = 20
+		max_damage = 40
+		damage_type = DamageType.LIGHTNING
+		weapon_type = WeaponType.TWO_HANDED_MACE
+	}
+
+	FULMINATOR {
+		min_damage = 12
+		max_damage = 18
+		damage_type = DamageType.LIGHTNING
+		weapon_type = WeaponType.ONE_HANDED_SWORD
+	}
+
+	GRISWOLDS_MASTERPIECE {
+		min_damage = 15
+		max_damage = 15
+		damage_type = DamageType.PHYSICAL
+		weapon_type = WeaponType.ONE_HANDED_SWORD
+	}
+
+	SKYCUTTER {
+		min_damage = 11
+		max_damage = 19
+		damage_type = DamageType.ARCANE
+		weapon_type = WeaponType.ONE_HANDED_SWORD
+	}
+
+	AZUREWRATH {
+		min_damage = 13
+		max_damage = 17
+		damage_type = DamageType.COLD
+		weapon_type = WeaponType.ONE_HANDED_SWORD
+	}
+
+	YANGS_RECURVE {
+		min_damage = 10
+		max_damage = 50
+		damage_type = DamageType.POISON
+		weapon_type = WeaponType.BOW
+	}
+
+	KRIDERSHOT {
+		min_damage = 10
+		max_damage = 50
+		damage_type = DamageType.FIRE
+		weapon_type = WeaponType.BOW
+	}
+
+	ETRAYU {
+		min_damage = 10
+		max_damage = 50
+		damage_type = DamageType.COLD
+		weapon_type = WeaponType.BOW
+	}
+
+	LONGSHOT {
+		min_damage = 10
+		max_damage = 50
+		damage_type = DamageType.PHYSICAL
+		weapon_type = WeaponType.BOW
+	}
+
+	WINDFORCE {
+		min_damage = 10
+		max_damage = 50
+		damage_type = DamageType.LIGHTNING
+		weapon_type = WeaponType.BOW
 	}
 }
 

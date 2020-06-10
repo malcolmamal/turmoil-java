@@ -76,6 +76,22 @@ class ConnectedItemSlotEquipment extends React.Component
 		}
 	}
 
+	setAttackType(item) {
+		if (item.slot !== "slot_right_hand") {
+			return;
+		}
+
+		let root = document.querySelector(':root');
+		let rootStyles = getComputedStyle(root);
+
+		if (item.itemSpecificType === "BOW") {
+			root.style.setProperty('--cursor-current', rootStyles.getPropertyValue('--cursor-bow'));
+		}
+		else {
+			root.style.setProperty('--cursor-current', rootStyles.getPropertyValue('--cursor-melee'));
+		}
+	}
+
 	render() {
 		const item = this.props.item ? this.props.item : {};
 
@@ -94,6 +110,8 @@ class ConnectedItemSlotEquipment extends React.Component
 			? <span id="slot_right_hand_effect" className={"item-weapon-bg-" + item.damageType} style={{position: 'absolute', top: '150px', left: '67px', width: '150px', height: '210px'}}/> : "";
 		const leftHandEffect = (item.slot === "slot_left_hand" && item.damageType)
 			? <span id="slot_left_hand_effect" className={"item-weapon-bg-" + item.damageType}  style={{position: 'absolute', top: '77px', left: '602px', width: '150px', height: '210px'}}/> : "";
+
+		this.setAttackType(item);
 
 		return (
 			<div>

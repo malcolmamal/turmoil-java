@@ -93,7 +93,7 @@ public class ItemAttributeGenerator
 		switch (item.itemType)
 		{
 			case ACCESSORY:
-				if (((Accessory)item).accessoryType == AccessoryType.SHIELD)
+				if (((Accessory)item).getAccessoryType() == AccessoryType.SHIELD)
 				{
 					appropriateAttributeTypes.add(AttributeType.EVASION_BLOCK);
 				}
@@ -116,12 +116,12 @@ public class ItemAttributeGenerator
 					AttributeType.REDUCED_DAMAGE_RANGE
 				));
 
-				if (((Armor)item).armorType == ArmorType.BOOTS)
+				if (((Armor)item).getArmorType() == ArmorType.BOOTS)
 				{
 					appropriateAttributeTypes.add(AttributeType.MOVEMENT);
 				}
 
-				if (((Armor)item).armorType == ArmorType.GLOVES)
+				if (((Armor)item).getArmorType() == ArmorType.GLOVES)
 				{
 					appropriateAttributeTypes.add(AttributeType.CRITICAL_CHANCE);
 					appropriateAttributeTypes.add(AttributeType.CRITICAL_DAMAGE);
@@ -351,7 +351,7 @@ public class ItemAttributeGenerator
 		if (attributeType == AttributeType.ARMOR)
 		{
 			primaryValue = (double)item.level + (10 + (25 - 10) * Math.round(new Random().nextDouble()));
-			if (item.itemType == ItemType.ARMOR && ((Armor)item).armorType == ArmorType.CHEST)
+			if (item.itemType == ItemType.ARMOR && ((Armor)item).getArmorType() == ArmorType.CHEST)
 			{
 				primaryValue = Math.ceil(primaryValue * 1.4);
 			}

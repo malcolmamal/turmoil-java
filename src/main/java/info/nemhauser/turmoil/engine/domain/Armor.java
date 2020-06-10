@@ -6,7 +6,7 @@ import info.nemhauser.turmoil.engine.templates.ArmorTemplate;
 
 public class Armor extends Item
 {
-	public ArmorType armorType;
+	private ArmorType armorType;
 
 	public Integer armorValue = 0;
 
@@ -75,5 +75,10 @@ public class Armor extends Item
 	public String getItemTypeClass()
 	{
 		return "armor." + armorType.toString();
+	}
+
+	public ArmorType getArmorType()
+	{
+		return armorType;
 	}
 }

@@ -14,7 +14,7 @@ export default class Unit extends React.Component
 			width: this.props.healthBar + 'px',
 		}
 		const unitAlt = this.props.title ? this.props.title : "unit";
-		const imageClass = this.props.enemy ? " instancePortraitFlipped instanceEnemy" : "";
+		const imageClass = this.props.enemy ? " instancePortraitFlipped instanceEnemy instanceEnemyCursor" : "";
 		const mainDivClass = this.props.enemy ? " enemyUnit" : "";
 		const tooltipType = this.props.enemy ? "monster" : "";
 		const tooltipClass = this.props.enemy ? Tooltip.tooltipClass : "";

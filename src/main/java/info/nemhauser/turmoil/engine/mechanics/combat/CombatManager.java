@@ -1,5 +1,6 @@
 package info.nemhauser.turmoil.engine.mechanics.combat;
 
+import info.nemhauser.turmoil.config.Logger;
 import info.nemhauser.turmoil.engine.domain.*;
 import info.nemhauser.turmoil.engine.enums.DamageMagnitude;
 import info.nemhauser.turmoil.engine.enums.DamageType;
@@ -13,7 +14,6 @@ public class CombatManager
 	{
 		PersonState attackerState = attacker.getCharacterState();
 		DamageMagnitude magnitude = getDamageMagnitude(attackerState);
-
 
 		long damageToDeal = getPureDamageToDeal(attackerState, magnitude);
 
@@ -65,7 +65,7 @@ public class CombatManager
 			/*
 			 * 10% chance for a crit to be magnitude
 			 */
-			if (Math.round(100 * new Random().nextDouble()) <= 10)
+			if (Math.round(100 * new Random().nextDouble()) <= 15)
 			{
 				return DamageMagnitude.DEVASTATE;
 			}

@@ -1,5 +1,7 @@
 package info.nemhauser.turmoil.response;
 
+import info.nemhauser.turmoil.engine.domain.Accessory;
+import info.nemhauser.turmoil.engine.domain.Armor;
 import info.nemhauser.turmoil.engine.domain.Item;
 import info.nemhauser.turmoil.engine.domain.Weapon;
 import info.nemhauser.turmoil.engine.enums.ItemSlot;
@@ -12,6 +14,8 @@ public class ItemInEquipmentResponse
 	private String filePath;
 	private String rarity;
 	private String type;
+
+	private String itemSpecificType;
 
 	private String damageType;
 	private String slot;
@@ -30,10 +34,21 @@ public class ItemInEquipmentResponse
 		this.slot = slot.getClassName();
 
 		this.damageType = "";
-		if (item.getItemType() == ItemType.WEAPON)
+		switch (item.getItemType())
 		{
-			Weapon weapon = (Weapon) item;
-			this.damageType = weapon.damageType.toString().toLowerCase();
+			case WEAPON -> {
+				Weapon weapon = (Weapon) item;
+				this.damageType = weapon.damageType.toString().toLowerCase();
+				this.itemSpecificType = weapon.getWeaponType().toString();
+			}
+			case ARMOR -> {
+				Armor armor = (Armor) item;
+				this.itemSpecificType = armor.getArmorType().toString();
+			}
+			case ACCESSORY -> {
+				Accessory accessory = (Accessory) item;
+				this.itemSpecificType = accessory.getAccessoryType().toString();
+			}
 		}
 	}
 
@@ -70,5 +85,10 @@ public class ItemInEquipmentResponse
 	public String getDamageType()
 	{
 		return damageType;
+	}
+
+	public String getItemSpecificType()
+	{
+		return itemSpecificType;
 	}
 }

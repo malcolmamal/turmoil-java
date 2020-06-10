@@ -18,9 +18,9 @@ public class Monster extends Person
 	{
 		super("testEnemy" + identNumber++);
 
-		instancePosition = "polygon-8-" + position;
+		instancePosition = "polygon-10-" + position;
 
-		characterState = new PersonState(100, 100, 5, 10, 10, 50);
+		characterState = new PersonState(health, 100, 5, 10, 10, 50);
 
 		pickDamageType();
 	}

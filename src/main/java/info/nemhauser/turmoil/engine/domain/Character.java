@@ -152,7 +152,7 @@ public class Character extends Person
 	public Armor equipArmor(Armor armor)
 	{
 		Armor replacedItem = null;
-		switch (armor.armorType)
+		switch (armor.getArmorType())
 		{
 			case HELM -> {
 				replacedItem = slotHelm;
@@ -261,7 +261,7 @@ public class Character extends Person
 	public Item equipAccessory(Accessory accessory) throws CouldNotEquipException
 	{
 		Item replacedItem = null;
-		switch (accessory.accessoryType)
+		switch (accessory.getAccessoryType())
 		{
 			case AMULET -> {
 				replacedItem = slotAmulet;
@@ -310,7 +310,9 @@ public class Character extends Person
 				return replacedItem;
 			}
 			case QUIVER -> {
-				if (slotRightHand == null || slotRightHand.weaponType == WeaponType.BOW || slotRightHand.weaponType == WeaponType.CROSSBOW)
+				if (slotRightHand == null
+						|| slotRightHand.getWeaponType() == WeaponType.BOW
+						|| slotRightHand.getWeaponType() == WeaponType.CROSSBOW)
 				{
 					replacedItem = slotLeftHand;
 					slotLeftHand = accessory;

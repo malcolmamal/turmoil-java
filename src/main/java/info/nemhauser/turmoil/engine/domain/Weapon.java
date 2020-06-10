@@ -7,7 +7,7 @@ import info.nemhauser.turmoil.engine.templates.WeaponTemplate;
 
 public class Weapon extends Item
 {
-	WeaponType weaponType;
+	private WeaponType weaponType;
 	public DamageType damageType;
 
 	public Integer minDamage = 1;
@@ -64,7 +64,7 @@ public class Weapon extends Item
 
 	public String getImagePath()
 	{
-		return super.getImagePath() + "weapons" + (rarity.isPlain() ? "/" + getWeaponFileCode() : "");
+		return super.getImagePath() + "weapons/" + getWeaponFileCode();
 	}
 
 	public String getWeaponFileCode()
@@ -121,4 +121,8 @@ public class Weapon extends Item
 		return "weapon." + weaponType.toString();
 	}
 
+	public WeaponType getWeaponType()
+	{
+		return weaponType;
+	}
 }

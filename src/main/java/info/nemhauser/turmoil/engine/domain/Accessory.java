@@ -6,7 +6,7 @@ import info.nemhauser.turmoil.engine.templates.AccessoryTemplate;
 
 public class Accessory extends Item
 {
-	public AccessoryType accessoryType;
+	private AccessoryType accessoryType;
 
 	public Accessory(AccessoryTemplate template)
 	{
@@ -67,5 +67,10 @@ public class Accessory extends Item
 	public String getItemTypeClass()
 	{
 		return "accessory." + accessoryType.toString();
+	}
+
+	public AccessoryType getAccessoryType()
+	{
+		return accessoryType;
 	}
 }
