@@ -39,6 +39,10 @@ export let Animations = {
 		});
 	},
 	blink: function (element) {
+		if (jQuery(element).attr('id') !== window.turmoil.instance.activeUnit) {
+			return;
+		}
+
 		jQuery(element).fadeTo(1000, 0.4, function() {
 			jQuery(this).fadeTo(750, 0.9, function() {
 				Animations.blink(this);
