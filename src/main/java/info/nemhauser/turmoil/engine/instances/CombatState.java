@@ -1,15 +1,14 @@
 package info.nemhauser.turmoil.engine.instances;
 
+import info.nemhauser.turmoil.engine.domain.Character;
 import info.nemhauser.turmoil.engine.domain.Monster;
 import info.nemhauser.turmoil.engine.domain.Person;
 import info.nemhauser.turmoil.engine.exceptions.GraphException;
 import info.nemhauser.turmoil.engine.world.map.graph.Instance;
 import info.nemhauser.turmoil.engine.world.map.graph.Neighbourhood;
 import info.nemhauser.turmoil.engine.world.map.graph.Utils;
-import org.jgrapht.Graphs;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.DefaultUndirectedGraph;
-import org.springframework.util.SerializationUtils;
 
 import java.util.*;
 
@@ -17,10 +16,9 @@ public class CombatState
 {
 	private final DefaultUndirectedGraph<String, DefaultEdge> instanceGraph;
 
-	public Person friend;
-	public Monster enemy;
-
 	private final LinkedHashMap<String, Monster> enemies = new LinkedHashMap<>();
+	private final LinkedHashMap<String, Character> friends = new LinkedHashMap<>();
+	private Character activeUnit;
 
 	public Integer turn = 1;
 
@@ -36,16 +34,29 @@ public class CombatState
 		return enemies;
 	}
 
+	public LinkedHashMap<String, Character> getFriends()
+	{
+		return friends;
+	}
+
 	public Monster getEnemy(String key)
 	{
 		return enemies.get(key);
 	}
 
+	public Character getFriend(String key)
+	{
+		return friends.get(key);
+	}
+
 	public void addEnemy(Monster monster)
 	{
 		enemies.put(monster.getIdent(), monster);
+	}
 
-		enemy = monster;
+	public void addFriend(Character friend)
+	{
+		friends.put(friend.getIdent(), friend);
 	}
 
 	public DefaultUndirectedGraph<String, DefaultEdge> getInstanceGraph()
@@ -96,8 +107,18 @@ public class CombatState
 		enemies.remove(enemy.getIdent());
 	}
 
-	public Set<String> getPolygonsInRange()
+	public Set<String> getPolygonsInRange(Person person)
 	{
-		return Neighbourhood.getVerticesInRange(instanceGraph, friend.getInstancePosition(), friend.getMovementPoints());
+		return Neighbourhood.getVerticesInRange(instanceGraph, person.getInstancePosition(), person.getMovementPoints());
+	}
+
+	public Character getActiveUnit()
+	{
+		return activeUnit;
+	}
+
+	public void setActiveUnit(Character activeUnit)
+	{
+		this.activeUnit = activeUnit;
 	}
 }

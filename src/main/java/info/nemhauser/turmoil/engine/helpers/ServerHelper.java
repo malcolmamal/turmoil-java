@@ -26,31 +26,13 @@ public class ServerHelper
 		return TurmoilApplication.getServerState().getItemTemplates();
 	}
 
-	public static CharacterState getCharacterState(Character character)
+	public static CombatState getCombatState(String ident)
 	{
-		if (getCharacterStates().containsKey(character.toString()))
+		if (getCombatStates().containsKey(ident))
 		{
-			return getCharacterStates().get(character.toString());
+			return getCombatStates().get(ident);
 		}
-		return null;
-	}
 
-	public static void setCharacterState(Character character, CharacterState characterState)
-	{
-		getCharacterStates().put(character.toString(), characterState);
-	}
-
-	private static HashMap<String, CharacterState> getCharacterStates()
-	{
-		return new HashMap<String, CharacterState>();
-	}
-
-	public static CombatState getCombatState(Character character)
-	{
-		if (getCombatStates().containsKey(character.toString()))
-		{
-			return getCombatStates().get(character.toString());
-		}
 		return null;
 	}
 

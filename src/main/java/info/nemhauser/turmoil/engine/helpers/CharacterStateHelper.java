@@ -1,8 +1,6 @@
 package info.nemhauser.turmoil.engine.helpers;
 
-import com.rabbitmq.client.AMQP;
 import info.nemhauser.turmoil.TurmoilApplication;
-import info.nemhauser.turmoil.config.Logger;
 import info.nemhauser.turmoil.engine.domain.Accessory;
 import info.nemhauser.turmoil.engine.domain.Armor;
 import info.nemhauser.turmoil.engine.domain.Attribute;
@@ -10,43 +8,19 @@ import info.nemhauser.turmoil.engine.domain.Character;
 import info.nemhauser.turmoil.engine.domain.CharacterState;
 import info.nemhauser.turmoil.engine.domain.Item;
 import info.nemhauser.turmoil.engine.domain.Weapon;
-import info.nemhauser.turmoil.engine.enums.AttributeType;
-import info.nemhauser.turmoil.engine.enums.DamageType;
-import info.nemhauser.turmoil.engine.enums.ItemSlot;
-import info.nemhauser.turmoil.engine.enums.ItemType;
-
-import java.util.ArrayList;
 
 public class CharacterStateHelper
 {
-	/**
-	 * @deprecated
-	 */
-	public static CharacterState getCharacterState(Character character)
-	{
-		CharacterState characterState = ServerHelper.getCharacterState(character);
-		if (characterState == null)
-		{
-			characterState = new CharacterState();
-		}
-		return characterState;
-	}
-
-	public static void setCharacterState(Character character, CharacterState characterState)
-	{
-		ServerHelper.setCharacterState(character, characterState);
-	}
-
 	public static void computeValuesForCharacterState(Character character)
 	{
-		computeValuesForCharacterState(getCharacterState(character), character);
+		computeValuesForCharacterState(character.getCharacterState());
 	}
 
-	public static void computeValuesForCharacterState(CharacterState characterState, Character character)
+	public static void computeValuesForCharacterState(CharacterState characterState)
 	{
-		characterState.level = character.level;
+		characterState.level = characterState.getCharacter().level;
 
-		characterState.experience = character.experience;
+		characterState.experience = characterState.getCharacter().experience;
 		characterState.requiredExperience = 1000; // ExperienceHelper.getRequiredExperience(character.level + 1); TODO: reimplement
 
 		characterState.applyResistAll();
@@ -66,7 +40,7 @@ public class CharacterStateHelper
 		}
 
 		// TODO: do something about character
-		computeValuesForCharacterState(characterState, TurmoilApplication.getCharacter("fox"));
+		computeValuesForCharacterState(characterState);
 	}
 
 	public static void removeItem(CharacterState characterState, Item item)

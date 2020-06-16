@@ -1,9 +1,14 @@
 package info.nemhauser.turmoil.engine.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.HashMap;
 
 public class CharacterState extends PersonState
 {
+	// TODO: temporary
+	private Character character;
+
 	public Integer level;
 	public Integer experience;
 	public Integer requiredExperience;
@@ -287,5 +292,16 @@ public class CharacterState extends PersonState
 	public HashMap<String, Item> getItems()
 	{
 		return items;
+	}
+
+	@JsonIgnore
+	public Character getCharacter()
+	{
+		return character;
+	}
+
+	public void setCharacter(Character character)
+	{
+		this.character = character;
 	}
 }

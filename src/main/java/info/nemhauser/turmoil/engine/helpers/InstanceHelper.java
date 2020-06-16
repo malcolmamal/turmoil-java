@@ -12,38 +12,25 @@ import info.nemhauser.turmoil.engine.instances.CombatState;
 public class InstanceHelper
 {
 	private static int monsterPosition = 0;
+
+	public static CombatState createCombatState()
+	{
+		return new CombatState();
+	}
+
 	/**
-	 * @deprecated
-	 *
-	 * @return DefaultUndirectedGraph<String, DefaultEdge>
+	 * @deprecated handle it more proper, no idents and such
 	 */
-	public static DefaultUndirectedGraph<String, DefaultEdge> getInstanceGraph()
+	@Deprecated
+	public static CombatState getCombatState(String ident)
 	{
-		return Instance.getInstanceGraph();
-	}
-
-	public static CombatState createCombatState(Character character)
-	{
-		CombatState combatState = new CombatState();
-		combatState.friend = character;
-		combatState.friend.currentHealth = combatState.friend.health;
-		combatState.friend.instancePosition = "polygon-1-4";
-		combatState.addEnemy(InstanceHelper.createMonster(character));
-		combatState.addEnemy(InstanceHelper.createMonster(character));
-		combatState.addEnemy(InstanceHelper.createMonster(character));
-		combatState.addEnemy(InstanceHelper.createMonster(character));
-
-		return combatState;
-	}
-
-	public static CombatState getCombatState(Character character)
-	{
-		CombatState combatState = ServerHelper.getCombatState(character);
+		CombatState combatState = ServerHelper.getCombatState(ident);
 		if (combatState == null)
 		{
-			combatState = createCombatState(character);
-			ServerHelper.getCombatStates().put(character.toString(), combatState);
+			combatState = createCombatState();
+			ServerHelper.getCombatStates().put(ident, combatState);
 		}
+
 		return combatState;
 	}
 

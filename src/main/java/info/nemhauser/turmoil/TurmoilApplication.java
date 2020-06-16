@@ -17,9 +17,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class TurmoilApplication
 {
 	private static CombatState combatState;
-	private static Character character; //TODO: remove it
 	private static CharacterState characterState;
-
 	private static ServerState serverState;
 
 	public static void main(String[] args)
@@ -38,14 +36,40 @@ public class TurmoilApplication
 		serverState = new ServerState();
 		serverState.getItemTemplates().initialize();
 
-		character = new Character("testElement");
-		character.setName("Fox Nemhauser");
-		character.setMovementPoints(3);
-		serverState.getCharacters().put("fox", character);
+		combatState = InstanceHelper.getCombatState("mainCombatState");
+
+		createCharacter("fox", "Fox Nemhauser", 3, "polygon-1-4");
+		createCharacter("margo", "Margo Baginska", 2, "polygon-1-5");
+
+		combatState.setActiveUnit(getCharacter("fox"));
+
+		initializeEnemies(combatState);
+	}
+
+	private static void initializeEnemies(CombatState combatState)
+	{
+		Character character = combatState.getActiveUnit();
+
+		combatState.addEnemy(InstanceHelper.createMonster(character));
+		combatState.addEnemy(InstanceHelper.createMonster(character));
+		combatState.addEnemy(InstanceHelper.createMonster(character));
+		combatState.addEnemy(InstanceHelper.createMonster(character));
+	}
+
+	private static Character createCharacter(String ident, String name, int movementPoints, String position)
+	{
+		Character character = new Character(ident);
+		character.setName(name);
+		character.setMovementPoints(movementPoints);
+		character.currentHealth = character.health;
+		character.instancePosition = position;
 
 		characterState = new CharacterState();
+		characterState.setCharacter(character);
 		characterState.resetValues();
 		character.setCharacterState(characterState);
+
+		serverState.getCharacters().put(ident, character);
 
 		try
 		{
@@ -56,6 +80,13 @@ public class TurmoilApplication
 			e.printStackTrace();
 		}
 
+		combatState.addFriend(character);
+
+		return character;
+	}
+
+	private static void rollItems(Character character)
+	{
 		serverState.addItem(ItemGenerator.rollItem(character));
 		serverState.addItem(ItemGenerator.rollItem(character));
 		serverState.addItem(ItemGenerator.rollItem(character, 20));
@@ -67,8 +98,6 @@ public class TurmoilApplication
 		serverState.addItem(ItemGenerator.rollItem(character, 70));
 		serverState.addItem(ItemGenerator.rollItem(character, 100));
 		serverState.addItem(ItemGenerator.rollItem(character, 100));
-
-		combatState = InstanceHelper.getCombatState(character);
 	}
 
 	public static CombatState getCombatState()
@@ -79,6 +108,11 @@ public class TurmoilApplication
 	public static Character getCharacter(String key)
 	{
 		return serverState.getCharacters().get(key);
+	}
+
+	public static Character getActiveUnit()
+	{
+		return combatState.getActiveUnit();
 	}
 
 	public static CharacterState getCharacterState()
@@ -117,10 +151,11 @@ public class TurmoilApplication
  *  21.
  *  22. level and experience
  *  23. would be nice to add bow (ranged) logic (add range param to bows)
- *  24. check what about critical hits of player
+ *  24. 
  *  25. scaling of items and monsters with level
  *  26. should be able to equip bow if we have quiver in secondary slot, however bow and sword should not be possible
  *  27. make movement actions faster (and maybe slow down attack actions?) so the flow is better
  *  28. pass whole unit in props for FriendlyUnit and EnemyUnit
+ *  29. make some areas not accessible by players where monsters can spawn
  *
  */

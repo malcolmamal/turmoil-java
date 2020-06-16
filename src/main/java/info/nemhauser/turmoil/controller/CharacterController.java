@@ -30,7 +30,7 @@ public class CharacterController
 	{
 		//TODO: item should know on which slot it is, front should not dictate it
 		JSONObject object = new JSONObject();
-		Character character = TurmoilApplication.getCharacter("fox");
+		Character character = TurmoilApplication.getActiveUnit();
 
 		Item itemForStash = character.unequip(itemKey);
 
@@ -48,7 +48,7 @@ public class CharacterController
 	{
 		JSONObject object = new JSONObject();
 
-		Character character = TurmoilApplication.getCharacter("fox");
+		Character character = TurmoilApplication.getActiveUnit();
 		Item itemToEquip = TurmoilApplication.getServerState().getItems().get(itemKey);
 
 		Item itemForStash;

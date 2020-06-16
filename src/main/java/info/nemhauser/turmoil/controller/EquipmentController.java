@@ -17,7 +17,7 @@ public class EquipmentController
 	JSONObject getItemsInEquipment()
 	{
 		JSONArray array = new JSONArray();
-		for (Item item : TurmoilApplication.getCharacter("fox").getEquippedItems().values())
+		for (Item item : TurmoilApplication.getActiveUnit().getEquippedItems().values())
 		{
 			array.add(convertItemToItemInEquipmentResponse(item));
 		}

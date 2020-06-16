@@ -49,7 +49,10 @@ class InstanceController {
 
 		JSONArray array = new JSONArray();
 
-		array.add(new FriendlyUnitResponse(TurmoilApplication.getCombatState().friend, TurmoilApplication.getCombatState().getPolygonsInRange()));
+		for (Character friend : TurmoilApplication.getCombatState().getFriends().values())
+		{
+			array.add(new FriendlyUnitResponse(friend, TurmoilApplication.getCombatState().getPolygonsInRange(friend)));
+		}
 
 		JSONObject object = new JSONObject();
 		object.put("friendlyUnits", array);
@@ -63,7 +66,7 @@ class InstanceController {
 	{
 		JSONArray array = new JSONArray();
 
-		TurmoilApplication.getCombatState().addEnemy(InstanceHelper.createMonster(TurmoilApplication.getCharacter("fox")));
+		TurmoilApplication.getCombatState().addEnemy(InstanceHelper.createMonster(TurmoilApplication.getActiveUnit()));
 		for (Monster monster : TurmoilApplication.getCombatState().getEnemies().values())
 		{
 			array.add(new EnemyUnitResponse(monster));
@@ -119,7 +122,7 @@ class InstanceController {
 	private JSONObject attackEnemyOnPosition(String position)
 	{
 		Logger.log("Attacking unit at " + position);
-		Character character = TurmoilApplication.getCharacter("fox");
+		Character character = TurmoilApplication.getActiveUnit();
 
 		if (position != null)
 		{
@@ -157,7 +160,7 @@ class InstanceController {
 
 				cs.removeEnemy(enemy);
 
-				Monster newEnemy = InstanceHelper.createMonster(TurmoilApplication.getCharacter("fox"));
+				Monster newEnemy = InstanceHelper.createMonster(TurmoilApplication.getActiveUnit());
 				cs.addEnemy(newEnemy);
 
 				object.put("unitToAdd", new EnemyUnitResponse(newEnemy));
@@ -183,16 +186,17 @@ class InstanceController {
 		Logger.log("Moving character to " + position);
 
 		CombatState cs = TurmoilApplication.getCombatState();
+		Character activeUnit = cs.getActiveUnit();
 
-		if (cs.friend.getInstancePosition().equals(position))
+		if (activeUnit.getInstancePosition().equals(position))
 		{
 			throw new GraphException("Cannot move to the same position (" + position + ")");
 		}
 
-		if (!cs.getPolygonsInRange().contains(position))
+		if (!cs.getPolygonsInRange(activeUnit).contains(position))
 		{
 			throw new GraphException("Cannot move to position (" + position + ") since it is out of range ("
-				+ cs.friend.getMovementPoints() + ")");
+				+ activeUnit.getMovementPoints() + ")");
 		}
 
 		if (cs.getEnemiesOnPositions().containsKey(position))
@@ -200,27 +204,28 @@ class InstanceController {
 			throw new GraphException("Cannot move to position (" + position + ") since it is already occupied");
 		}
 
-		Pathing pathing = new Pathing(cs.getInstanceGraphForEnemy(cs.friend), cs.friend.instancePosition, position);
+		Pathing pathing = new Pathing(cs.getInstanceGraphForEnemy(activeUnit), activeUnit.instancePosition, position);
 		//TODO: do not return next but according to movementPoints
 		pathing.getNextPosition();
 
-		cs.friend.instancePosition = position;
+		activeUnit.instancePosition = position;
 
 		return new MoveResponse(
 				"move",
 				true,
-				cs.friend.instancePosition,
-				cs.friend.getIdent(),
-				new FriendlyUnitResponse(cs.friend, cs.getPolygonsInRange())
+				activeUnit.instancePosition,
+				activeUnit.getIdent(),
+				new FriendlyUnitResponse(activeUnit, cs.getPolygonsInRange(activeUnit))
 		);
 	}
 
 	private JSONObject actionEnemy(Monster enemy)
 	{
 		CombatState cs = TurmoilApplication.getCombatState();
+		Character activeUnit = cs.getActiveUnit();
 
 		String enemyPosition = enemy.getInstancePosition();
-		String characterPosition = cs.friend.getInstancePosition();
+		String characterPosition = activeUnit.getInstancePosition();
 
 		Pathing pathing;
 		String moveTo;
@@ -237,12 +242,12 @@ class InstanceController {
 		Logger.log("Move distance: " + pathing.getDistance());
 		Logger.log("enemy will move to: " + moveTo);
 
-		if (moveTo.equals(cs.friend.getInstancePosition()))
+		if (moveTo.equals(activeUnit.getInstancePosition()))
 		{
 			Logger.log("Enemy should attack!");
 
-			DamageDealt damageDealt = CombatManager.dealDamage(enemy, cs.friend);
-			cs.friend.currentHealth -= (int)damageDealt.getValue();
+			DamageDealt damageDealt = CombatManager.dealDamage(enemy, activeUnit);
+			activeUnit.currentHealth -= (int)damageDealt.getValue();
 
 			return new JSONObject(Map.of(
 					"success", true,
@@ -250,7 +255,7 @@ class InstanceController {
 					"actionType", "attack",
 					"type", damageDealt.getMagnitude().toString().toLowerCase(),
 					"damageDealt", damageDealt.getValue(),
-					"healthBar", cs.friend.getHealthBarValue(),
+					"healthBar", activeUnit.getHealthBarValue(),
 					"attackingUnit", enemy.getIdent()
 			));
 		}

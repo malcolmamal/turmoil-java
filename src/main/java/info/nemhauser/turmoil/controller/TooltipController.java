@@ -35,6 +35,14 @@ public class TooltipController
 
 		if (itemForTooltip == null)
 		{
+			if (TurmoilApplication.getCharacter("margo").getEquippedItems().containsKey(item))
+			{
+				itemForTooltip = TurmoilApplication.getCharacter("margo").getEquippedItems().get(item);
+			}
+		}
+
+		if (itemForTooltip == null)
+		{
 			throw new Exception("Tried to find item but failed, for code:" + item);
 		}
 
