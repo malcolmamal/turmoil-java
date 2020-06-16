@@ -17,7 +17,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class TurmoilApplication
 {
 	private static CombatState combatState;
-	private static CharacterState characterState;
 	private static ServerState serverState;
 
 	public static void main(String[] args)
@@ -65,7 +64,7 @@ public class TurmoilApplication
 		character.currentHealth = character.health;
 		character.instancePosition = position;
 
-		characterState = new CharacterState();
+		CharacterState characterState = new CharacterState();
 		characterState.setCharacter(character);
 		characterState.resetValues();
 		character.setCharacterState(characterState);
@@ -118,7 +117,7 @@ public class TurmoilApplication
 
 	public static CharacterState getCharacterState()
 	{
-		return characterState;
+		return combatState.getActiveUnit().getCharacterState();
 	}
 
 	public static ServerState getServerState()
@@ -156,9 +155,9 @@ public class TurmoilApplication
  *  25. scaling of items and monsters with level
  *  26. should be able to equip bow if we have quiver in secondary slot, however bow and sword should not be possible
  *  27. make movement actions faster (and maybe slow down attack actions?) so the flow is better
- *  28. 
+ *  28.
  *  29. make some areas not accessible by players where monsters can spawn
  *  30. when enemy unit dies it is not despawned correctly
- *  31. after active unit change: wonky movement animation, tooltip on equipped item is wrong, equipped items from stash seem to be shared
+ *  31. after active unit change: wonky movement animation, tooltip on equipped item is wrong, on front the equipped items are not cleared properly
  *
  */
