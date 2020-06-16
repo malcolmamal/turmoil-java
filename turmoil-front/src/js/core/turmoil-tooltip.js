@@ -35,10 +35,8 @@ export let Tooltip = {
 		}
 	},
 	handleItemTooltipContent: function handleItemTooltipContent(element) {
-		let ident = element.data('ident');
-		let type = element.data('tooltip-type');
-
-		console.log('shift', window.pressedKeys.shift);
+		let ident = element.attr('data-ident');
+		let type = element.attr('data-tooltip-type');
 
 		if (type === 'monster' && !window.pressedKeys.shift) {
 			return;

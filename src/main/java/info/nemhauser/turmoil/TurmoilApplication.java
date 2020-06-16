@@ -158,8 +158,8 @@ public class TurmoilApplication
  *  28.
  *  29. make some areas not accessible by players where monsters can spawn
  *  30. when enemy unit dies it is not despawned correctly
- *  31. after active unit change: tooltip on equipped item is wrong, on front the equipped items are not cleared properly
+ *  31. after active unit change: on front the equipped items are not cleared properly
  *  32. until some proper taunting is added, non active friendly units should be considered obstacles in the graph for enemy units
- *  33. there seems to be equipping issue, need to add some console window equip logging and test with recording
+ *  33. there seems to be equipping issue, need to add some console window equip logging and test with recording (could be double action which should be blocked)
  *
  */
