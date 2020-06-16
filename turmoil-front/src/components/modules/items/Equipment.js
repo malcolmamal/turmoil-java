@@ -39,7 +39,7 @@ class ConnectedEquipment extends React.Component
 		});
 
 		Ajax.exec({
-			url: 'initializeEquipment',
+			url: 'equipment/initializeEquipment',
 			onSuccess: this.wornItems
 		});
 	}

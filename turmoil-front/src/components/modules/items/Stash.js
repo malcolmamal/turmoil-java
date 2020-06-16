@@ -47,7 +47,7 @@ class ConnectedStash extends React.Component
 		}
 
 		Ajax.exec({
-			url: 'initializeStash',
+			url: 'stash/initializeStash',
 			onSuccess: this.stashedItems
 		});
 	}

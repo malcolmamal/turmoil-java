@@ -121,4 +121,9 @@ public class CombatState
 	{
 		this.activeUnit = activeUnit;
 	}
+
+	public Boolean isActiveUnit(Character character)
+	{
+		return activeUnit.getIdent().equals(character.getIdent());
+	}
 }

@@ -42,6 +42,7 @@ public class TurmoilApplication
 		createCharacter("margo", "Margo Baginska", 2, "polygon-1-5");
 
 		combatState.setActiveUnit(getCharacter("fox"));
+		rollItems(getCharacter("fox"));
 
 		initializeEnemies(combatState);
 	}
@@ -155,7 +156,9 @@ public class TurmoilApplication
  *  25. scaling of items and monsters with level
  *  26. should be able to equip bow if we have quiver in secondary slot, however bow and sword should not be possible
  *  27. make movement actions faster (and maybe slow down attack actions?) so the flow is better
- *  28. pass whole unit in props for FriendlyUnit and EnemyUnit
+ *  28. 
  *  29. make some areas not accessible by players where monsters can spawn
+ *  30. when enemy unit dies it is not despawned correctly
+ *  31. after active unit change: wonky movement animation, tooltip on equipped item is wrong, equipped items from stash seem to be shared
  *
  */

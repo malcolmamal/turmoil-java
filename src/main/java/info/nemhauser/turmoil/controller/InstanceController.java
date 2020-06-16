@@ -22,7 +22,22 @@ import java.util.Map;
 
 
 @RestController
-class InstanceController {
+class InstanceController
+{
+	@RequestMapping(value = "/instance/setUnitActive/{unitIdent}", produces = "application/json")
+	public @ResponseBody
+	JSONObject setUnitActive(@PathVariable String unitIdent)
+	{
+		CombatState cs = TurmoilApplication.getCombatState();
+		Character activeUnit = TurmoilApplication.getCharacter(unitIdent);
+		cs.setActiveUnit(activeUnit);
+
+		JSONObject object = new JSONObject();
+		object.put("unit", new FriendlyUnitResponse(activeUnit, true, cs.getPolygonsInRange(activeUnit)));
+		object.put("items", EquipmentController.getItemsInEquipment(activeUnit));
+
+		return object;
+	}
 
 	@RequestMapping(value = "/instance/initializeEnemyUnits", produces = "application/json")
 	public @ResponseBody
@@ -49,9 +64,11 @@ class InstanceController {
 
 		JSONArray array = new JSONArray();
 
+		CombatState cs = TurmoilApplication.getCombatState();
+
 		for (Character friend : TurmoilApplication.getCombatState().getFriends().values())
 		{
-			array.add(new FriendlyUnitResponse(friend, TurmoilApplication.getCombatState().getPolygonsInRange(friend)));
+			array.add(new FriendlyUnitResponse(friend, cs.isActiveUnit(friend), cs.getPolygonsInRange(friend)));
 		}
 
 		JSONObject object = new JSONObject();
@@ -215,7 +232,7 @@ class InstanceController {
 				true,
 				activeUnit.instancePosition,
 				activeUnit.getIdent(),
-				new FriendlyUnitResponse(activeUnit, cs.getPolygonsInRange(activeUnit))
+				new FriendlyUnitResponse(activeUnit, true, cs.getPolygonsInRange(activeUnit))
 		);
 	}
 

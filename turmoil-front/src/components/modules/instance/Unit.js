@@ -11,7 +11,7 @@ export default class Unit extends React.Component
 
 	render() {
 		const unitStyle = {
-			width: this.props.healthBar + 'px',
+			width: this.props.unit.healthBar + 'px',
 		}
 		const unitAlt = this.props.title ? this.props.title : "unit";
 		const imageClass = this.props.enemy ? " instancePortraitFlipped instanceEnemy instanceEnemyCursor" : "";
@@ -19,19 +19,21 @@ export default class Unit extends React.Component
 		const tooltipType = this.props.enemy ? "monster" : "";
 		const tooltipClass = this.props.enemy ? Tooltip.tooltipClass : "";
 
-		this.refreshUnitData(this.props.ident, this.props.movement);
+		const ident = this.props.unit.ident;
+
+		this.refreshUnitData(ident, this.props.unit.movement);
 
 		return(
-			<div className={"instanceElement" + mainDivClass} id={this.props.ident} onClick={() => this.props.onClick(this.props.ident)}>
+			<div className={"instanceElement" + mainDivClass} id={ident} onClick={() => this.props.onClick(ident)}>
 				<div className="instancePortraitHealthBar">
-					<div className="instancePortraitHealthBarInner" id={this.props.ident + "Health"} style={unitStyle}/>
+					<div className="instancePortraitHealthBarInner" id={ident + "Health"} style={unitStyle}/>
 				</div>
 				<img alt={unitAlt} className={"instancePortrait" + imageClass + tooltipClass}
-					 src={"/images/portraits/" + this.props.portrait}
-					 data-ident={this.props.ident}
+					 src={"/images/portraits/" + this.props.unit.portrait}
+					 data-ident={ident}
 					 data-tooltip-type={tooltipType}
 				/>
-				<div id={this.props.ident + "Effect"}/>
+				<div id={ident + "Effect"}/>
 			</div>
 		);
 	}

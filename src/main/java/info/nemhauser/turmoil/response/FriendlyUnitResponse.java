@@ -8,12 +8,14 @@ public class FriendlyUnitResponse extends EnemyUnitResponse
 {
 	private Set<String> polygonsInRange;
 	private String gender;
+	private Boolean isActiveUnit;
 
-	public FriendlyUnitResponse(Person person, Set<String> polygonsInRange)
+	public FriendlyUnitResponse(Person person, Boolean isActiveUnit, Set<String> polygonsInRange)
 	{
 		super(person);
 		this.gender = person.getGender().toString().toLowerCase();
 		this.polygonsInRange = polygonsInRange;
+		this.isActiveUnit = isActiveUnit;
 	}
 
 	public String[] getPolygonsInRange()
@@ -24,5 +26,10 @@ public class FriendlyUnitResponse extends EnemyUnitResponse
 	public String getGender()
 	{
 		return gender;
+	}
+
+	public Boolean getActiveUnit()
+	{
+		return isActiveUnit;
 	}
 }

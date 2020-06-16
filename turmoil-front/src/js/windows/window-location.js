@@ -25,12 +25,47 @@ export let WindowLocation = {
 			blockActions: true
 		});
 	},
-	actionOnUnit: function (unitId, callbacks)
-	{
+	actionOnUnit: function (unitId, callbacks) {
 		let unit = jQuery('#' + unitId);
 		let polygon = jQuery(WindowLocation.getPolygonForUnit(unit));
 
 		return WindowLocation.actionOnPolygon(polygon, unit, callbacks);
+	},
+	actionOnFriendlyUnit: function (unitId, callbacks) {
+		Ajax.exec({
+			url: 'instance/setUnitActive/' + unitId,
+			onSuccess: WindowLocation.finalizeActionsOnFriendlyUnit,
+			onSuccessThis: callbacks,
+			blockActions: true
+		});
+	},
+	setUnitActive: function (unit) {
+		window.turmoil.instance.activeUnit = unit.ident;
+		window.turmoil.instance.polygonsInRange = unit.polygonsInRange;
+
+		Animations.blink('#' + unit.ident);
+
+		WindowLocation.setEquipmentBackground(unit.gender);
+		WindowLocation.inactivatePolygons();
+
+		setTimeout(function() {
+				WindowLocation.setActivePolygons();
+				WindowLocation.enableActions();
+			}, 500
+		);
+	},
+	finalizeActionsOnFriendlyUnit: function (data, callbackFunctions) {
+		if (typeof(data.unit) === "undefined") {
+			return;
+		}
+
+		if (typeof(callbackFunctions) !== 'undefined'
+			&& typeof(callbackFunctions.updateEquipmentItems) === 'function'
+			&& typeof(data.items) !== "undefined") {
+			callbackFunctions.updateEquipmentItems({items: data.items});
+		}
+
+		WindowLocation.setUnitActive(data.unit);
 	},
 	finalizeActionsOnPolygon: function (data, callbackFunctions) {
 		WindowLocation.inactivatePolygons();

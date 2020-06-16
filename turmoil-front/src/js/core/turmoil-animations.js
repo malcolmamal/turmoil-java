@@ -116,8 +116,7 @@ export let Animations = {
 				Svg.removeClass(polygon, 'instancePolygon');
 				Sound.stopAudioLoop('soundMoveLeather', unit.attr('id'));
 
-				if (window.turmoil.instance.activeUnit === unit.attr('id'))
-				{
+				if (window.turmoil.instance.activeUnit === unit.attr('id')) {
 					Animations.blink('#' + unit.attr('id'));
 				}
 			}

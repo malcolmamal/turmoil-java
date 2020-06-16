@@ -4,8 +4,7 @@ export let ReduxHandlers = {
 	handleUpdateItemsInEquipment: function (currentState, payload) {
 		let newState = {};
 
-		if (typeof payload.wornItems !== 'undefined')
-		{
+		if (typeof payload.wornItems !== 'undefined') {
 			newState.equipmentItems = [...payload.wornItems.items];
 
 			return ReduxHandlers.properResponse(currentState, newState);
@@ -13,16 +12,14 @@ export let ReduxHandlers = {
 
 		newState.equipmentItems = [...currentState.equipmentItems];
 
-		if (typeof payload.itemToAdd !== 'undefined')
-		{
+		if (typeof payload.itemToAdd !== 'undefined') {
 			let slot = payload.itemToAdd.slot;
 
 			Utils.removeFromArrayBySlot(slot, newState.equipmentItems);
 			newState.equipmentItems.push(payload.itemToAdd);
 		}
 
-		if (typeof payload.itemToRemove !== 'undefined')
-		{
+		if (typeof payload.itemToRemove !== 'undefined') {
 			let slot = payload.itemToRemove.slot;
 			let ident = payload.itemToRemove.ident;
 
@@ -35,8 +32,7 @@ export let ReduxHandlers = {
 	handleUpdateItemsInStash: function (currentState, payload) {
 		let newState = {};
 
-		if (typeof payload.stashItems !== 'undefined')
-		{
+		if (typeof payload.stashItems !== 'undefined') {
 			newState.stashItems = [...payload.stashItems.items];
 
 			return ReduxHandlers.properResponse(currentState, newState);
@@ -44,13 +40,11 @@ export let ReduxHandlers = {
 
 		newState.stashItems = [...currentState.stashItems];
 
-		if (typeof payload.itemToAdd !== 'undefined')
-		{
+		if (typeof payload.itemToAdd !== 'undefined') {
 			newState.stashItems.push(payload.itemToAdd);
 		}
 
-		if (typeof payload.itemToRemove !== 'undefined')
-		{
+		if (typeof payload.itemToRemove !== 'undefined') {
 			let ident = payload.itemToRemove.ident;
 
 			Utils.removeFromArrayByIdent(ident, newState.stashItems);
@@ -61,8 +55,7 @@ export let ReduxHandlers = {
 	handleUpdateEnemyUnits: function (currentState, payload) {
 		let newState = {};
 
-		if (typeof payload.enemyUnits !== 'undefined')
-		{
+		if (typeof payload.enemyUnits !== 'undefined') {
 			newState.enemyUnits = [...payload.enemyUnits];
 
 			return ReduxHandlers.properResponse(currentState, newState);
@@ -70,13 +63,11 @@ export let ReduxHandlers = {
 
 		newState.enemyUnits = [...currentState.enemyUnits];
 
-		if (typeof payload.unitToAdd !== 'undefined')
-		{
+		if (typeof payload.unitToAdd !== 'undefined') {
 			newState.enemyUnits.push(payload.unitToAdd);
 		}
 
-		if (typeof payload.unitToRemove !== 'undefined')
-		{
+		if (typeof payload.unitToRemove !== 'undefined') {
 			let ident = payload.unitToRemove.ident;
 
 			Utils.removeFromArrayByIdent(ident, newState.enemyUnits);
@@ -87,8 +78,7 @@ export let ReduxHandlers = {
 	handleUpdateFriendlyUnits: function (currentState, payload) {
 		let newState = {};
 
-		if (typeof payload.friendlyUnits !== 'undefined')
-		{
+		if (typeof payload.friendlyUnits !== 'undefined') {
 			newState.friendlyUnits = [...payload.friendlyUnits];
 
 			return ReduxHandlers.properResponse(currentState, newState);

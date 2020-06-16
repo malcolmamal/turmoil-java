@@ -39,16 +39,15 @@ class ConnectedEnemyUnit extends React.Component
 		this.props.updateEnemyUnits({unitToRemove: unit});
 	}
 
-	render()
-	{
+	render() {
 		return(
-			<Unit ident={this.props.ident} portrait={this.props.portrait} healthBar={this.props.healthBar} movement={this.props.movement} enemy={true} onClick={this.actionOnUnitHandler}/>
+			<Unit unit={this.props.unit} enemy={true} onClick={this.actionOnUnitHandler}/>
 		);
 	}
 
 	componentDidMount() {
-		const ident = this.props.ident;
-		const position = this.props.position;
+		const ident = this.props.unit.ident;
+		const position = this.props.unit.position;
 
 		setTimeout(function() {
 				WindowLocation.handleMoveToPolygon(jQuery('#' + position), jQuery('#' + ident));

@@ -4,7 +4,6 @@ import info.nemhauser.turmoil.TurmoilApplication;
 import info.nemhauser.turmoil.config.Logger;
 import info.nemhauser.turmoil.engine.domain.Item;
 import info.nemhauser.turmoil.engine.generators.ItemGenerator;
-import info.nemhauser.turmoil.engine.instances.ServerState;
 import info.nemhauser.turmoil.response.ItemInStashResponse;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
@@ -19,7 +18,7 @@ public class StashController
 {
 	private static final ArrayList<ItemInStashResponse> items = new ArrayList<>();
 
-	@RequestMapping(value = "/initializeStash", produces = "application/json")
+	@RequestMapping(value = "/stash/initializeStash", produces = "application/json")
 	public @ResponseBody
 	JSONObject getItemsInStash()
 	{
@@ -55,7 +54,7 @@ public class StashController
 		return new ItemInStashResponse(item);
 	}
 
-	@RequestMapping(value = "/addToStash", produces = "application/json")
+	@RequestMapping(value = "/stash/addToStash", produces = "application/json")
 	public @ResponseBody
 	JSONObject addToStash()
 	{
