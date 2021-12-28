@@ -11,10 +11,10 @@
     "jquery-ui": "^1.12.1",
     "malihu-custom-scrollbar-plugin": "^3.1.5",
     "moment": "^2.25.3",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
+    "react": "^17.0.0",
+    "react-dom": "^17.0.0",
     "react-intl": "^4.5.4",
-    "react-scripts": "3.4.1"
+    "react-scripts": "^4.0.0"
   },
   "scripts": {
     "start": "react-scripts start",
