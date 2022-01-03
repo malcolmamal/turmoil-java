@@ -42,7 +42,7 @@ export let Ajax = {
 					crossDomain: true,
 					dataType: 'json',
 					timeout: 3000,
-					url: Ajax.baseUrl + params.url,
+					url: typeof(params.fullUrl) !== 'undefined' ? params.fullUrl: Ajax.baseUrl + params.url,
 					data: dataString,
 					//dataType:"script",
 					success: function(data, textStatus, xhr) {
