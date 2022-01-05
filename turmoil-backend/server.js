@@ -4,21 +4,12 @@ const API_PATH = 'http://localhost:8080';
 
 export class Server {
 
-//  static API_PATH = 'http://localhost:8080';
-
-// /**
-//  * @param {IncomingMessage} req
-//  * @param {ServerResponse} res
-//  */
+  constructor(req, res) {
+    this.handleCors(req, res);
+  }
 
   initializeStashOld = (req, res) => {
     const http = require('http');
-    const {origin} = req.headers;
-
-    const allowedOrigins = ['http://127.0.0.1:3000', 'http://localhost:3000', 'http://127.0.0.1:8080', 'http://localhost:8080', 'http://127.0.0.1:3030', 'http://localhost:3030'];
-    if (allowedOrigins.includes(origin)) {
-      res.setHeader('Access-Control-Allow-Origin', origin);
-    }
 
     res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
@@ -48,12 +39,6 @@ export class Server {
   };
 
   initializeStashNew = async (req, res) => {
-    const {origin} = req.headers;
-
-    const allowedOrigins = ['http://127.0.0.1:3000', 'http://localhost:3000', 'http://127.0.0.1:8080', 'http://localhost:8080', 'http://127.0.0.1:3030', 'http://localhost:3030'];
-    if (allowedOrigins.includes(origin)) {
-      res.setHeader('Access-Control-Allow-Origin', origin);
-    }
 
     res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
@@ -66,8 +51,23 @@ export class Server {
 
     const data = await result.json();
 
-    //console.log(data);
-
     res.end(JSON.stringify(data));
   };
+
+  initializeStashExpress = async () => {
+    const result = await fetch(
+        `${API_PATH}/initializeStash`,
+    );
+
+    return await result.json();
+  };
+
+  handleCors(req, res) {
+    const {origin} = req.headers;
+
+    const allowedOrigins = ['http://127.0.0.1:3000', 'http://localhost:3000', 'http://127.0.0.1:8080', 'http://localhost:8080', 'http://127.0.0.1:3030', 'http://localhost:3030'];
+    if (allowedOrigins.includes(origin)) {
+      res.setHeader('Access-Control-Allow-Origin', origin);
+    }
+  }
 }
