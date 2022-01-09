@@ -5,7 +5,7 @@ import {User} from "../models/user.js";
 import nodemailer from "nodemailer";
 import sendgridTransport from "nodemailer-sendgrid";
 
-const apiKey = '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';
+const apiKey = 'some-key';
 
 const transporter = nodemailer.createTransport(sendgridTransport({
     apiKey: apiKey
