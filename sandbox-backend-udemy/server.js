@@ -11,7 +11,7 @@ export class Server {
   initializeStashOld = (req, res) => {
     const http = require('http');
 
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
     res.setHeader('Access-Control-Allow-Credentials', "true");
     res.writeHead(200, {'Content-Type': 'text/plain'});
@@ -40,7 +40,7 @@ export class Server {
 
   initializeStashNew = async (req, res) => {
 
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
     res.setHeader('Access-Control-Allow-Credentials', "true");
     res.writeHead(200, {'Content-Type': 'text/plain'});
