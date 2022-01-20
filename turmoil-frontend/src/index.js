@@ -3,6 +3,7 @@ import './js/turmoil-init';
 
 // react
 import ReactDOM from 'react-dom';
+import {BrowserRouter} from 'react-router-dom';
 
 // redux
 import {Provider} from "react-redux";
@@ -28,7 +29,9 @@ const language = navigator.language.split(/[-_]/)[0];
 ReactDOM.render(
 	<Provider store={store}>
 		<IntlProvider locale={language} messages={data[language]}>
-			<Turmoil />
+			<BrowserRouter>
+				<Turmoil />
+			</BrowserRouter>
 		</IntlProvider>
 	</Provider>,
 	document.getElementById('root')

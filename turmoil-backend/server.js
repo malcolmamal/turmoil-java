@@ -5,7 +5,7 @@ const API_PATH = 'http://localhost:8080';
 export class Server {
 
   constructor(req, res) {
-    this.handleCors(req, res);
+    //this.handleCors(req, res);
   }
 
   initializeStashOld = (req, res) => {

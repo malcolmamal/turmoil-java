@@ -1,6 +1,7 @@
 import express from "express";
+import bodyParser from "body-parser";
 import {Server} from "./server.js";
-import {pool, sequelize} from "./configs/database.js";
+import {sequelize} from "./configs/database.js";
 import router from "./routes/user.js";
 
 import {User} from './models/user.js';
@@ -12,7 +13,26 @@ import {User} from './models/user.js';
 
 const app = express();
 
-const db = pool.promise();
+
+app.use((req, res, next) => {
+
+    console.log("added cors");
+    // const allowedOrigins = ['http://127.0.0.1:3000', 'http://localhost:3000', 'http://127.0.0.1:8080', 'http://localhost:8080', 'http://127.0.0.1:3030', 'http://localhost:3030'];
+    // if (allowedOrigins.includes(origin)) {
+    //     res.setHeader('Access-Control-Allow-Origin', origin);
+    // }
+    res.setHeader('Access-Control-Allow-Origin', '*');
+
+    res.setHeader(
+        'Access-Control-Allow-Methods',
+        'OPTIONS, GET, POST, PUT, PATCH, DELETE'
+    );
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    next();
+});
+
+// app.use(bodyParser.urlencoded()); // x-www-form-urlencoded <form>
+app.use(bodyParser.json()); // application/json
 
 app.use('/user', router);
 
