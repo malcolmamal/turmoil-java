@@ -27,7 +27,15 @@ app.get('/initializeStash', (req, res, next) => {
         });
 });
 
-sequelize.sync()
+app.use((error, req, res, next) => {
+    console.log(error);
+    const status = error.statusCode || 500;
+    const message = error.message;
+    const data = error.data;
+    res.status(status).json({ message: message, data: data });
+});
+
+sequelize.sync({force: false})
     .then(result => {
         app.listen(3030);
     })
