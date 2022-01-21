@@ -1,4 +1,4 @@
-import Sequelize from 'sequelize'
+import {Sequelize} from 'sequelize'
 
 // https://sequelize.org/master/manual/model-basics.html
 

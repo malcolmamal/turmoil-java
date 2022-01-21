@@ -3,6 +3,7 @@ import bodyParser from "body-parser";
 import {Server} from "./server.js";
 import {sequelize} from "./configs/database.js";
 import router from "./routes/user.js";
+import {isAuthorized} from "./middleware/is-auth.js";
 
 import {User} from './models/user.js';
 
@@ -13,10 +14,9 @@ import {User} from './models/user.js';
 
 const app = express();
 
-
 app.use((req, res, next) => {
 
-    console.log("added cors");
+    console.log("added cors 1");
     // const allowedOrigins = ['http://127.0.0.1:3000', 'http://localhost:3000', 'http://127.0.0.1:8080', 'http://localhost:8080', 'http://127.0.0.1:3030', 'http://localhost:3030'];
     // if (allowedOrigins.includes(origin)) {
     //     res.setHeader('Access-Control-Allow-Origin', origin);
@@ -36,7 +36,7 @@ app.use(bodyParser.json()); // application/json
 
 app.use('/user', router);
 
-app.get('/initializeStash', (req, res, next) => {
+app.get('/initializeStash', isAuthorized, (req, res, next) => {
     let server = new Server(req, res);
 
     console.log("Will initialize stash");
@@ -48,7 +48,7 @@ app.get('/initializeStash', (req, res, next) => {
 });
 
 app.use((error, req, res, next) => {
-    console.log(error);
+    console.log('got error', error);
     const status = error.statusCode || 500;
     const message = error.message;
     const data = error.data;

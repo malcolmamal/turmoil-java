@@ -42,6 +42,7 @@ export let Ajax = {
 					crossDomain: true,
 					dataType: 'json',
 					timeout: 3000,
+					headers: {"Authorization": "Bearer " + localStorage.getItem('token')},
 					url: typeof(params.fullUrl) !== 'undefined' ? params.fullUrl: Ajax.baseUrl + params.url,
 					data: dataString,
 					//dataType:"script",

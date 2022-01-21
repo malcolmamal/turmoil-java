@@ -15,7 +15,7 @@ import locale_en from "./translations/en.json";
 import locale_pl from "./translations/pl.json";
 
 // application
-import Turmoil from './components/Turmoil';
+import {WrappedTurmoil} from './components/WrappedTurmoil';
 
 const data = {
 	'en': locale_en,
@@ -30,7 +30,7 @@ ReactDOM.render(
 	<Provider store={store}>
 		<IntlProvider locale={language} messages={data[language]}>
 			<BrowserRouter>
-				<Turmoil />
+				<WrappedTurmoil />
 			</BrowserRouter>
 		</IntlProvider>
 	</Provider>,
