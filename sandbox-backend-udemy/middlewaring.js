@@ -24,7 +24,7 @@ app.use((req, res, next) => {
 
 app.use((req, res, next) => {
     console.log('This is fourth middleware')
-    next()  // comment out and observe the difference
+    next()  //comment out and observe the difference
 
     console.log('This is fourth-half middleware')
 })
