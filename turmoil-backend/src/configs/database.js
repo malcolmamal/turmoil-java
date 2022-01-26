@@ -1,11 +1,11 @@
-import {Sequelize} from 'sequelize'
+import { Sequelize } from 'sequelize';
 
 // https://sequelize.org/master/manual/model-basics.html
 
 export const sequelize = new Sequelize('turmoil', 'root', 'nopass', {
-    dialect: 'mysql',
-    host: 'localhost',
-    dialectOptions: {
-        // Your mysql2 options here
-    }
+  dialect: 'mysql',
+  host: 'localhost',
+  dialectOptions: {
+    // Your mysql2 options here
+  },
 });
