@@ -5,6 +5,7 @@ import sequelize from './configs/database.js';
 import router from './routes/userRoutes.js';
 import isAuthorized from './middleware/authMiddleware.js';
 import Logger from './utils/logger.js';
+import cors from 'cors';
 
 // in case of doubled request, favicon workaround
 // app.get('/favicon.ico', (req, res) => res.sendStatus(204));
@@ -14,21 +15,7 @@ import Logger from './utils/logger.js';
 const startServer = (port) => {
   const app = express();
 
-  app.use((req, res, next) => {
-    Logger.log('added cors 1');
-    // const allowedOrigins = ['http://127.0.0.1:3000', 'http://localhost:3000', 'http://127.0.0.1:8080', 'http://localhost:8080', 'http://127.0.0.1:3030', 'http://localhost:3030'];
-    // if (allowedOrigins.includes(origin)) {
-    //     res.setHeader('Access-Control-Allow-Origin', origin);
-    // }
-    res.setHeader('Access-Control-Allow-Origin', '*');
-
-    res.setHeader(
-      'Access-Control-Allow-Methods',
-      'OPTIONS, GET, POST, PUT, PATCH, DELETE',
-    );
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    next();
-  });
+  app.use(cors());
 
   // app.use(bodyParser.urlencoded()); // x-www-form-urlencoded <form>
   app.use(bodyParser.json()); // application/json
@@ -36,10 +23,8 @@ const startServer = (port) => {
   app.use('/user', router);
 
   app.get('/initializeStash', isAuthorized, (req, res) => {
-    const server = new Server(req, res);
-
     Logger.log('Will initialize stash');
-    server.initializeStashExpress()
+    Server.initializeStashExpress()
       .then((r) => {
         res.send(r);
         Logger.log('Output sent');

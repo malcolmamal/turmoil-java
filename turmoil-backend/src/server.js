@@ -25,15 +25,6 @@ class Server {
 
     return result.json();
   };
-
-  static handleCors(req, res) {
-    const { origin } = req.headers;
-
-    const allowedOrigins = ['http://127.0.0.1:3000', 'http://localhost:3000', 'http://127.0.0.1:8080', 'http://localhost:8080', 'http://127.0.0.1:3030', 'http://localhost:3030'];
-    if (allowedOrigins.includes(origin)) {
-      res.setHeader('Access-Control-Allow-Origin', origin);
-    }
-  }
 }
 
 export default Server;
