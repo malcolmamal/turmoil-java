@@ -1,11 +1,11 @@
 import express from "express";
 import bodyParser from "body-parser";
 import {Server} from "./server.js";
-import {sequelize} from "./configs/database.js";
-import router from "./routes/user.js";
-import {isAuthorized} from "./middleware/is-auth.js";
+import {sequelize} from "./src/configs/database.js";
+import router from "./src/routes/user.js";
+import {isAuthorized} from "./src/middleware/is-auth.js";
 
-import {User} from './models/user.js';
+import {User} from './src/models/user.js';
 
 // in case of doubled request, favicon workaround
 // app.get('/favicon.ico', (req, res) => res.sendStatus(204));

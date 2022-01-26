@@ -7,7 +7,7 @@
   "scripts": {
     "start": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "./node_modules/.bin/eslint tests src --ext=js",
+	"lint": "node ./node_modules/eslint/bin/eslint.js tests src --ext=js",
     "lint:fix": "npm run lint -- --fix"
   },
   "author": "",
