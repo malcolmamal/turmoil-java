@@ -1,65 +1,68 @@
-import React from "react";
-import {connect} from "react-redux";
-import jQuery from "jquery";
-import Unit from "./Unit";
-import {ReduxActions} from "../../../js/redux/actions";
-import {WindowLocation} from "../../../js/windows/window-location";
+import React from 'react';
+import { connect } from 'react-redux';
+import jQuery from 'jquery';
+import Unit from './Unit';
+import { ReduxActions } from '../../../js/redux/actions';
+import { WindowLocation } from '../../../js/windows/window-location';
 
 function mapDispatchToProps(dispatch) {
-	return {
-		updateItems: stashItems => dispatch(ReduxActions.updateItemsInStashAction(stashItems)),
-		updateEnemyUnits: stashItems => dispatch(ReduxActions.updateEnemyUnitsAction(stashItems))
-	};
+  return {
+    updateItems: (stashItems) => dispatch(ReduxActions.updateItemsInStashAction(stashItems)),
+    updateEnemyUnits: (stashItems) => dispatch(ReduxActions.updateEnemyUnitsAction(stashItems)),
+  };
 }
 
-class ConnectedEnemyUnit extends React.Component
-{
-	constructor(props) {
-		super(props);
+class ConnectedEnemyUnit extends React.Component {
+  constructor(props) {
+    super(props);
 
-		this.actionOnUnitHandler = this.actionOnUnitHandler.bind(this);
-		this.updateItems = this.updateItems.bind(this);
-		this.addEnemyUnit = this.addEnemyUnit.bind(this);
-		this.removeEnemyUnit = this.removeEnemyUnit.bind(this);
-	}
+    this.actionOnUnitHandler = this.actionOnUnitHandler.bind(this);
+    this.updateItems = this.updateItems.bind(this);
+    this.addEnemyUnit = this.addEnemyUnit.bind(this);
+    this.removeEnemyUnit = this.removeEnemyUnit.bind(this);
+  }
 
-	actionOnUnitHandler(ident) {
-		WindowLocation.actionOnUnit(ident, {updateItems: this.updateItems, removeEnemyUnit: this.removeEnemyUnit, addEnemyUnit: this.addEnemyUnit});
-	}
+  componentDidMount() {
+    const { ident, position } = this.props;
 
-	updateItems(item) {
-		this.props.updateItems({itemToAdd: item});
-	}
+    setTimeout(() => {
+      WindowLocation.handleMoveToPolygon(jQuery(`#${position}`), jQuery(`#${ident}`));
+    }, 125);
+  }
 
-	addEnemyUnit(unit) {
-		this.props.updateEnemyUnits({unitToAdd: unit});
-	}
+  actionOnUnitHandler(ident) {
+    WindowLocation.actionOnUnit(ident, { updateItems: this.updateItems, removeEnemyUnit: this.removeEnemyUnit, addEnemyUnit: this.addEnemyUnit });
+  }
 
-	removeEnemyUnit(unit) {
-		this.props.updateEnemyUnits({unitToRemove: unit});
-	}
+  updateItems(item) {
+    const { updateItems } = this.props;
+    updateItems({ itemToAdd: item });
+  }
 
-	render()
-	{
-		return(
-			<Unit ident={this.props.ident} portrait={this.props.portrait} healthBar={this.props.healthBar} movement={this.props.movement} enemy={true} onClick={this.actionOnUnitHandler}/>
-		);
-	}
+  addEnemyUnit(unit) {
+    const { updateEnemyUnits } = this.props;
+    updateEnemyUnits({ unitToAdd: unit });
+  }
 
-	componentDidMount() {
-		const ident = this.props.ident;
-		const position = this.props.position;
+  removeEnemyUnit(unit) {
+    const { updateEnemyUnits } = this.props;
+    updateEnemyUnits({ unitToRemove: unit });
+  }
 
-		setTimeout(function() {
-				WindowLocation.handleMoveToPolygon(jQuery('#' + position), jQuery('#' + ident));
-			}, 125
-		);
-	}
+  render() {
+    const {
+      ident, portrait, healthBar, movement,
+    } = this.props;
+
+    return (
+      <Unit ident={ident} portrait={portrait} healthBar={healthBar} movement={movement} enemy onClick={this.actionOnUnitHandler} />
+    );
+  }
 }
 
 const EnemyUnit = connect(
-	null,
-	mapDispatchToProps
+  null,
+  mapDispatchToProps,
 )(ConnectedEnemyUnit);
 
 export default EnemyUnit;

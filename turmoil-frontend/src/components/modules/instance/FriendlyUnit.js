@@ -1,37 +1,39 @@
-import React from "react";
-import jQuery from "jquery";
-import Unit from "./Unit";
-import {WindowLocation} from "../../../js/windows/window-location";
+import React from 'react';
+import jQuery from 'jquery';
+import Unit from './Unit';
+import { WindowLocation } from '../../../js/windows/window-location';
 
-export default class FriendlyUnit extends React.Component
-{
-	actionOnUnitHandler(ident) {
-		// do nothing at the moment
-	}
+export default class FriendlyUnit extends React.Component {
+  componentDidMount() {
+    const {
+      ident, position, polygonsInRange, gender,
+    } = this.props;
 
-	render() {
-		return(
-			<Unit ident={this.props.ident} portrait={this.props.portrait} healthBar={this.props.healthBar} movement={this.props.movement} onClick={this.actionOnUnitHandler}/>
-		);
-	}
+    window.turmoil.instance.activeUnit = ident;
+    window.turmoil.instance.polygonsInRange = polygonsInRange;
 
-	componentDidMount() {
-		const ident = this.props.ident;
-		const position = this.props.position;
+    WindowLocation.setEquipmentBackground(gender);
 
-		window.turmoil.instance.activeUnit = ident;
-		window.turmoil.instance.polygonsInRange = this.props.polygonsInRange;
+    setTimeout(() => {
+      WindowLocation.handleMoveToPolygon(jQuery(`#${position}`), jQuery(`#${ident}`));
+    }, 200);
 
-		WindowLocation.setEquipmentBackground(this.props.gender);
+    setTimeout(() => {
+      WindowLocation.setActivePolygons();
+    }, 500);
+  }
 
-		setTimeout(function() {
-				WindowLocation.handleMoveToPolygon(jQuery('#' + position), jQuery('#' + ident));
-			}, 200
-		);
+  actionOnUnitHandler(ident) {
+    // do nothing at the moment
+  }
 
-		setTimeout(function() {
-				WindowLocation.setActivePolygons();
-			}, 500
-		);
-	}
+  render() {
+    const {
+      ident, portrait, healthBar, movement,
+    } = this.props;
+
+    return (
+      <Unit ident={ident} portrait={portrait} healthBar={healthBar} movement={movement} onClick={this.actionOnUnitHandler} />
+    );
+  }
 }

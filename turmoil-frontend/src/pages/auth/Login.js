@@ -11,20 +11,20 @@ class Login extends Component {
         value: '',
         valid: false,
         touched: false,
-        validators: [required, email]
+        validators: [required, email],
       },
       password: {
         value: '',
         valid: false,
         touched: false,
-        validators: [required, length({ min: 5 })]
+        validators: [required, length({ min: 5 })],
       },
-      formIsValid: false
-    }
+      formIsValid: false,
+    },
   };
 
   inputChangeHandler = (input, value) => {
-    this.setState(prevState => {
+    this.setState((prevState) => {
       let isValid = true;
       for (const validator of prevState.loginForm[input].validators) {
         isValid = isValid && validator(value);
@@ -34,8 +34,8 @@ class Login extends Component {
         [input]: {
           ...prevState.loginForm[input],
           valid: isValid,
-          value: value
-        }
+          value,
+        },
       };
       let formIsValid = true;
       for (const inputName in updatedForm) {
@@ -43,34 +43,33 @@ class Login extends Component {
       }
       return {
         loginForm: updatedForm,
-        formIsValid: formIsValid
+        formIsValid,
       };
     });
   };
 
-  inputBlurHandler = input => {
-    this.setState(prevState => {
-      return {
-        loginForm: {
-          ...prevState.loginForm,
-          [input]: {
-            ...prevState.loginForm[input],
-            touched: true
-          }
-        }
-      };
-    });
+  inputBlurHandler = (input) => {
+    this.setState((prevState) => ({
+      loginForm: {
+        ...prevState.loginForm,
+        [input]: {
+          ...prevState.loginForm[input],
+          touched: true,
+        },
+      },
+    }));
   };
 
   render() {
+    const { onLogin, loading } = this.props;
+    const { loginForm } = this.state;
+
     return (
       <form
-        onSubmit={e =>
-          this.props.onLogin(e, {
-            email: this.state.loginForm.email.value,
-            password: this.state.loginForm.password.value
-          })
-        }
+        onSubmit={(e) => onLogin(e, {
+          email: loginForm.email.value,
+          password: loginForm.password.value,
+        })}
       >
         <Input
           id="email"
@@ -79,9 +78,9 @@ class Login extends Component {
           control="input"
           onChange={this.inputChangeHandler}
           onBlur={this.inputBlurHandler.bind(this, 'email')}
-          value={this.state.loginForm['email'].value}
-          valid={this.state.loginForm['email'].valid}
-          touched={this.state.loginForm['email'].touched}
+          value={loginForm.email.value}
+          valid={loginForm.email.valid}
+          touched={loginForm.email.touched}
         />
         <Input
           id="password"
@@ -90,11 +89,11 @@ class Login extends Component {
           control="input"
           onChange={this.inputChangeHandler}
           onBlur={this.inputBlurHandler.bind(this, 'password')}
-          value={this.state.loginForm['password'].value}
-          valid={this.state.loginForm['password'].valid}
-          touched={this.state.loginForm['password'].touched}
+          value={loginForm.password.value}
+          valid={loginForm.password.valid}
+          touched={loginForm.password.touched}
         />
-        <Button design="raised" type="submit" loading={this.props.loading}>
+        <Button design="raised" type="submit" loading={loading}>
           Login
         </Button>
       </form>

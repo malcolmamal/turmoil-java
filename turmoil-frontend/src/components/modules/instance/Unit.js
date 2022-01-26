@@ -1,38 +1,43 @@
-import React from "react";
-import {Tooltip} from "../../../js/core/turmoil-tooltip";
+import React from 'react';
+import { Tooltip } from '../../../js/core/turmoil-tooltip';
 
-export default class Unit extends React.Component
-{
-	refreshUnitData(ident, movement) {
-		window.turmoil.instance.units[ident] = {
-			movement: movement
-		}
-	}
+export default class Unit extends React.Component {
+  refreshUnitData(ident, movement) {
+    window.turmoil.instance.units[ident] = {
+      movement,
+    };
+  }
 
-	render() {
-		const unitStyle = {
-			width: this.props.healthBar + 'px',
-		}
-		const unitAlt = this.props.title ? this.props.title : "unit";
-		const imageClass = this.props.enemy ? " instancePortraitFlipped instanceEnemy instanceEnemyCursor" : "";
-		const mainDivClass = this.props.enemy ? " enemyUnit" : "";
-		const tooltipType = this.props.enemy ? "monster" : "";
-		const tooltipClass = this.props.enemy ? Tooltip.tooltipClass : "";
+  render() {
+    const {
+      healthBar, title, enemy, ident, movement, portrait, onClick,
+    } = this.props;
 
-		this.refreshUnitData(this.props.ident, this.props.movement);
+    const unitStyle = {
+      width: `${healthBar}px`,
+    };
+    const unitAlt = title || 'unit';
+    const imageClass = enemy ? ' instancePortraitFlipped instanceEnemy instanceEnemyCursor' : '';
+    const mainDivClass = enemy ? ' enemyUnit' : '';
+    const tooltipType = enemy ? 'monster' : '';
+    const tooltipClass = enemy ? Tooltip.tooltipClass : '';
 
-		return(
-			<div className={"instanceElement" + mainDivClass} id={this.props.ident} onClick={() => this.props.onClick(this.props.ident)}>
-				<div className="instancePortraitHealthBar">
-					<div className="instancePortraitHealthBarInner" id={this.props.ident + "Health"} style={unitStyle}/>
-				</div>
-				<img alt={unitAlt} className={"instancePortrait" + imageClass + tooltipClass}
-					 src={"/images/portraits/" + this.props.portrait}
-					 data-ident={this.props.ident}
-					 data-tooltip-type={tooltipType}
-				/>
-				<div id={this.props.ident + "Effect"}/>
-			</div>
-		);
-	}
+    this.refreshUnitData(ident, movement);
+
+    return (
+      <div className={`instanceElement${mainDivClass}`} id={ident} onClick={() => onClick(ident)}>
+        <div className="instancePortraitHealthBar">
+          <div className="instancePortraitHealthBarInner" id={`${ident}Health`} style={unitStyle} />
+        </div>
+        <img
+          alt={unitAlt}
+          className={`instancePortrait${imageClass}${tooltipClass}`}
+          src={`/images/portraits/${portrait}`}
+          data-ident={ident}
+          data-tooltip-type={tooltipType}
+        />
+        <div id={`${ident}Effect`} />
+      </div>
+    );
+  }
 }
