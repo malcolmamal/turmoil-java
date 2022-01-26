@@ -24,7 +24,7 @@ const startServer = (port) => {
 
   app.get('/initializeStash', isAuthorized, (req, res) => {
     Logger.log('Will initialize stash');
-    Server.initializeStashExpress()
+    Server.initializeStash()
       .then((r) => {
         res.send(r);
         Logger.log('Output sent');
