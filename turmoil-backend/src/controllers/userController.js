@@ -1,9 +1,10 @@
 import { validationResult } from 'express-validator';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { User } from '../models/user.js';
+import User from '../models/User.js';
+import Logger from '../utils/logger.js';
 
-export const addUser = (req, res, next) => {
+export const addUser = (req, res) => {
   let hashedPass;
 
   bcrypt.hash(req.query.password || 'nopass', 12)
@@ -16,11 +17,11 @@ export const addUser = (req, res, next) => {
       });
     })
     .then((result) => {
-      // console.log(result);
+      // Logger.log(result);
       res.send(`user created ${result}`);
     })
     .catch((err) => {
-      console.log(err);
+      Logger.log(err);
       res.send(err);
     });
 };
@@ -62,6 +63,8 @@ export const createUser = async (req, res, next) => {
     }
     next(err);
   }
+
+  return null;
 };
 
 export const loginUser = async (req, res, next) => {
@@ -75,8 +78,8 @@ export const loginUser = async (req, res, next) => {
       error.statusCode = 401;
       return next(error);
     }
-    loadedUser = user[0];
-    console.log('user', loadedUser.email, loadedUser.password);
+    [loadedUser] = user;
+    Logger.log('user', loadedUser.email, loadedUser.password);
     const isEqual = await bcrypt.compare(password, loadedUser.password);
     if (!isEqual) {
       const error = new Error('Wrong password!');
@@ -102,4 +105,6 @@ export const loginUser = async (req, res, next) => {
     }
     next(err);
   }
+
+  return null;
 };

@@ -1,10 +1,10 @@
 import Sequelize from 'sequelize';
-import { sequelize } from '../configs/database.js';
+import sequelize from '../configs/database.js';
 
 // https://sequelize.org/master/manual/model-basics.html
 // DataTypes
 
-export const User = sequelize.define('user', {
+const User = sequelize.define('user', {
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
@@ -24,3 +24,5 @@ export const User = sequelize.define('user', {
     allowNull: false,
   },
 });
+
+export default User;

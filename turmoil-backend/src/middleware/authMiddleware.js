@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
+import Logger from '../utils/logger.js';
 
-export const isAuthorized = (req, res, next) => {
+const isAuthorized = (req, res, next) => {
   const authHeader = req.get('Authorization');
   if (!authHeader) {
     const error = new Error('No token');
@@ -24,7 +25,9 @@ export const isAuthorized = (req, res, next) => {
     throw error;
   }
   req.userId = decodedToken.id;
-  console.log('decoded email', decodedToken.email);
+  Logger.log('decoded email', decodedToken.email);
 
   next();
 };
+
+export default isAuthorized;
