@@ -8,6 +8,9 @@ class Login extends Component {
   constructor(props, context) {
     super(props, context);
 
+    this.inputBlurHandlerEmail = this.inputBlurHandler.bind(this, 'email');
+    this.inputBlurHandlerPassword = this.inputBlurHandler.bind(this, 'password');
+
     this.state = {
       loginForm: {
         email: {
@@ -85,7 +88,7 @@ class Login extends Component {
           type="email"
           control="input"
           onChange={this.inputChangeHandler}
-          onBlur={this.inputBlurHandler.bind(this, 'email')}
+          onBlur={this.inputBlurHandlerEmail}
           value={loginForm.email.value}
           valid={loginForm.email.valid}
           touched={loginForm.email.touched}
@@ -96,7 +99,7 @@ class Login extends Component {
           type="password"
           control="input"
           onChange={this.inputChangeHandler}
-          onBlur={this.inputBlurHandler.bind(this, 'password')}
+          onBlur={this.inputBlurHandlerPassword}
           value={loginForm.password.value}
           valid={loginForm.password.valid}
           touched={loginForm.password.touched}

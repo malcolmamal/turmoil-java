@@ -8,6 +8,10 @@ class Signup extends Component {
   constructor(props, context) {
     super(props, context);
 
+    this.inputBlurHandlerName = this.inputBlurHandler.bind(this, 'name');
+    this.inputBlurHandlerEmail = this.inputBlurHandler.bind(this, 'email');
+    this.inputBlurHandlerPassword = this.inputBlurHandler.bind(this, 'password');
+
     this.state = {
       signupForm: {
         email: {
@@ -86,7 +90,7 @@ class Signup extends Component {
           type="email"
           control="input"
           onChange={this.inputChangeHandler}
-          onBlur={this.inputBlurHandler.bind(this, 'email')}
+          onBlur={this.inputBlurHandlerEmail}
           value={signupForm.email.value}
           valid={signupForm.email.valid}
           touched={signupForm.email.touched}
@@ -97,7 +101,7 @@ class Signup extends Component {
           type="text"
           control="input"
           onChange={this.inputChangeHandler}
-          onBlur={this.inputBlurHandler.bind(this, 'name')}
+          onBlur={this.inputBlurHandlerName}
           value={signupForm.name.value}
           valid={signupForm.name.valid}
           touched={signupForm.name.touched}
@@ -108,7 +112,7 @@ class Signup extends Component {
           type="password"
           control="input"
           onChange={this.inputChangeHandler}
-          onBlur={this.inputBlurHandler.bind(this, 'password')}
+          onBlur={this.inputBlurHandlerPassword}
           value={signupForm.password.value}
           valid={signupForm.password.valid}
           touched={signupForm.password.touched}
