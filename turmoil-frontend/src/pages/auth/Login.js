@@ -101,7 +101,7 @@ class Login extends Component {
           valid={loginForm.password.valid}
           touched={loginForm.password.touched}
         />
-        <Button design="raised" type="submit" loading={loading}>
+        <Button design="raised" loading={loading}>
           Login
         </Button>
       </form>

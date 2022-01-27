@@ -14,78 +14,73 @@ import Logger from '../utils/logger';
 const Ajax = {
   debugInfo: '',
   baseUrl: 'http://localhost:8080/',
-  exec() {
-    if (arguments.length === 1) {
-      const params = arguments[0];
-      if (typeof (params.url) !== 'undefined') {
-        let dataString = null;
-        if (typeof (params.args) !== 'undefined') {
-          jQuery.each(params.args, (name, value) => {
-            dataString += `&arg[${name}]=${value}`;
-          });
+  exec(params) {
+    if (typeof (params.url) !== 'undefined') {
+      let dataString = null;
+      if (typeof (params.args) !== 'undefined') {
+        jQuery.each(params.args, (name, value) => {
+          dataString += `&arg[${name}]=${value}`;
+        });
+      }
+
+      if (typeof (params.blockActions) !== 'undefined' && params.blockActions === true) {
+        if (!WindowLocation.areActionsAllowed()) {
+          window.turmoil.logDebug('Actions are currently blocked', params);
+
+          return;
         }
 
-        if (typeof (params.blockActions) !== 'undefined' && params.blockActions === true) {
-          if (!WindowLocation.areActionsAllowed()) {
-            window.turmoil.logDebug('Actions are currently blocked', arguments);
+        WindowLocation.blockActions();
+      }
 
-            return;
+      Layout.showSpinner();
+
+      jQuery.ajax({
+        type: 'GET',
+        crossDomain: true,
+        dataType: 'json',
+        timeout: 3000,
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+        url: typeof (params.fullUrl) !== 'undefined' ? params.fullUrl : Ajax.baseUrl + params.url,
+        data: dataString,
+        // dataType:"script",
+        success(data, textStatus) {
+          if (textStatus === 'success') {
+            if (typeof (data.success) !== 'undefined' && data.success === false) {
+              WindowLocation.enableActions();
+
+              const requestData = params.url + (dataString != null ? `?${dataString}` : '');
+              Ajax.handleAjaxError(
+                `<b>${requestData}<br><br></b>${data.message}`,
+                `problem with request: ${requestData}`,
+                textStatus,
+              );
+            } else if (typeof (params.onSuccess) !== 'undefined') {
+              if (typeof (params.onSuccessThis) !== 'undefined') {
+                params.onSuccess(data, params.onSuccessThis);
+              } else {
+                params.onSuccess(data);
+              }
+            }
+          } else if (window.debug) {
+            Logger.log('Ajax error', textStatus, params.url, data);
           }
 
-          WindowLocation.blockActions();
-        }
+          Layout.hideSpinner();
+        },
+        error(XMLHttpRequest, textStatus, errorThrown) {
+          WindowLocation.enableActions();
 
-        Layout.showSpinner();
-
-        jQuery.ajax({
-          type: 'GET',
-          crossDomain: true,
-          dataType: 'json',
-          timeout: 3000,
-          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-          url: typeof (params.fullUrl) !== 'undefined' ? params.fullUrl : Ajax.baseUrl + params.url,
-          data: dataString,
-          // dataType:"script",
-          success(data, textStatus) {
-            if (textStatus === 'success') {
-              if (typeof (data.success) !== 'undefined' && data.success === false) {
-                WindowLocation.enableActions();
-
-                const requestData = params.url + (dataString != null ? `?${dataString}` : '');
-                Ajax.handleAjaxError(
-                  `<b>${requestData}<br><br></b>${data.message}`,
-                  `problem with request: ${requestData}`,
-                  textStatus,
-                );
-              } else if (typeof (params.onSuccess) !== 'undefined') {
-                if (typeof (params.onSuccessThis) !== 'undefined') {
-                  params.onSuccess(data, params.onSuccessThis);
-                } else {
-                  params.onSuccess(data);
-                }
-              }
-            } else if (window.debug) {
-              Logger.log('Ajax error', textStatus, params.url, data);
-            }
-
-            Layout.hideSpinner();
-          },
-          error(XMLHttpRequest, textStatus, errorThrown) {
-            WindowLocation.enableActions();
-
-            Ajax.handleAjaxError(XMLHttpRequest.responseText, errorThrown, textStatus);
-          },
-          complete() {
-            // complete params: xhr, textStatus
-            // console.log('complete', xhr.status);
-            // console.log('complete url', window.baseUrl + params.url);
-          },
-        });
-      } else if (window.debug) {
-        Logger.log('Missing url param for ajax call');
-      }
+          Ajax.handleAjaxError(XMLHttpRequest.responseText, errorThrown, textStatus);
+        },
+        complete() {
+          // complete params: xhr, textStatus
+          // console.log('complete', xhr.status);
+          // console.log('complete url', window.baseUrl + params.url);
+        },
+      });
     } else if (window.debug) {
-      Logger.log('Missing arguments for ajax call');
+      Logger.log('Missing url param for ajax call');
     }
   },
   handleAjaxError(responseText, errorThrown, status) {

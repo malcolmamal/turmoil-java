@@ -223,11 +223,11 @@ const Windows = {
     });
 
     highestZIndexValue += 1;
-    document.querySelector(`#window_${windowType}_resizer`).style.zIndex = highestZIndexValue;
+    document.querySelector(`#window_${windowType}_resizer`).style.setProperty('z-index', highestZIndexValue);
   },
   resetZIndex() {
     document.querySelectorAll('.windowResizer').forEach((element) => {
-      element.style.zIndex = 0;
+      element.style.setProperty('z-index', 0);
     });
   },
   saveWindowsPositions(forceSaveParam) {

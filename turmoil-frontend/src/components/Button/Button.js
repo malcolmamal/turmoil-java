@@ -12,7 +12,7 @@ const button = (props) => (!props.link ? (
     ].join(' ')}
     onClick={props.onClick}
     disabled={props.disabled || props.loading}
-    type={props.type}
+    type="submit"
   >
     {props.loading ? 'Loading...' : props.children}
   </button>

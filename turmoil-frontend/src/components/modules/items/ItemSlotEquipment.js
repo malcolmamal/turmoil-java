@@ -16,45 +16,20 @@ function mapDispatchToProps(dispatch) {
 }
 
 class ConnectedItemSlotEquipment extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.onContextMenuHandler = this.onContextMenuHandler.bind(this);
-
-    this.updateItems = this.updateItems.bind(this);
-  }
-
-  onContextMenuHandler(event, item) {
-    event.preventDefault();
-    if (item.ident) {
-      this.actionRightClickOnEquipment(item, this.updateItems);
-      const { updateCharacterStats } = this.props;
-      WindowStats.updateStats(updateCharacterStats);
-    }
-  }
-
-  updateItems(item) {
-    const { updateEquipmentItems, updateStashItems } = this.props;
-    updateEquipmentItems({ itemToRemove: item });
-    updateStashItems({ itemToAdd: item });
-
-    WindowLocation.enableActions();
-  }
-
-  actionRightClickOnEquipment(item, updateItems) {
+  static actionRightClickOnEquipment(item, updateItems) {
     Tooltip.hideAllTooltips();
 
     if (item.ident) {
       Ajax.exec({
         url: `character/unequip/${item.ident}`,
-        onSuccess: this.finalizeRightClickOnEquipment,
+        onSuccess: ConnectedItemSlotEquipment.finalizeRightClickOnEquipment,
         onSuccessThis: updateItems,
         blockActions: true,
       });
     }
   }
 
-  finalizeRightClickOnEquipment(data, callbackFunction) {
+  static finalizeRightClickOnEquipment(data, callbackFunction) {
     if (data != null && data.success === true) {
       if (typeof (data.itemForStash) !== 'undefined') {
         switch (data.itemForStash.type) {
@@ -75,6 +50,31 @@ class ConnectedItemSlotEquipment extends React.Component {
         }
       }
     }
+  }
+
+  constructor(props) {
+    super(props);
+
+    this.onContextMenuHandler = this.onContextMenuHandler.bind(this);
+
+    this.updateItems = this.updateItems.bind(this);
+  }
+
+  onContextMenuHandler(event, item) {
+    event.preventDefault();
+    if (item.ident) {
+      ConnectedItemSlotEquipment.actionRightClickOnEquipment(item, this.updateItems);
+      const { updateCharacterStats } = this.props;
+      WindowStats.updateStats(updateCharacterStats);
+    }
+  }
+
+  updateItems(item) {
+    const { updateEquipmentItems, updateStashItems } = this.props;
+    updateEquipmentItems({ itemToRemove: item });
+    updateStashItems({ itemToAdd: item });
+
+    WindowLocation.enableActions();
   }
 
   render() {

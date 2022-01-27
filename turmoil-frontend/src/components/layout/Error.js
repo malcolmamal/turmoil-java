@@ -11,12 +11,12 @@ export default class Error extends React.Component {
     const span = document.getElementById('modalClose');
 
     // When the user clicks on <span> (x), close the modal
-    span.onclick = function () {
+    span.onclick = () => {
       window.modal.style.display = 'none';
     };
 
     // When the user clicks anywhere outside the modal, close it
-    window.onclick = function (event) {
+    window.onclick = (event) => {
       if (event.target === window.modal) {
         window.modal.style.display = 'none';
       }

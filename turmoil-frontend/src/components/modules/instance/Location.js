@@ -27,7 +27,7 @@ class ConnectedLocation extends React.Component {
   componentDidMount() {
     jQuery('#window_location').disableSelection();
 
-    jQuery('.instancePolygon').click(function () {
+    jQuery('.instancePolygon').click(function onClickAction() {
       WindowLocation.actionOnPolygon(jQuery(this));
     });
 

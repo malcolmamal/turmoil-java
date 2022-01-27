@@ -48,12 +48,12 @@ const Svg = {
   hasClass(element, className) {
     const domElement = this.toDOMElement(element);
 
+    // TODO: there is also something called animVal, is this important?
+
     let hasClass = false;
     jQuery.each(domElement.className.baseVal.replace(/[\s]+/g, ' ').trim().split(' '), (index, value) => {
       if (className === value) {
         hasClass = true;
-
-        return false;
       }
     });
 

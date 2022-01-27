@@ -113,7 +113,7 @@ class Signup extends Component {
           valid={signupForm.password.valid}
           touched={signupForm.password.touched}
         />
-        <Button design="raised" type="submit" loading={loading}>
+        <Button design="raised" loading={loading}>
           Signup
         </Button>
       </form>

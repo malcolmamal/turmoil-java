@@ -181,12 +181,14 @@ window.onkeyup = checkKeys;
 window.onkeydown = checkKeys;
 
 function audioReady() {
-  return jQuery.when.apply(jQuery, jQuery('audio').map(() => {
-    const ready = new jQuery.Deferred();
-    jQuery(this).one('canplay', ready.resolve);
-
-    return ready.promise();
-  }));
+  return Promise.resolve();
+  // TODO: this code seems to not do what it's supposed to do? there are no audio elements found to do anything there
+  // also - remove jquery...
+  // return jQuery.when.apply(jQuery, jQuery('audio').map(() => {
+  //   const ready = new jQuery.Deferred();
+  //   jQuery(this).one('canplay', ready.resolve);
+  //   return ready.promise();
+  // }));
 }
 
 jQuery(() => {
@@ -229,8 +231,9 @@ jQuery(() => {
 });
 
 if (typeof jQuery !== 'undefined') {
-  (function spinWhileAjaxRuns(jQuery) {
+  (function spinWhileAjaxRuns() {
     jQuery('#spinner').ajaxStart(() => {
+      Logger.log('Should be spinning but it still has to be fixed probably... maybe beucase there is no #spinner?');
       jQuery(this).fadeIn();
     }).ajaxStop(() => {
       jQuery(this).fadeOut();

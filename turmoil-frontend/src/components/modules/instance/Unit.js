@@ -2,7 +2,7 @@ import React from 'react';
 import Tooltip from '../../../js/core/turmoil-tooltip';
 
 export default class Unit extends React.Component {
-  refreshUnitData(ident, movement) {
+  static refreshUnitData(ident, movement) {
     window.turmoil.instance.units[ident] = {
       movement,
     };
@@ -22,7 +22,7 @@ export default class Unit extends React.Component {
     const tooltipType = enemy ? 'monster' : '';
     const tooltipClass = enemy ? Tooltip.tooltipClass : '';
 
-    this.refreshUnitData(ident, movement);
+    Unit.refreshUnitData(ident, movement);
 
     return (
       <div className={`instanceElement${mainDivClass}`} id={ident} onClick={() => onClick(ident)}>

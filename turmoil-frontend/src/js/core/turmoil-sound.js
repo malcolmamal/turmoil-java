@@ -13,7 +13,7 @@ const Sound = {
     window.turmoil.soundLoops[`${ident}_loop`] = true;
 
     sound.load();
-    sound.addEventListener('ended', function () {
+    sound.addEventListener('ended', function onSoundEnd() {
       if (window.turmoil.soundLoops[`${ident}_loop`]) {
         this.currentTime = 0;
         window.turmoil.soundLoopsPromises[ident] = this.play();

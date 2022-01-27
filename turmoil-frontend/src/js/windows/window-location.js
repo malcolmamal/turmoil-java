@@ -14,7 +14,7 @@ const WindowLocation = {
   },
   actionOnPolygon(polygon, unit, callbacks) {
     if (typeof (polygon) === 'undefined' || polygon == null) {
-      window.turmoil.logDebug('Wrong polygon parameter', arguments);
+      window.turmoil.logDebug('Wrong polygon parameter', polygon, unit, callbacks);
 
       return;
     }

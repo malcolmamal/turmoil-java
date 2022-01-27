@@ -16,40 +16,18 @@ function mapDispatchToProps(dispatch) {
 }
 
 class ConnectedItemSlotStash extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.updateItems = this.updateItems.bind(this);
-  }
-
-  onContextMenuHandler(event, itemId) {
-    event.preventDefault();
-
-    this.actionRightClickOnStashedItem(itemId, this.updateItems);
-    const { updateCharacterStats } = this.props;
-    WindowStats.updateStats(updateCharacterStats);
-  }
-
-  updateItems(itemForStash, itemForEquipment) {
-    const { updateStashItems, updateEquipmentItems } = this.props;
-    updateStashItems({ itemToAdd: itemForStash, itemToRemove: itemForEquipment });
-    updateEquipmentItems({ itemToAdd: itemForEquipment });
-
-    WindowLocation.enableActions();
-  }
-
-  actionRightClickOnStashedItem(itemId, updateItems) {
+  static actionRightClickOnStashedItem(itemId, updateItems) {
     Tooltip.hideAllTooltips();
 
     Ajax.exec({
       url: `character/equip/${itemId}`,
-      onSuccess: this.finalizeRightClickOnStashedItem,
+      onSuccess: ConnectedItemSlotStash.finalizeRightClickOnStashedItem,
       onSuccessThis: updateItems,
       blockActions: true,
     });
   }
 
-  finalizeRightClickOnStashedItem(data, callbackFunction) {
+  static finalizeRightClickOnStashedItem(data, callbackFunction) {
     if (data != null && data.success === true) {
       if (typeof (data.itemForEquipment) !== 'undefined') {
         switch (data.itemForEquipment.type) {
@@ -70,6 +48,28 @@ class ConnectedItemSlotStash extends React.Component {
         callbackFunction(data.itemForStash, data.itemForEquipment);
       }
     }
+  }
+
+  constructor(props) {
+    super(props);
+
+    this.updateItems = this.updateItems.bind(this);
+  }
+
+  onContextMenuHandler(event, itemId) {
+    event.preventDefault();
+
+    ConnectedItemSlotStash.actionRightClickOnStashedItem(itemId, this.updateItems);
+    const { updateCharacterStats } = this.props;
+    WindowStats.updateStats(updateCharacterStats);
+  }
+
+  updateItems(itemForStash, itemForEquipment) {
+    const { updateStashItems, updateEquipmentItems } = this.props;
+    updateStashItems({ itemToAdd: itemForStash, itemToRemove: itemForEquipment });
+    updateEquipmentItems({ itemToAdd: itemForEquipment });
+
+    WindowLocation.enableActions();
   }
 
   render() {
