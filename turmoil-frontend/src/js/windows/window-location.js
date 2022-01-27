@@ -176,8 +176,8 @@ const WindowLocation = {
     }
   },
   inactivateUnits() {
-    jQuery('.instancePolygonEnemyActive').each(function () {
-      Svg.replaceClass(jQuery(this), 'instancePolygonEnemy', 'instancePolygonEnemyActive');
+    document.querySelectorAll('.instancePolygonEnemyActive').forEach((element) => {
+      Svg.replaceClass(element, 'instancePolygonEnemy', 'instancePolygonEnemyActive');
     });
   },
   setActivePolygons() {
@@ -189,8 +189,8 @@ const WindowLocation = {
     });
   },
   inactivatePolygons() {
-    jQuery('.instancePolygonInRange').each(function () {
-      Svg.replaceClass(jQuery(this), 'instancePolygon', 'instancePolygonInRange');
+    document.querySelectorAll('.instancePolygonInRange').forEach((element) => {
+      Svg.replaceClass(element, 'instancePolygon', 'instancePolygonInRange');
     });
   },
   enableActions() {

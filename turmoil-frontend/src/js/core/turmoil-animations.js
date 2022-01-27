@@ -39,8 +39,8 @@ const Animations = {
     });
   },
   blink(element) {
-    jQuery(element).fadeTo(1000, 0.4, function () {
-      jQuery(this).fadeTo(750, 0.9, function () {
+    jQuery(element).fadeTo(1000, 0.4, function increase() {
+      jQuery(this).fadeTo(750, 0.9, function decrease() {
         Animations.blink(this);
       });
     });

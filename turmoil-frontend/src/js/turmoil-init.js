@@ -229,7 +229,7 @@ jQuery(() => {
 });
 
 if (typeof jQuery !== 'undefined') {
-  (function (jQuery) {
+  (function spinWhileAjaxRuns(jQuery) {
     jQuery('#spinner').ajaxStart(() => {
       jQuery(this).fadeIn();
     }).ajaxStop(() => {

@@ -215,18 +215,19 @@ const Windows = {
     Tooltip.hideAllTooltips();
 
     let highestZIndexValue = 0;
-    jQuery('.windowResizer').each(function () {
-      if (jQuery(this).css('z-index') > highestZIndexValue) {
-        highestZIndexValue = parseInt(jQuery(this).css('z-index'));
+
+    document.querySelectorAll('.windowResizer').forEach((element) => {
+      if (element.style.zIndex > highestZIndexValue) {
+        highestZIndexValue = parseInt(element.style.zIndex, 10);
       }
     });
 
     highestZIndexValue += 1;
-    jQuery(`#window_${windowType}_resizer`).css('z-index', highestZIndexValue);
+    document.querySelector(`#window_${windowType}_resizer`).style.zIndex = highestZIndexValue;
   },
   resetZIndex() {
-    jQuery('.windowResizer').each(() => {
-      jQuery(this).css('z-index', 0);
+    document.querySelectorAll('.windowResizer').forEach((element) => {
+      element.style.zIndex = 0;
     });
   },
   saveWindowsPositions(forceSaveParam) {

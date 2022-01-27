@@ -3,9 +3,11 @@ import Logger from '../utils/logger';
 
 const Svg = {
   addClass(element, className) {
+    const domElement = this.toDOMElement(element);
+
     let newClasses = '';
     let hasClass = false;
-    jQuery.each(element.attr('class').replace(/[\s]+/g, ' ').trim().split(' '), (index, value) => {
+    jQuery.each(domElement.className.baseVal.replace(/[\s]+/g, ' ').trim().split(' '), (index, value) => {
       newClasses += ` ${value}`;
       if (className === value) {
         hasClass = true;
@@ -16,7 +18,7 @@ const Svg = {
       newClasses += ` ${className}`;
     }
 
-    element.attr('class', jQuery.trim(newClasses));
+    domElement.className.baseVal = jQuery.trim(newClasses);
   },
   addClassWithDuration(element, className, duration) {
     jQuery(element).addClass(className, duration);
@@ -24,18 +26,30 @@ const Svg = {
   removeClassWithDuration(element, className, duration) {
     jQuery(element).removeClass(className, duration);
   },
+  toDOMElement(element) {
+    let domElement = element;
+    if (domElement instanceof jQuery) {
+      [domElement] = domElement.get();
+    }
+
+    return domElement;
+  },
   removeClass(element, className) {
+    const domElement = this.toDOMElement(element);
+
     let newClasses = '';
-    jQuery.each(element.attr('class').replace(/[\s]+/g, ' ').trim().split(' '), (index, value) => {
+    jQuery.each(domElement.className.baseVal.replace(/[\s]+/g, ' ').trim().split(' '), (index, value) => {
       if (className !== value) {
         newClasses += ` ${value}`;
       }
     });
-    element.attr('class', jQuery.trim(newClasses));
+    domElement.className.baseVal = jQuery.trim(newClasses);
   },
   hasClass(element, className) {
+    const domElement = this.toDOMElement(element);
+
     let hasClass = false;
-    jQuery.each(element.attr('class').replace(/[\s]+/g, ' ').trim().split(' '), (index, value) => {
+    jQuery.each(domElement.className.baseVal.replace(/[\s]+/g, ' ').trim().split(' '), (index, value) => {
       if (className === value) {
         hasClass = true;
 
