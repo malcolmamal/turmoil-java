@@ -26,10 +26,10 @@ class ConnectedEquipment extends React.Component {
     Object.keys(window.turmoil.equipment.defaultItems).forEach((value) => {
       jQuery(`#${value}`).draggable({
         revert: true,
-        start(event, ui) {
+        start() {
           Tooltip.hideAllTooltips();
         },
-        stop(event, ui) {
+        stop() {
           Tooltip.hideAllTooltips();
         },
       });

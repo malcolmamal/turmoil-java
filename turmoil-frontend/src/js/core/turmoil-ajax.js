@@ -45,7 +45,7 @@ export const Ajax = {
           url: typeof (params.fullUrl) !== 'undefined' ? params.fullUrl : Ajax.baseUrl + params.url,
           data: dataString,
           // dataType:"script",
-          success(data, textStatus, xhr) {
+          success(data, textStatus) {
             if (textStatus === 'success') {
               if (typeof (data.success) !== 'undefined' && data.success === false) {
                 WindowLocation.enableActions();
@@ -74,7 +74,8 @@ export const Ajax = {
 
             Ajax.handleAjaxError(XMLHttpRequest.responseText, errorThrown, textStatus);
           },
-          complete(xhr, textStatus) {
+          complete() {
+            // complete params: xhr, textStatus
             // console.log('complete', xhr.status);
             // console.log('complete url', window.baseUrl + params.url);
           },
@@ -87,17 +88,18 @@ export const Ajax = {
     }
   },
   handleAjaxError(responseText, errorThrown, status) {
+    let response = responseText;
     if (typeof responseText === 'undefined') {
-      responseText = status;
+      response = status;
     }
 
-    jQuery('#error').html(responseText);
+    jQuery('#error').html(response);
     if (window.debug) {
       console.log('Error in ajax call', errorThrown);
-      Ajax.debugInfo = responseText;
+      Ajax.debugInfo = response;
 
       if (window.debugPopup) {
-        jQuery('#modalContent').html(responseText);
+        jQuery('#modalContent').html(response);
         window.modal.style.display = 'block';
       }
     }

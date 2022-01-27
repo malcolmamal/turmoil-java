@@ -64,6 +64,7 @@ export const Animations = {
           styleClass += 'damageIndicatorHealing';
           break;
         }
+        default:
       }
     }
 

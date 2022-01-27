@@ -12,7 +12,7 @@ import Logger from './utils/logger.js';
 // or instead: res.status(204).end()
 // https://stackoverflow.com/questions/35408729/express-js-prevent-get-favicon-ico/35408810#35408810
 
-const startServer = (port) => {
+const startServer = (port, hostname) => {
   const app = express();
 
   app.use(cors());
@@ -41,7 +41,7 @@ const startServer = (port) => {
 
   sequelize.sync({ force: false })
     .then(() => {
-      app.listen(port);
+      app.listen(port, hostname);
     })
     .catch((err) => {
       Logger.log(err);

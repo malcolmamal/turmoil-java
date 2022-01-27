@@ -67,6 +67,7 @@ class ConnectedItemSlotEquipment extends React.Component {
           case 'WEAPON':
             Sound.playAudio('soundWeapon');
             break;
+          default:
         }
 
         if (typeof (callbackFunction) === 'function') {

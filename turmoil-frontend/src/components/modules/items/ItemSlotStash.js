@@ -62,6 +62,7 @@ class ConnectedItemSlotStash extends React.Component {
           case 'WEAPON':
             Sound.playAudio('soundWeapon');
             break;
+          default:
         }
       }
 

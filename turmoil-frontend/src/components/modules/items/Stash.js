@@ -31,7 +31,7 @@ class ConnectedStash extends React.Component {
       // grid: [ 6, 3 ],
       distance: 45,
       items: '> li',
-      update(event, ui) {
+      update() {
         const resultOrder = jQuery(this).sortable('toArray').toString();
         console.log(resultOrder);
       },
