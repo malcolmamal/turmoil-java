@@ -5,10 +5,10 @@ import Svg from '../core/turmoil-svg';
 import Animations from '../core/turmoil-animations';
 import Ajax from '../core/turmoil-ajax';
 import Logger from '../utils/logger';
+import Consts from '../core/turmoil-consts';
+import Permissions from '../core/turmoil-permissions';
 
 const WindowLocation = {
-  ATTACK_TYPE_MELEE: 'melee',
-  ATTACK_TYPE_BOW: 'bow',
   getPolygonForUnit(unit) {
     return jQuery(`#${jQuery(unit).data('previousPolygonId')}`);
   },
@@ -48,7 +48,7 @@ const WindowLocation = {
           () => {
             WindowLocation.inactivateUnits();
             WindowLocation.setActivePolygons();
-            WindowLocation.enableActions();
+            Permissions.enableActions();
           },
           window.turmoil.settings.delayBetweenActions * index + window.turmoil.settings.delayBetweenActions / 2,
         );
@@ -193,15 +193,6 @@ const WindowLocation = {
       Svg.replaceClass(element, 'instancePolygon', 'instancePolygonInRange');
     });
   },
-  enableActions() {
-    window.turmoil.instance.isActive = true;
-  },
-  blockActions() {
-    window.turmoil.instance.isActive = false;
-  },
-  areActionsAllowed() {
-    return window.turmoil.instance.isActive;
-  },
   setAttackType(item) {
     if (item.slot !== 'slot_right_hand') {
       return;
@@ -212,10 +203,10 @@ const WindowLocation = {
 
     if (item.itemSpecificType === 'BOW') {
       root.style.setProperty('--cursor-current', rootStyles.getPropertyValue('--cursor-bow'));
-      window.turmoil.instance.attackType = WindowLocation.ATTACK_TYPE_BOW;
+      window.turmoil.instance.attackType = Consts.ATTACK_TYPE_BOW;
     } else {
       root.style.setProperty('--cursor-current', rootStyles.getPropertyValue('--cursor-melee'));
-      window.turmoil.instance.attackType = WindowLocation.ATTACK_TYPE_MELEE;
+      window.turmoil.instance.attackType = Consts.ATTACK_TYPE_MELEE;
     }
   },
   setEquipmentBackground(gender) {

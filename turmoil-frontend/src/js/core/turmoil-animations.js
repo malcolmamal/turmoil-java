@@ -2,7 +2,7 @@ import jQuery from 'jquery';
 import Utils from './turmoil-utils';
 import Sound from './turmoil-sound';
 import Svg from './turmoil-svg';
-import WindowLocation from '../windows/window-location';
+import Consts from './turmoil-consts';
 
 const Animations = {
   animateToTop(id) {
@@ -78,7 +78,7 @@ const Animations = {
     // TODO: check attack type per attacking unit
     const targetUnit = jQuery(`#${unitId}`);
 
-    if (window.turmoil.instance.attackType === WindowLocation.ATTACK_TYPE_BOW && targetUnit.hasClass('enemyUnit')) {
+    if (window.turmoil.instance.attackType === Consts.ATTACK_TYPE_BOW && targetUnit.hasClass('enemyUnit')) {
       effect.addClass('attackArrow');
       Sound.playAudio(`soundAttackBow${Utils.randomInt(3)}`);
 

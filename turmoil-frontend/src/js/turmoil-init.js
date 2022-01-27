@@ -5,7 +5,6 @@ import Utils from './core/turmoil-utils';
 import Layout from './core/turmoil-layout';
 import Windows from './core/turmoil-windows';
 import Logger from './utils/logger';
-import WindowLocation from './windows/window-location';
 
 // styles
 import '../stylesheets/turmoil-general.css';
@@ -22,6 +21,7 @@ import soundAttackBow3 from '../media/audio/attack_bow_003.wav';
 import soundAccessoryJewellery from '../media/audio/change_bling_004.wav';
 import soundMediumArmor from '../media/audio/change_medium_002.wav';
 import soundWeapon from '../media/audio/change_weapon_004.wav';
+import Consts from './core/turmoil-consts';
 
 window.debug = true;
 window.debugPopup = true;
@@ -86,7 +86,7 @@ window.turmoil.equipment.defaultItems = {
 window.turmoil.instance = {
   activeUnit: null,
   isActive: true,
-  attackType: WindowLocation.ATTACK_TYPE_MELEE,
+  attackType: Consts.ATTACK_TYPE_MELEE,
   polygonsInRange: [],
   units: {},
 };

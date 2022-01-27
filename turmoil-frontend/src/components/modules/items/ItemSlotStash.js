@@ -5,7 +5,7 @@ import WindowStats from '../../../js/windows/window-stats';
 import Tooltip from '../../../js/core/turmoil-tooltip';
 import Ajax from '../../../js/core/turmoil-ajax';
 import Sound from '../../../js/core/turmoil-sound';
-import WindowLocation from '../../../js/windows/window-location';
+import Permissions from '../../../js/core/turmoil-permissions';
 
 function mapDispatchToProps(dispatch) {
   return {
@@ -69,7 +69,7 @@ class ConnectedItemSlotStash extends React.Component {
     updateStashItems({ itemToAdd: itemForStash, itemToRemove: itemForEquipment });
     updateEquipmentItems({ itemToAdd: itemForEquipment });
 
-    WindowLocation.enableActions();
+    Permissions.enableActions();
   }
 
   render() {

@@ -1,7 +1,7 @@
 import jQuery from 'jquery';
 import Layout from './turmoil-layout';
-import WindowLocation from '../windows/window-location';
 import Logger from '../utils/logger';
+import Permissions from './turmoil-permissions';
 
 /**
  * window.turmoil.ajax.exec({
@@ -24,13 +24,13 @@ const Ajax = {
       }
 
       if (typeof (params.blockActions) !== 'undefined' && params.blockActions === true) {
-        if (!WindowLocation.areActionsAllowed()) {
+        if (!Permissions.areActionsAllowed()) {
           window.turmoil.logDebug('Actions are currently blocked', params);
 
           return;
         }
 
-        WindowLocation.blockActions();
+        Permissions.blockActions();
       }
 
       Layout.showSpinner();
@@ -47,7 +47,7 @@ const Ajax = {
         success(data, textStatus) {
           if (textStatus === 'success') {
             if (typeof (data.success) !== 'undefined' && data.success === false) {
-              WindowLocation.enableActions();
+              Permissions.enableActions();
 
               const requestData = params.url + (dataString != null ? `?${dataString}` : '');
               Ajax.handleAjaxError(
@@ -69,7 +69,7 @@ const Ajax = {
           Layout.hideSpinner();
         },
         error(XMLHttpRequest, textStatus, errorThrown) {
-          WindowLocation.enableActions();
+          Permissions.enableActions();
 
           Ajax.handleAjaxError(XMLHttpRequest.responseText, errorThrown, textStatus);
         },

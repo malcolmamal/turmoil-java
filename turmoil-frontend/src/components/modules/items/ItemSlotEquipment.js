@@ -6,6 +6,7 @@ import Tooltip from '../../../js/core/turmoil-tooltip';
 import Ajax from '../../../js/core/turmoil-ajax';
 import Sound from '../../../js/core/turmoil-sound';
 import WindowLocation from '../../../js/windows/window-location';
+import Permissions from '../../../js/core/turmoil-permissions';
 
 function mapDispatchToProps(dispatch) {
   return {
@@ -74,7 +75,7 @@ class ConnectedItemSlotEquipment extends React.Component {
     updateEquipmentItems({ itemToRemove: item });
     updateStashItems({ itemToAdd: item });
 
-    WindowLocation.enableActions();
+    Permissions.enableActions();
   }
 
   render() {
