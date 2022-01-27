@@ -1,11 +1,12 @@
 class Logger {
   static log = (...args) => {
+    let dataToLog = args;
     if (args.length === 1) {
-      const [arg] = args;
-      console.log(arg);
-    } else {
-      console.log(args);
+      [dataToLog] = args;
     }
+
+    // eslint-disable-next-line no-console
+    console.log(dataToLog);
   };
 }
 
