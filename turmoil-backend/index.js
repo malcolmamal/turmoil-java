@@ -1,12 +1,9 @@
-//const http = require('http');
-//const {Server} = require("./server.js");
-//const {Server} = require("./server");
+import startServer from './src/app.js';
+import Logger from './src/utils/logger.js';
 
-import {Server} from "./server.js";
-import * as http from "http";
+const port = process.env.TURMOIL_BACKEND_PORT || 3030;
+const hostname = process.env.TURMOIL_BACKEND_HOSTNAME || '127.0.0.1';
 
-http.createServer((req, res) => {
-    let server = new Server();
-    server.initializeStashNew(req, res);
-    console.log('something');
-}).listen(3030);
+Logger.log("Starting server on port", port);
+
+startServer(port, hostname);

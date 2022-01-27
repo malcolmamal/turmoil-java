@@ -30,3 +30,7 @@ build/
 ### VS Code ###
 .vscode/
 turmoil.bat
+
+### gradle ###
+.gradle/
+build/
