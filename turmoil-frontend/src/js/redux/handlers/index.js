@@ -15,7 +15,7 @@ const ReduxHandlers = {
     if (typeof payload.itemToAdd !== 'undefined') {
       const { slot } = payload.itemToAdd;
 
-      Utils.removeFromArrayBySlot(slot, newState.equipmentItems);
+      newState.equipmentItems = Utils.removeFromArrayBySlot(slot, newState.equipmentItems);
       newState.equipmentItems.push(payload.itemToAdd);
     }
 
@@ -23,7 +23,7 @@ const ReduxHandlers = {
       const { slot } = payload.itemToRemove;
       const { ident } = payload.itemToRemove;
 
-      Utils.removeFromArrayByIdent(ident, newState.equipmentItems);
+      newState.equipmentItems = Utils.removeFromArrayByIdent(ident, newState.equipmentItems);
       newState.equipmentItems.push(window.turmoil.equipment.defaultItems[slot]);
     }
 
@@ -47,7 +47,7 @@ const ReduxHandlers = {
     if (typeof payload.itemToRemove !== 'undefined') {
       const { ident } = payload.itemToRemove;
 
-      Utils.removeFromArrayByIdent(ident, newState.stashItems);
+      newState.stashItems = Utils.removeFromArrayByIdent(ident, newState.stashItems);
     }
 
     return ReduxHandlers.properResponse(currentState, newState);
@@ -70,7 +70,7 @@ const ReduxHandlers = {
     if (typeof payload.unitToRemove !== 'undefined') {
       const { ident } = payload.unitToRemove;
 
-      Utils.removeFromArrayByIdent(ident, newState.enemyUnits);
+      newState.enemyUnits = Utils.removeFromArrayByIdent(ident, newState.enemyUnits);
     }
 
     return ReduxHandlers.properResponse(currentState, newState);
