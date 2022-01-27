@@ -6,6 +6,7 @@ import 'malihu-custom-scrollbar-plugin';
 import Window from './Window';
 import 'malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css';
 import '../stylesheets/window-console.css';
+import Logger from '../js/utils/logger';
 
 export default class Console extends React.Component {
   componentDidMount() {
@@ -13,11 +14,11 @@ export default class Console extends React.Component {
       jQuery('#consoleTabs').tabs();
 
       if (window.debug) {
-        console.log('Tabs initialized...');
+        Logger.log('Tabs initialized...');
       }
     });
 
-    console.log('Console initialized...');
+    Logger.log('Console initialized...');
   }
 
   render() {

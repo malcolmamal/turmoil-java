@@ -1,8 +1,8 @@
 import jQuery from 'jquery';
-import { Tooltip } from './turmoil-tooltip';
-import { Layout } from './turmoil-layout';
+import Tooltip from './turmoil-tooltip';
+import Layout from './turmoil-layout';
 
-export const Windows = {
+const Windows = {
   windowSizes: {
     consoleWidth: 600,
     consoleHeight: 260,
@@ -17,7 +17,7 @@ export const Windows = {
   },
   initWindow(windowType, isScalable) {
     let isVisible = false;
-    let scale; // TODO
+    // let scale; // TODO
     let verticalPos;
     let horizontalPos;
 
@@ -215,20 +215,22 @@ export const Windows = {
     Tooltip.hideAllTooltips();
 
     let highestZIndexValue = 0;
-    jQuery('.windowResizer').each(function (index) {
+    jQuery('.windowResizer').each(function () {
       if (jQuery(this).css('z-index') > highestZIndexValue) {
         highestZIndexValue = parseInt(jQuery(this).css('z-index'));
       }
     });
 
-    jQuery(`#window_${windowType}_resizer`).css('z-index', ++highestZIndexValue);
+    highestZIndexValue += 1;
+    jQuery(`#window_${windowType}_resizer`).css('z-index', highestZIndexValue);
   },
   resetZIndex() {
-    jQuery('.windowResizer').each(function (index) {
+    jQuery('.windowResizer').each(() => {
       jQuery(this).css('z-index', 0);
     });
   },
-  saveWindowsPositions(forceSave) {
+  saveWindowsPositions(forceSaveParam) {
+    let forceSave = forceSaveParam;
     if (typeof (forceSave) === 'undefined') {
       forceSave = false;
     }
@@ -287,3 +289,5 @@ jQuery(() => {
   });
 */
 });
+
+export default Windows;

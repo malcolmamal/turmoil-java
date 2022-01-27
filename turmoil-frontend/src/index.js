@@ -11,15 +11,15 @@ import { IntlProvider } from 'react-intl';
 import store from './js/redux/store/index';
 
 // localization
-import locale_en from './translations/en.json';
-import locale_pl from './translations/pl.json';
+import localeEn from './translations/en.json';
+import localePl from './translations/pl.json';
 
 // application
-import { WrappedTurmoil } from './components/WrappedTurmoil';
+import WrappedTurmoil from './components/WrappedTurmoil';
 
 const data = {
-  en: locale_en,
-  pl: locale_pl,
+  en: localeEn,
+  pl: localePl,
 };
 
 const language = navigator.language.split(/[-_]/)[0];

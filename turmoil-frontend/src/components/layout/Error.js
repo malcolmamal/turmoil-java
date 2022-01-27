@@ -1,5 +1,6 @@
 import React from 'react';
 import '../../stylesheets/turmoil-error.css';
+import Logger from '../../js/utils/logger';
 
 export default class Error extends React.Component {
   componentDidMount() {
@@ -14,7 +15,7 @@ export default class Error extends React.Component {
       window.modal.style.display = 'none';
     };
 
-    // When the user clicks anywhere outside of the modal, close it
+    // When the user clicks anywhere outside the modal, close it
     window.onclick = function (event) {
       if (event.target === window.modal) {
         window.modal.style.display = 'none';
@@ -22,7 +23,7 @@ export default class Error extends React.Component {
     };
 
     if (window.debug) {
-      console.log('Error modal initialized...');
+      Logger.log('Error modal initialized...');
     }
   }
 

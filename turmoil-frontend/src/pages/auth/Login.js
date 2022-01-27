@@ -5,30 +5,36 @@ import Button from '../../components/Button/Button';
 import { required, length, email } from '../../js/utils/validators';
 
 class Login extends Component {
-  state = {
-    loginForm: {
-      email: {
-        value: '',
-        valid: false,
-        touched: false,
-        validators: [required, email],
+  constructor(props, context) {
+    super(props, context);
+
+    this.state = {
+      loginForm: {
+        email: {
+          value: '',
+          valid: false,
+          touched: false,
+          validators: [required, email],
+        },
+        password: {
+          value: '',
+          valid: false,
+          touched: false,
+          validators: [required, length({ min: 5 })],
+        },
+        formIsValid: false,
       },
-      password: {
-        value: '',
-        valid: false,
-        touched: false,
-        validators: [required, length({ min: 5 })],
-      },
-      formIsValid: false,
-    },
-  };
+    };
+  }
 
   inputChangeHandler = (input, value) => {
     this.setState((prevState) => {
       let isValid = true;
-      for (const validator of prevState.loginForm[input].validators) {
+
+      prevState.loginForm[input].validators.forEach((validator) => {
         isValid = isValid && validator(value);
-      }
+      });
+
       const updatedForm = {
         ...prevState.loginForm,
         [input]: {
@@ -37,10 +43,12 @@ class Login extends Component {
           value,
         },
       };
+
       let formIsValid = true;
-      for (const inputName in updatedForm) {
+      Object.keys(updatedForm).forEach((inputName) => {
         formIsValid = formIsValid && updatedForm[inputName].valid;
-      }
+      });
+
       return {
         loginForm: updatedForm,
         formIsValid,

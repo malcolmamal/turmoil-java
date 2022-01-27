@@ -1,7 +1,8 @@
 import React from 'react';
 import jQuery from 'jquery';
 import Unit from './Unit';
-import { WindowLocation } from '../../../js/windows/window-location';
+import WindowLocation from '../../../js/windows/window-location';
+import Logger from '../../../js/utils/logger';
 
 export default class FriendlyUnit extends React.Component {
   componentDidMount() {
@@ -25,6 +26,7 @@ export default class FriendlyUnit extends React.Component {
 
   actionOnUnitHandler(ident) {
     // do nothing at the moment
+    Logger.log('Nothing to do with Unit at the moment', ident);
   }
 
   render() {

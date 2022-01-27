@@ -4,9 +4,10 @@ import jQuery from 'jquery';
 import 'jquery-ui/ui/widgets/sortable';
 import Window from '../../Window';
 import ItemSlotStash from './ItemSlotStash';
-import { ReduxActions } from '../../../js/redux/actions';
-import { Ajax } from '../../../js/core/turmoil-ajax';
+import ReduxActions from '../../../js/redux/actions';
+import Ajax from '../../../js/core/turmoil-ajax';
 import '../../../stylesheets/window-stash.css';
+import Logger from '../../../js/utils/logger';
 
 const mapStateToProps = (state) => ({ stashItems: state.stashItems });
 
@@ -33,14 +34,14 @@ class ConnectedStash extends React.Component {
       items: '> li',
       update() {
         const resultOrder = jQuery(this).sortable('toArray').toString();
-        console.log(resultOrder);
+        Logger.log(resultOrder);
       },
     });
 
     stash.disableSelection();
 
     if (window.debug) {
-      console.log('Stash initialized...');
+      Logger.log('Stash initialized...');
     }
 
     Ajax.exec({

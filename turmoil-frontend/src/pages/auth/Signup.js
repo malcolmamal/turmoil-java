@@ -5,36 +5,42 @@ import Button from '../../components/Button/Button';
 import { required, length, email } from '../../js/utils/validators';
 
 class Signup extends Component {
-  state = {
-    signupForm: {
-      email: {
-        value: '',
-        valid: false,
-        touched: false,
-        validators: [required, email],
+  constructor(props, context) {
+    super(props, context);
+
+    this.state = {
+      signupForm: {
+        email: {
+          value: '',
+          valid: false,
+          touched: false,
+          validators: [required, email],
+        },
+        password: {
+          value: '',
+          valid: false,
+          touched: false,
+          validators: [required, length({ min: 5 })],
+        },
+        name: {
+          value: '',
+          valid: false,
+          touched: false,
+          validators: [required],
+        },
+        formIsValid: false,
       },
-      password: {
-        value: '',
-        valid: false,
-        touched: false,
-        validators: [required, length({ min: 5 })],
-      },
-      name: {
-        value: '',
-        valid: false,
-        touched: false,
-        validators: [required],
-      },
-      formIsValid: false,
-    },
-  };
+    };
+  }
 
   inputChangeHandler = (input, value) => {
     this.setState((prevState) => {
       let isValid = true;
-      for (const validator of prevState.signupForm[input].validators) {
+
+      prevState.signupForm[input].validators.forEach((validator) => {
         isValid = isValid && validator(value);
-      }
+      });
+
       const updatedForm = {
         ...prevState.signupForm,
         [input]: {
@@ -43,10 +49,12 @@ class Signup extends Component {
           value,
         },
       };
+
       let formIsValid = true;
-      for (const inputName in updatedForm) {
+      Object.keys(updatedForm).forEach((inputName) => {
         formIsValid = formIsValid && updatedForm[inputName].valid;
-      }
+      });
+
       return {
         signupForm: updatedForm,
         formIsValid,

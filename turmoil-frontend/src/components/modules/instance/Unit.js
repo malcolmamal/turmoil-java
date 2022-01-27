@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tooltip } from '../../../js/core/turmoil-tooltip';
+import Tooltip from '../../../js/core/turmoil-tooltip';
 
 export default class Unit extends React.Component {
   refreshUnitData(ident, movement) {

@@ -1,9 +1,11 @@
 import jQuery from 'jquery';
 import moment from 'moment';
 import 'jquery-ui/themes/base/all.css';
-import { Utils } from './core/turmoil-utils';
-import { Layout } from './core/turmoil-layout';
-import { Windows } from './core/turmoil-windows';
+import Utils from './core/turmoil-utils';
+import Layout from './core/turmoil-layout';
+import Windows from './core/turmoil-windows';
+import Logger from './utils/logger';
+import WindowLocation from './windows/window-location';
 
 // styles
 import '../stylesheets/turmoil-general.css';
@@ -20,7 +22,6 @@ import soundAttackBow3 from '../media/audio/attack_bow_003.wav';
 import soundAccessoryJewellery from '../media/audio/change_bling_004.wav';
 import soundMediumArmor from '../media/audio/change_medium_002.wav';
 import soundWeapon from '../media/audio/change_weapon_004.wav';
-import { WindowLocation } from './windows/window-location';
 
 window.debug = true;
 window.debugPopup = true;
@@ -109,12 +110,13 @@ window.turmoil.soundLoopsPromises = {}; // promises: https://developers.google.c
 window.turmoil.windowSettings = localStorage.getItem('windowSettings') === null ? {} : JSON.parse(localStorage.getItem('windowSettings'));
 
 window.turmoil.lastLogDate = null;
-window.turmoil.log = function (content, target) {
-  if (typeof (target) === 'undefined') {
+window.turmoil.log = (content, targetParam) => {
+  let target = targetParam;
+  if (typeof (targetParam) === 'undefined') {
     target = 'all';
   }
 
-  console.log(`[${target}]`, content);
+  Logger.log(`[${target}]`, content);
 
   const consoleTarget = jQuery(`#console-${target}`);
   if (consoleTarget.length > 0) {
@@ -140,11 +142,11 @@ window.turmoil.log = function (content, target) {
 
     window.turmoil.lastLogDate = currentDateObject;
   } else {
-    console.log(`[${target}]`, content);
+    Logger.log(`[${target}]`, content);
   }
 };
 
-window.turmoil.logDebug = function (content) {
+window.turmoil.logDebug = (content) => {
   let caller = '';
   if (typeof (arguments) === 'object') {
     if (typeof (this.callee) === 'function' && typeof (this.callee.name) === 'string') {
@@ -152,14 +154,14 @@ window.turmoil.logDebug = function (content) {
     }
   }
   window.turmoil.log(caller + content, 'all');
-  console.log('[debug]', caller + content);
+  Logger.log('[debug]', caller + content);
 };
 
-window.turmoil.logCombat = function (content) {
+window.turmoil.logCombat = (content) => {
   window.turmoil.log(content, 'combat');
 };
 
-window.turmoil.logErrors = function (content) {
+window.turmoil.logErrors = (content) => {
   window.turmoil.log(content, 'errors');
 };
 
@@ -169,17 +171,17 @@ window.pressedKeys = {
   shift: false,
 };
 
-window.onkeyup = checkKeys;
-window.onkeydown = checkKeys;
-
 function checkKeys(e) {
   window.pressedKeys.alt = e.altKey;
   window.pressedKeys.ctrl = e.ctrlKey;
   window.pressedKeys.shift = e.shiftKey;
 }
 
+window.onkeyup = checkKeys;
+window.onkeydown = checkKeys;
+
 function audioReady() {
-  return jQuery.when.apply(jQuery, jQuery('audio').map(function () {
+  return jQuery.when.apply(jQuery, jQuery('audio').map(() => {
     const ready = new jQuery.Deferred();
     jQuery(this).one('canplay', ready.resolve);
 
@@ -199,7 +201,7 @@ jQuery(() => {
     if (jQuery.isFunction(jQuery().mCustomScrollbar)) {
       scrollableContainer.mCustomScrollbar({ theme: 'dark' });
     } else if (window.debug) {
-      console.log('scrollableContainer found, but custom-scrollbar module is not active...');
+      Logger.log('scrollableContainer found, but custom-scrollbar module is not active...');
     }
   }
 
@@ -220,7 +222,7 @@ jQuery(() => {
   Windows.initWindow('location', true);
 
   audioReady().then(() => {
-    console.log('Audio assets initialized...');
+    Logger.log('Audio assets initialized...');
   });
 
   // TODO: handle browser window resize
@@ -228,9 +230,9 @@ jQuery(() => {
 
 if (typeof jQuery !== 'undefined') {
   (function (jQuery) {
-    jQuery('#spinner').ajaxStart(function () {
+    jQuery('#spinner').ajaxStart(() => {
       jQuery(this).fadeIn();
-    }).ajaxStop(function () {
+    }).ajaxStop(() => {
       jQuery(this).fadeOut();
     });
   }(jQuery));

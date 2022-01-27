@@ -1,11 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { ReduxActions } from '../../../js/redux/actions';
-import { WindowStats } from '../../../js/windows/window-stats';
-import { Tooltip } from '../../../js/core/turmoil-tooltip';
-import { Ajax } from '../../../js/core/turmoil-ajax';
-import { Sound } from '../../../js/core/turmoil-sound';
-import { WindowLocation } from '../../../js/windows/window-location';
+import ReduxActions from '../../../js/redux/actions';
+import WindowStats from '../../../js/windows/window-stats';
+import Tooltip from '../../../js/core/turmoil-tooltip';
+import Ajax from '../../../js/core/turmoil-ajax';
+import Sound from '../../../js/core/turmoil-sound';
+import WindowLocation from '../../../js/windows/window-location';
 
 function mapDispatchToProps(dispatch) {
   return {

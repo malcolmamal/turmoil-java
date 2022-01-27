@@ -1,6 +1,7 @@
 import jQuery from 'jquery';
+import Logger from '../utils/logger';
 
-export const Svg = {
+const Svg = {
   addClass(element, className) {
     let newClasses = '';
     let hasClass = false;
@@ -49,8 +50,10 @@ export const Svg = {
     Svg.addClass(element, newClassName);
   },
   printClass(element) {
-    console.log(element.attr('class'));
+    Logger.log(element.attr('class'));
 
     return element.attr('class');
   },
 };
+
+export default Svg;

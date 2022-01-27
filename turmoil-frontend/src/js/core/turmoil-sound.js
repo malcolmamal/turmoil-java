@@ -1,8 +1,10 @@
-export const Sound = {
+import Logger from '../utils/logger';
+
+const Sound = {
   playAudio(audio) {
     const sound = new Audio(window.turmoil.sounds[audio]);
     sound.load();
-    const promise = sound.play();
+    sound.play().then();
   },
   playAudioLoop(audio, suffix) {
     const ident = `${audio}_${suffix}`;
@@ -27,11 +29,11 @@ export const Sound = {
       const playPromise = window.turmoil.soundLoopsPromises[ident];
 
       if (playPromise !== undefined) {
-        playPromise.then((_) => {
+        playPromise.then(() => {
           sound.pause();
         })
           .catch((error) => {
-            console.log('sound pause catch', error);
+            Logger.log('sound pause catch', error);
           });
       }
 
@@ -41,3 +43,5 @@ export const Sound = {
     }
   },
 };
+
+export default Sound;

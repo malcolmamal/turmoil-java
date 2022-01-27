@@ -1,9 +1,10 @@
 import jQuery from 'jquery';
 import 'jquery-ui/ui/widgets/tooltip';
-import { Ajax } from './turmoil-ajax';
+import Ajax from './turmoil-ajax';
 import '../../stylesheets/turmoil-tooltip.css';
+import Logger from '../utils/logger';
 
-export const Tooltip = {
+const Tooltip = {
   emptyContent: "<div id='something-_ID_'>_CONTENT_</div>",
   tooltipClass: ' tooltip itemTooltip',
   tooltipContents: {},
@@ -38,10 +39,10 @@ export const Tooltip = {
     const ident = element.data('ident');
     const type = element.data('tooltip-type');
 
-    console.log('shift', window.pressedKeys.shift);
+    Logger.log('shift', window.pressedKeys.shift);
 
     if (type === 'monster' && !window.pressedKeys.shift) {
-      return;
+      return '';
     }
 
     let content = Tooltip.emptyContent.replace('_CONTENT_', '').replace('_ID_', ident);
@@ -65,14 +66,14 @@ export const Tooltip = {
               Tooltip.reopenTooltipIfNotVisible(element, `#something-${ident}`);
             }, 10);
           } else if (window.debug) {
-            console.log('Tooltip Ajax error', textStatus, ident, data);
+            Logger.log('Tooltip Ajax error', textStatus, ident, data);
           }
         },
         error(XMLHttpRequest, textStatus, errorThrown) {
           jQuery('#error').html(XMLHttpRequest.responseText);
 
           if (window.debug) {
-            console.log('Error in ajax call', errorThrown);
+            Logger.log('Error in ajax call', errorThrown);
           }
         },
       });
@@ -110,6 +111,8 @@ jQuery(() => {
   });
 
   if (window.debug) {
-    console.log('Tooltip initialized...');
+    Logger.log('Tooltip initialized...');
   }
 });
+
+export default Tooltip;

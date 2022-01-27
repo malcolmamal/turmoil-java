@@ -1,6 +1,6 @@
-import { Utils } from '../../core/turmoil-utils';
+import Utils from '../../core/turmoil-utils';
 
-export const ReduxHandlers = {
+const ReduxHandlers = {
   handleUpdateItemsInEquipment(currentState, payload) {
     const newState = {};
 
@@ -91,3 +91,5 @@ export const ReduxHandlers = {
     return { ...currentState, ...newState };
   },
 };
+
+export default ReduxHandlers;

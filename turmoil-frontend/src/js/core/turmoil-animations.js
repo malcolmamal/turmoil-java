@@ -1,10 +1,10 @@
 import jQuery from 'jquery';
-import { Utils } from './turmoil-utils';
-import { Sound } from './turmoil-sound';
-import { Svg } from './turmoil-svg';
-import { WindowLocation } from '../windows/window-location';
+import Utils from './turmoil-utils';
+import Sound from './turmoil-sound';
+import Svg from './turmoil-svg';
+import WindowLocation from '../windows/window-location';
 
-export const Animations = {
+const Animations = {
   animateToTop(id) {
     const element = jQuery(`#${id}`);
     if (element.length > 0) {
@@ -125,3 +125,5 @@ export const Animations = {
     );
   },
 };
+
+export default Animations;

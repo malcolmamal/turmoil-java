@@ -2,8 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import jQuery from 'jquery';
 import Unit from './Unit';
-import { ReduxActions } from '../../../js/redux/actions';
-import { WindowLocation } from '../../../js/windows/window-location';
+import ReduxActions from '../../../js/redux/actions';
+import WindowLocation from '../../../js/windows/window-location';
 
 function mapDispatchToProps(dispatch) {
   return {

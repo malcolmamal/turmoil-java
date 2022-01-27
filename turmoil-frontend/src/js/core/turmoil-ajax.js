@@ -1,6 +1,7 @@
 import jQuery from 'jquery';
-import { Layout } from './turmoil-layout';
-import { WindowLocation } from '../windows/window-location';
+import Layout from './turmoil-layout';
+import WindowLocation from '../windows/window-location';
+import Logger from '../utils/logger';
 
 /**
  * window.turmoil.ajax.exec({
@@ -10,7 +11,7 @@ import { WindowLocation } from '../windows/window-location';
  *
  * @type {{debugInfo: string, baseUrl: string, exec: Ajax.exec}}
  */
-export const Ajax = {
+const Ajax = {
   debugInfo: '',
   baseUrl: 'http://localhost:8080/',
   exec() {
@@ -64,7 +65,7 @@ export const Ajax = {
                 }
               }
             } else if (window.debug) {
-              console.log('Ajax error', textStatus, params.url, data);
+              Logger.log('Ajax error', textStatus, params.url, data);
             }
 
             Layout.hideSpinner();
@@ -81,10 +82,10 @@ export const Ajax = {
           },
         });
       } else if (window.debug) {
-        console.log('Missing url param for ajax call');
+        Logger.log('Missing url param for ajax call');
       }
     } else if (window.debug) {
-      console.log('Missing arguments for ajax call');
+      Logger.log('Missing arguments for ajax call');
     }
   },
   handleAjaxError(responseText, errorThrown, status) {
@@ -95,7 +96,7 @@ export const Ajax = {
 
     jQuery('#error').html(response);
     if (window.debug) {
-      console.log('Error in ajax call', errorThrown);
+      Logger.log('Error in ajax call', errorThrown);
       Ajax.debugInfo = response;
 
       if (window.debugPopup) {
@@ -114,3 +115,5 @@ export const Ajax = {
     Layout.hideSpinnerWithDelay();
   },
 };
+
+export default Ajax;

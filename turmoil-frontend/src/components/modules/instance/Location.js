@@ -5,10 +5,11 @@ import Window from '../../Window';
 import Field from './Field';
 import FriendlyUnit from './FriendlyUnit';
 import EnemyUnit from './EnemyUnit';
-import { ReduxActions } from '../../../js/redux/actions';
-import { Ajax } from '../../../js/core/turmoil-ajax';
-import { WindowLocation } from '../../../js/windows/window-location';
+import ReduxActions from '../../../js/redux/actions';
+import Ajax from '../../../js/core/turmoil-ajax';
+import WindowLocation from '../../../js/windows/window-location';
 import '../../../stylesheets/window-location.css';
+import Logger from '../../../js/utils/logger';
 
 const mapStateToProps = (state) => ({
   enemyUnits: state.enemyUnits,
@@ -45,7 +46,7 @@ class ConnectedLocation extends React.Component {
     });
 
     if (window.debug) {
-      console.log('Location initialized...');
+      Logger.log('Location initialized...');
     }
   }
 
@@ -62,8 +63,8 @@ class ConnectedLocation extends React.Component {
    */
 
     const fields = [];
-    for (let i = 1; i < 11; i++) {
-      for (let j = 1; j < 9; j++) {
+    for (let i = 1; i < 11; i += 1) {
+      for (let j = 1; j < 9; j += 1) {
         fields.push({ column: i, row: j });
       }
     }

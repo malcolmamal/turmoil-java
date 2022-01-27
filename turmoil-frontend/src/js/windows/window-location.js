@@ -1,11 +1,12 @@
 import jQuery from 'jquery';
 import 'jquery-ui/ui/widgets/draggable';
 import 'jquery-ui/ui/widgets/resizable';
-import { Svg } from '../core/turmoil-svg';
-import { Animations } from '../core/turmoil-animations';
-import { Ajax } from '../core/turmoil-ajax';
+import Svg from '../core/turmoil-svg';
+import Animations from '../core/turmoil-animations';
+import Ajax from '../core/turmoil-ajax';
+import Logger from '../utils/logger';
 
-export const WindowLocation = {
+const WindowLocation = {
   ATTACK_TYPE_MELEE: 'melee',
   ATTACK_TYPE_BOW: 'bow',
   getPolygonForUnit(unit) {
@@ -115,18 +116,18 @@ export const WindowLocation = {
 
     const offsetContainer = jQuery('#locationContainer').offset();
     if (typeof offsetContainer === 'undefined') {
-      console.log('OffsetContainer undefined');
+      Logger.log('OffsetContainer undefined');
       return;
     }
 
     if (typeof polygon === 'undefined') {
-      console.log('Polygon undefined');
+      Logger.log('Polygon undefined');
       return;
     }
 
     const offset = polygon.offset();
     if (typeof offset === 'undefined') {
-      console.log('Offset undefined', polygon);
+      Logger.log('Offset undefined', polygon);
       return;
     }
 
@@ -228,3 +229,5 @@ export const WindowLocation = {
     }
   },
 };
+
+export default WindowLocation;

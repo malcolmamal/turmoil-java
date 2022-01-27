@@ -1,4 +1,4 @@
-export const Utils = {
+const Utils = {
   getCurrentDateTime() {
     const currentDate = new Date();
     return `${currentDate.toJSON().slice(0, 10)} ${
@@ -10,7 +10,8 @@ export const Utils = {
   randomInt(max) {
     return Math.floor((Math.random() * max) + 1);
   },
-  addEvent(element, type, eventHandle) {
+  addEvent(elementParam, type, eventHandle) {
+    const element = elementParam;
     if (element == null || typeof (element) === 'undefined') {
       return;
     }
@@ -40,3 +41,5 @@ export const Utils = {
     }
   },
 };
+
+export default Utils;

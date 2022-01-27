@@ -1,6 +1,6 @@
 import jQuery from 'jquery';
 
-export const Layout = {
+const Layout = {
   isVerticalScrollPresent() {
     // currently disabled
     return false;
@@ -92,3 +92,5 @@ export const Layout = {
     Layout.setLayout();
   },
 };
+
+export default Layout;

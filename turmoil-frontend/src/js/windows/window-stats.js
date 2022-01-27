@@ -1,6 +1,6 @@
-import { Ajax } from '../core/turmoil-ajax';
+import Ajax from '../core/turmoil-ajax';
 
-export const WindowStats = {
+const WindowStats = {
   updateStats(callBackFunction) {
     Ajax.exec({
       url: 'character/state',
@@ -8,3 +8,5 @@ export const WindowStats = {
     });
   },
 };
+
+export default WindowStats;

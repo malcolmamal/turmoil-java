@@ -4,7 +4,7 @@ import {
   UPDATE_ITEMS_IN_EQUIPMENT,
   UPDATE_ITEMS_IN_STASH,
 } from '../constants/action-types';
-import { ReduxHandlers } from '../handlers';
+import ReduxHandlers from '../handlers';
 
 const initialState = {
   characterState: {},
@@ -14,7 +14,7 @@ const initialState = {
   friendlyUnits: [],
 };
 
-function rootReducer(state = initialState, action) {
+function rootReducer(state = initialState, action = '') {
   switch (action.type) {
     case UPDATE_CHARACTER_STATE: {
       return { ...state, characterState: action.payload };
@@ -31,6 +31,7 @@ function rootReducer(state = initialState, action) {
     case UPDATE_FRIENDLY_UNITS: {
       return ReduxHandlers.handleUpdateFriendlyUnits(state, action.payload);
     }
+    default:
   }
 
   return state;

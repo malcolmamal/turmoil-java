@@ -12,7 +12,8 @@ import Location from './modules/instance/Location';
 import SignupPage from '../pages/auth/Signup';
 import LoginPage from '../pages/auth/Login';
 import Button from './Button/Button';
-import { Windows } from '../js/core/turmoil-windows';
+import Windows from '../js/core/turmoil-windows';
+import Logger from '../js/utils/logger';
 
 export default class Turmoil extends React.Component {
   constructor(props, context) {
@@ -30,16 +31,16 @@ export default class Turmoil extends React.Component {
 
   componentDidMount() {
     const { location } = this.props;
-    console.log('mounted at', location);
+    Logger.log('mounted at', location);
 
     if (location.pathname === '/logged') {
-      console.log('is in logged pathname');
+      Logger.log('is in logged pathname');
       setTimeout(() => {
         Windows.initWindow('console', true);
-        console.log('tried to init window...');
+        Logger.log('tried to init window...');
       }, 2000);
     } else {
-      console.log('is not in pathname :/');
+      Logger.log('is not in pathname :/');
     }
   }
 
@@ -61,24 +62,24 @@ export default class Turmoil extends React.Component {
   // }
 
   changeShouldRedirect = (e, state) => {
-    console.log('clicked!', e, state);
-    console.log('state', this.state);
+    Logger.log('clicked!', e, state);
+    Logger.log('state', this.state);
     this.setState({ shouldRedirect: !state.shouldRedirect });
-    console.log('state', this.state);
+    Logger.log('state', this.state);
   };
 
-  setAutoLogout = (milliseconds) => {
-    setTimeout(() => {
-      this.logoutHandler();
-    }, milliseconds);
-  };
+  // setAutoLogout = (milliseconds) => {
+  //   setTimeout(() => {
+  //     this.logoutHandler();
+  //   }, milliseconds);
+  // };
 
-  logoutHandler = () => {
-    this.setState({ isAuth: false, token: null });
-    localStorage.removeItem('token');
-    localStorage.removeItem('expiryDate');
-    localStorage.removeItem('userId');
-  };
+  // logoutHandler = () => {
+  //   this.setState({ isAuth: false, token: null });
+  //   localStorage.removeItem('token');
+  //   localStorage.removeItem('expiryDate');
+  //   localStorage.removeItem('userId');
+  // };
 
   loginHandler = (event, authData) => {
     event.preventDefault();
@@ -103,13 +104,13 @@ export default class Turmoil extends React.Component {
           throw new Error('Validation failed.');
         }
         if (res.status !== 200 && res.status !== 201) {
-          console.log('Error!');
+          Logger.log('Error!');
           throw new Error('Could not authenticate you!');
         }
         return res.json();
       })
       .then((resData) => {
-        console.log(resData);
+        Logger.log(resData);
         this.setState({
           isAuth: true,
           token: resData.token,
@@ -129,7 +130,7 @@ export default class Turmoil extends React.Component {
         navigate('/logged');
       })
       .catch((err) => {
-        console.log(err);
+        Logger.log(err);
         this.setState({
           isAuth: false,
           authLoading: false,
@@ -159,13 +160,13 @@ export default class Turmoil extends React.Component {
           );
         }
         if (res.status !== 200 && res.status !== 201) {
-          console.log('Error!');
+          Logger.log('Error!');
           throw new Error('Creating a user failed!');
         }
         return res.json();
       })
       .then((resData) => {
-        console.log(resData);
+        Logger.log(resData);
         this.setState({ isAuth: false, authLoading: false });
         // todo redirect to login
         // this.props.history.replace('/logged');
@@ -174,7 +175,7 @@ export default class Turmoil extends React.Component {
         navigate('/login');
       })
       .catch((err) => {
-        console.log(err);
+        Logger.log(err);
         this.setState({
           isAuth: false,
           authLoading: false,
@@ -184,7 +185,7 @@ export default class Turmoil extends React.Component {
   };
 
   render() {
-    // console.log("location", this.props.location);
+    // Logger.log("location", this.props.location);
     const { authLoading } = this.state;
 
     const routes = (

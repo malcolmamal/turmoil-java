@@ -6,7 +6,7 @@ import {
   UPDATE_FRIENDLY_UNITS,
 } from '../constants/action-types';
 
-export const ReduxActions = {
+const ReduxActions = {
   updateCharacterStatsAction(payload) {
     return { type: UPDATE_CHARACTER_STATE, payload };
   },
@@ -23,3 +23,5 @@ export const ReduxActions = {
     return { type: UPDATE_FRIENDLY_UNITS, payload };
   },
 };
+
+export default ReduxActions;
